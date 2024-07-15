@@ -55,7 +55,7 @@ We welcome contributions to the project! If you want to add new features or make
 4. Push your changes to your fork.
 5. Create a pull request detailing the changes you have made.
 
-## Suggested Updates/Next Steps
+## Suggested Updates / Next Steps
 
 Here are some suggested updates and next steps for the project:
 
