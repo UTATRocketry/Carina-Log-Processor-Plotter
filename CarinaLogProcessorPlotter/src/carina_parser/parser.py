@@ -117,7 +117,7 @@ def parse_actuator_lines(lines, time_offset):
             
     return actuators
 
-def mass_flow_rate(sensors: pd.DataFrame, start_ind: int, end_ind: int) -> None: 
+def mass_flow_rate(sensors: pd.DataFrame, start_ind: int, end_ind: int) -> list: 
     time = sensors["Time"].to_list()[start_ind:end_ind]
     if "MFT" in sensors.columns:
         mass = sensors["MFT"].to_list()[start_ind:end_ind]
