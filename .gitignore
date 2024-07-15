@@ -1,2 +1,5 @@
 #Ignore data files as they are to large for commits
 /CarinaLogProcessorPlotter/Data/*/raw
+
+#Ignore program log as it chnages every run 
+/CarinaLogProcessorPlotter/program.log
