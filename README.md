@@ -40,9 +40,9 @@ The Carina Log Processor and Plotter is a GUI-based application designed to read
 4. Click the "Start Program" button to process and visualize the data across the entire time domain.
 5. Now use the UI to customize the plots as you need to perform your data analysis. In addition, you can use the tool to numerically solve for the mass flow rate and plot it as well. 
 
-# Start Page 
+### Start Page 
 ![image](https://github.com/user-attachments/assets/e2d9a487-77e9-4db8-8e27-596e9e0c69fc)
-# Main Program
+### Main Program
 ![image](https://github.com/user-attachments/assets/44cf4a4d-e7fa-465b-a164-866577a4a676)
 
 ## Contributing
