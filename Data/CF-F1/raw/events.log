@@ -1,0 +1,134 @@
+2022-06-04 07:33:51,071 INFO [default] Logging is ready.
+2022-06-04 07:33:51,071 INFO [default] Carina has started.
+2022-06-04 07:34:29,333 INFO [default] Added system diagram file: /home/pi/Desktop/Liquid CF-F Ops Diagram.png
+2022-06-04 07:34:35,442 INFO [default] User has requested process file open.
+2022-06-04 07:34:38,340 INFO [default] Process file parsed successfully.
+2022-06-04 07:34:38,958 INFO [default] Presenters ready.
+2022-06-04 07:34:38,958 INFO [default] Managers ready.
+2022-06-04 07:34:38,959 INFO [default] Controllers ready.
+2022-06-04 07:34:38,968 INFO [default] User interface ready.
+2022-06-04 07:35:04,834 INFO [default] User has requested process start.
+2022-06-04 07:35:04,835 INFO [default] DAQManager acquisition started.
+2022-06-04 07:36:21,652 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned ON.
+2022-06-04 07:36:21,737 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned OFF.
+2022-06-04 07:36:23,839 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned ON.
+2022-06-04 07:36:25,479 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 0 degrees.
+2022-06-04 07:36:25,481 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 0 degrees is 246 (out of 4096).
+2022-06-04 07:36:25,988 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 0 degrees.
+2022-06-04 07:36:25,989 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 0 degrees is 246 (out of 4096).
+2022-06-04 07:36:26,000 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:29] PCA9685 channel  servo: state set to OPEN.
+2022-06-04 07:36:27,944 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 0 degrees.
+2022-06-04 07:36:27,947 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 0 degrees is 246 (out of 4096).
+2022-06-04 07:36:28,459 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 90 degrees.
+2022-06-04 07:36:28,461 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 90 degrees is 471.9 (out of 4096).
+2022-06-04 07:36:28,473 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:36] PCA9685 channel  servo: state set to CLOSED.
+2022-06-04 07:36:30,761 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned OFF.
+2022-06-04 07:36:45,493 INFO [default] PFT: User has requested recalibration.
+2022-06-04 07:37:16,552 INFO [default] PFT: User has accepted modified recalibration.
+2022-06-04 07:37:36,152 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned ON.
+2022-06-04 07:37:38,153 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 0 degrees.
+2022-06-04 07:37:38,155 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 0 degrees is 246 (out of 4096).
+2022-06-04 07:37:38,665 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 0 degrees.
+2022-06-04 07:37:38,667 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 0 degrees is 246 (out of 4096).
+2022-06-04 07:37:38,676 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:29] PCA9685 channel  servo: state set to OPEN.
+2022-06-04 07:37:40,558 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned OFF.
+2022-06-04 07:37:46,349 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 100 degrees.
+2022-06-04 07:37:46,352 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 100 degrees is 483.333 (out of 4096).
+2022-06-04 07:37:46,864 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 85 degrees.
+2022-06-04 07:37:46,865 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 85 degrees is 433.333 (out of 4096).
+2022-06-04 07:37:46,871 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:29] PCA9685 channel  servo: state set to OPEN.
+2022-06-04 07:37:48,670 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 0 degrees.
+2022-06-04 07:37:48,672 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 0 degrees is 150 (out of 4096).
+2022-06-04 07:37:49,179 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 11 degrees.
+2022-06-04 07:37:49,180 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 11 degrees is 186.667 (out of 4096).
+2022-06-04 07:37:49,184 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:36] PCA9685 channel  servo: state set to CLOSED.
+2022-06-04 07:37:50,274 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 100 degrees.
+2022-06-04 07:37:50,277 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 100 degrees is 483.333 (out of 4096).
+2022-06-04 07:37:50,791 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 85 degrees.
+2022-06-04 07:37:50,793 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 85 degrees is 433.333 (out of 4096).
+2022-06-04 07:37:50,805 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:29] PCA9685 channel  servo: state set to OPEN.
+2022-06-04 07:37:54,276 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 07:37:55,928 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 07:38:07,851 INFO [default] Solenoid 'SVCCP' at relay channel 4 is now turned ON.
+2022-06-04 07:38:09,510 INFO [default] Solenoid 'SVCCP' at relay channel 4 is now turned OFF.
+2022-06-04 07:38:12,077 INFO [default] Solenoid 'SVCCP' at relay channel 4 is now turned ON.
+2022-06-04 07:38:14,317 INFO [default] Solenoid 'SVCCP' at relay channel 4 is now turned OFF.
+2022-06-04 07:39:12,456 INFO [default] MFT: User has requested recalibration.
+2022-06-04 07:40:03,926 INFO [default] MFT: User has accepted modified recalibration.
+2022-06-04 07:40:23,116 INFO [default] MFT: User has requested recalibration.
+2022-06-04 07:41:01,192 INFO [default] MFT: User has accepted modified recalibration.
+2022-06-04 07:46:30,610 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 0 degrees.
+2022-06-04 07:46:30,613 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 0 degrees is 150 (out of 4096).
+2022-06-04 07:46:31,123 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 11 degrees.
+2022-06-04 07:46:31,125 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 11 degrees is 186.667 (out of 4096).
+2022-06-04 07:46:31,136 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:36] PCA9685 channel  servo: state set to CLOSED.
+2022-06-04 07:46:38,790 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 100 degrees.
+2022-06-04 07:46:38,792 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 100 degrees is 483.333 (out of 4096).
+2022-06-04 07:46:39,301 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 85 degrees.
+2022-06-04 07:46:39,303 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 85 degrees is 433.333 (out of 4096).
+2022-06-04 07:46:39,314 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:29] PCA9685 channel  servo: state set to OPEN.
+2022-06-04 07:47:08,668 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 0 degrees.
+2022-06-04 07:47:08,672 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 0 degrees is 150 (out of 4096).
+2022-06-04 07:47:09,184 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 11 degrees.
+2022-06-04 07:47:09,186 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 11 degrees is 186.667 (out of 4096).
+2022-06-04 07:47:09,198 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:36] PCA9685 channel  servo: state set to CLOSED.
+2022-06-04 07:47:18,735 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 100 degrees.
+2022-06-04 07:47:18,739 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 100 degrees is 483.333 (out of 4096).
+2022-06-04 07:47:19,253 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 85 degrees.
+2022-06-04 07:47:19,255 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 85 degrees is 433.333 (out of 4096).
+2022-06-04 07:47:19,266 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:29] PCA9685 channel  servo: state set to OPEN.
+2022-06-04 07:48:16,415 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 07:48:16,654 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 07:49:29,940 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 07:49:30,274 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 07:49:32,771 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 07:49:33,512 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 07:49:35,816 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 07:49:36,945 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 07:49:39,714 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 07:49:40,528 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 07:49:42,570 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 07:49:43,176 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 07:49:45,294 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 07:49:46,110 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 07:51:56,535 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 07:52:42,116 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 07:56:40,490 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned ON.
+2022-06-04 07:56:44,973 INFO [default] Solenoid 'SVCCP' at relay channel 4 is now turned ON.
+2022-06-04 07:57:22,242 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 0 degrees.
+2022-06-04 07:57:22,243 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 0 degrees is 150 (out of 4096).
+2022-06-04 07:57:22,748 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 11 degrees.
+2022-06-04 07:57:22,749 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 11 degrees is 186.667 (out of 4096).
+2022-06-04 07:57:22,755 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:36] PCA9685 channel  servo: state set to CLOSED.
+2022-06-04 07:57:26,199 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 0 degrees.
+2022-06-04 07:57:26,201 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 0 degrees is 246 (out of 4096).
+2022-06-04 07:57:26,709 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 90 degrees.
+2022-06-04 07:57:26,710 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 90 degrees is 471.9 (out of 4096).
+2022-06-04 07:57:26,714 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:36] PCA9685 channel  servo: state set to CLOSED.
+2022-06-04 07:57:49,680 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 100 degrees.
+2022-06-04 07:57:49,683 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 100 degrees is 483.333 (out of 4096).
+2022-06-04 07:57:50,199 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 85 degrees.
+2022-06-04 07:57:50,201 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 85 degrees is 433.333 (out of 4096).
+2022-06-04 07:57:50,212 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:29] PCA9685 channel  servo: state set to OPEN.
+2022-06-04 07:57:52,015 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned OFF.
+2022-06-04 07:57:53,516 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned ON.
+2022-06-04 07:57:54,808 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 0 degrees.
+2022-06-04 07:57:54,810 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 0 degrees is 246 (out of 4096).
+2022-06-04 07:57:55,318 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] MFV: Servo rotated to 0 degrees.
+2022-06-04 07:57:55,320 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] MFV: Servo PWM for 0 degrees is 246 (out of 4096).
+2022-06-04 07:57:55,330 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:29] PCA9685 channel  servo: state set to OPEN.
+2022-06-04 07:57:56,645 INFO [default] Solenoid 'ENABLE MFV' at relay channel 6 is now turned OFF.
+2022-06-04 07:57:59,926 INFO [default] Solenoid 'SVCCP' at relay channel 4 is now turned OFF.
+2022-06-04 07:59:19,337 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 08:00:22,752 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned OFF.
+2022-06-04 08:00:47,438 INFO [default] Solenoid 'SVFTV' at relay channel 2 is now turned ON.
+2022-06-04 08:09:34,415 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 0 degrees.
+2022-06-04 08:09:34,420 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 0 degrees is 150 (out of 4096).
+2022-06-04 08:09:34,938 DEBUG [default] [pi@unknown-host] [void PCA9685Actuator::rotateToAngle(double)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:51] BVFTP: Servo rotated to 11 degrees.
+2022-06-04 08:09:34,938 DEBUG [default] [pi@unknown-host] [uint16_t PCA9685Actuator::getPWMFromAngle(double) const] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:58] BVFTP: Servo PWM for 11 degrees is 186.667 (out of 4096).
+2022-06-04 08:09:34,943 DEBUG [default] [pi@unknown-host] [virtual void PCA9685Actuator::setState(bool)] [/home/pi/Desktop/Carina-engineTestMVP/src/L4/control/PCA9685Actuator.cpp:36] PCA9685 channel  servo: state set to CLOSED.
+2022-06-04 08:11:07,867 INFO [default] Solenoid 'SVCCP' at relay channel 4 is now turned ON.
+2022-06-04 08:11:08,167 INFO [default] Solenoid 'SVCCP' at relay channel 4 is now turned OFF.
+2022-06-04 08:12:37,115 INFO [default] User has requested process close.
+2022-06-04 08:12:37,119 INFO [default] DAQManager acquisition stopped.
+2022-06-04 08:12:39,408 INFO [default] Carina has ended.
