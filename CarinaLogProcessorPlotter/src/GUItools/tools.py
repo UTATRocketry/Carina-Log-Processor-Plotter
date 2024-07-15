@@ -11,7 +11,7 @@ from datetime import datetime
 def textbox_caller(func, text_box: CTkEntry, save: IntVar):
     def call_func():
         text = text_box.get()
-        folder = os.path.join(os.getcwd(), "Data", text, "raw")
+        folder = os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", text, "raw")
         if not os.path.exists(os.path.join(folder, "data.log")) or not os.path.exists(os.path.join(folder, "events.log")):
             gui_error("File Path not Found")
             return
@@ -80,8 +80,8 @@ def clear_gui(window: CTk) -> None:
 
 #add error handeling for colors array, in general improve color handeling fr lines
 def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, actuators:list, save:int = 0) -> None: 
-    if not os.path.exists(os.path.join(os.getcwd(), "Data", folder_name, "Plots")):
-        os.mkdir(os.path.join(os.getcwd(), "Data", folder_name, "Plots"))
+    if not os.path.exists(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots")):
+        os.mkdir(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots"))
 
     colors = ['b','g','r','c','m','y','k']
     name = ""
@@ -139,11 +139,11 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
     fig.show()
 
     if save == 1:
-        fig.savefig(os.path.join(os.getcwd(), "Data", folder_name, "Plots", f"{name} vs Time Plot {t.strftime('%Hh%Mm%Ss', t.gmtime(time[0]))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(time[-1]))}.jpg"))
+        fig.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{name} vs Time Plot {t.strftime('%Hh%Mm%Ss', t.gmtime(time[0]))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(time[-1]))}.jpg"))
 
 def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "sensor", start_time = 0, end_time = None, save:int = 0) -> None:
-    if not os.path.exists(os.path.join(os.getcwd(), "Data", folder_name, "Plots")):
-        os.mkdir(os.path.join(os.getcwd(),"Data", folder_name, "Plots"))
+    if not os.path.exists(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots")):
+        os.mkdir(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots"))
 
     time = dataframe["Time"].to_list()
     start = get_xaxis_index(time, start_time)
@@ -165,7 +165,7 @@ def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "senso
             plt.ylabel(column + get_units(column))
             p.show() 
             if save == 1:
-                p.savefig(os.path.join(os.getcwd(), "Data", folder_name, "Plots", f"{column} vs Time Plot T[{t.strftime('%Hh%Mm%Ss', t.gmtime(start_time))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(end_time))}].jpg"))
+                p.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{column} vs Time Plot T[{t.strftime('%Hh%Mm%Ss', t.gmtime(start_time))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(end_time))}].jpg"))
 
 def get_xaxis_index(xaxis: list, given_time) -> int:
     if given_time == 0:
