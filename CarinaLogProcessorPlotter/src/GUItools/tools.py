@@ -188,10 +188,13 @@ def get_xaxis_index(xaxis: list, given_time) -> int:
         return given_time
     elif given_time is None:
         return len(xaxis)
+    if given_time and given_time < 0:
+        return 0
     else:
         for i, t in enumerate(xaxis):
             if t > given_time:
                 return i - 1
+    return i
             
 def get_units(name: str)->str:
     unit = name[0]
