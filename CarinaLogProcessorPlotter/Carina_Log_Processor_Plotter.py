@@ -209,13 +209,16 @@ class Carina_Log_Processor_Plotter(CTk):
         visual_switch.grid(row=4, column=0, padx=10, pady=(0, 10), sticky="")
 
         buttons_frm = CTkFrame(master=self)
+        buttons_frm.grid_rowconfigure((0, 1), weight=1)
         buttons_frm.grid_columnconfigure((0, 1), weight=1)
         back_btn = CTkButton(master=buttons_frm, text="Return", font=("Arial", 16), anchor="center", command=self.boot_screen)
-        back_btn.grid(row=0, column=0, pady=10, padx=(10, 5), sticky="nsew")
+        back_btn.grid(row=0, column=0, pady=10, padx=(10, 5), sticky="ew")
         log_btn = CTkButton(master=buttons_frm, text="Logs", font=("Arial", 16), anchor="center", command=self.logs_screen)
-        log_btn.grid(row=0, column=1, pady=10, padx=(5, 10), sticky="nsew")
-        buttons_frm.grid(row=5, column=0, padx=5, pady=(0, 10), sticky="nsew")
-        self.update()
+        log_btn.grid(row=0, column=1, pady=10, padx=(5, 10), sticky="ew")
+        export_btn = CTkButton(master=buttons_frm, text="Export Data", font=("Arial", 16), anchor="center", command=self.export_data)
+        export_btn.grid(row=1, column=0, pady=10, padx=(10, 5), sticky="ew")
+        buttons_frm.grid(row=5, column=0, padx=5, pady=(0, 10), sticky="ew")
+        self.update() # why ???
         
     def logs_screen(self):
         tools.clear_gui(self)
@@ -237,4 +240,9 @@ class Carina_Log_Processor_Plotter(CTk):
         else:
             set_appearance_mode("dark")
         tools.append_to_log(f"Changed appearance mode to {get_appearance_mode()}", "INFO")
-        
+
+    def export_data(self):
+        self.sensor_df["MFR"] = parser.mass_flow_rate(self.sensor_df, 0, len(self.sensor_df['Time']))
+        self.sensor_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_sensors_data.csv"))
+        self.actuator_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "actuator_sensors_data.csv"))
+        tools.gui_popup(f"Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")

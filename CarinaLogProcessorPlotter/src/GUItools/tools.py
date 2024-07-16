@@ -73,6 +73,10 @@ def gui_error(msg: str) -> None:
     messagebox.showerror(title="Program Error", message=msg)
     append_to_log(msg, "ERROR")
 
+def gui_popup(msg:str) -> None:
+    messagebox.showinfo(title="Program Info", message=msg)
+    append_to_log(msg)
+
 def clear_gui(window: CTk) -> None:
     for child in window.children.copy():
         window.children[child].destroy() 
