@@ -73,6 +73,10 @@ def gui_error(msg: str) -> None:
     messagebox.showerror(title="Program Error", message=msg)
     append_to_log(msg, "ERROR")
 
+def gui_popup(msg:str) -> None:
+    messagebox.showinfo(title="Program Info", message=msg)
+    append_to_log(msg)
+
 def clear_gui(window: CTk) -> None:
     for child in window.children.copy():
         window.children[child].destroy() 
@@ -95,25 +99,31 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
 
     fig = plt.figure(name)
     i = 0
+    max_val = 0
+    min_val = 0
     plotted = True
     if left_axis and right_axis:
         for sensor in left_axis:
             plt.plot(time, sensor[1], label=sensor[0], color=colors[i])
+            min_val, max_val = max_min_check(min_val, max_val, sensor[1])
             i += 1
         plt.ylabel(get_units(sensor[0]))
         ax2 = plt.twinx()
         for sensor in right_axis:
             ax2.plot(time, sensor[1], label=sensor[0], color=colors[i])
+            min_val, max_val = max_min_check(min_val, max_val, sensor[1])
             i += 1
         ax2.set_ylabel(get_units(sensor[0]))
     elif left_axis:
         for sensor in left_axis:
             plt.plot(time, sensor[1], label=sensor[0], color=colors[i])
+            min_val, max_val = max_min_check(min_val, max_val, sensor[1])
             i += 1
         plt.ylabel(get_units(sensor[0]))
     elif right_axis: 
         for sensor in right_axis:
             plt.plot(time, sensor[1], label=sensor[0], color=colors[i])
+            min_val, max_val = max_min_check(min_val, max_val, sensor[1])
             i += 1
         plt.ylabel(get_units(sensor[0]))
     else:
@@ -125,7 +135,7 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
             actuations = get_actuation_indexes(actuator[1])
             for actuation in actuations:
                 new_xaxis = [time[actuation[0]]]*2
-                plt.plot(new_xaxis, [min(sensor[1]), max(sensor[1])], label=f'{actuator[0]} {actuation[1]}', color=colors[i], linestyle='-.')
+                plt.plot(new_xaxis, [min_val - 2, max_val + 2], label=f'{actuator[0]} {actuation[1]}', color=colors[i], linestyle='-.')
                 i -= 1
     elif actuators:
         for actuator in actuators:
@@ -141,6 +151,16 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
     if save == 1:
         fig.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{name} vs Time Plot {t.strftime('%Hh%Mm%Ss', t.gmtime(time[0]))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(time[-1]))}.jpg"))
 
+def max_min_check(prev_min: float, prev_max: float, data: list)->tuple:
+    cur_max = max(data)
+    cur_min = min(data)
+    res1, res2 = prev_min, prev_max
+    if cur_max > prev_max:
+        res2 = cur_max
+    if cur_min < prev_min:
+        res1 = cur_min
+    return res1, res2
+
 def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "sensor", start_time = 0, end_time = None, save:int = 0) -> None:
     if not os.path.exists(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots")):
         os.mkdir(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots"))
@@ -154,7 +174,7 @@ def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "senso
         time.append(time[-1] + 0.01)
     for column in dataframe.columns:
         if column != "Time":
-            p = plt.figure(column + "vs Time Plot")
+            p = plt.figure(column + " vs Time Plot")
             data = dataframe[column].to_list()[start:end]
             if type.lower() == "sensor":
                 plt.plot(time, data)
@@ -162,7 +182,7 @@ def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "senso
                 plt.stairs(data, time)
             plt.title(column + " vs Time Plot")
             plt.xlabel("Time (s)")
-            plt.ylabel(column + get_units(column))
+            plt.ylabel(column + " " + get_units(column))
             p.show() 
             if save == 1:
                 p.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{column} vs Time Plot T[{t.strftime('%Hh%Mm%Ss', t.gmtime(start_time))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(end_time))}].jpg"))
@@ -172,10 +192,13 @@ def get_xaxis_index(xaxis: list, given_time) -> int:
         return given_time
     elif given_time is None:
         return len(xaxis)
+    if given_time and given_time < 0:
+        return 0
     else:
         for i, t in enumerate(xaxis):
             if t > given_time:
                 return i - 1
+    return i
             
 def get_units(name: str)->str:
     unit = name[0]
