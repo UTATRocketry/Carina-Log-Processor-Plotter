@@ -1,19 +1,24 @@
-[T 16/07/2024 20:23:43], INFO: Program Started
-[T 16/07/2024 20:23:43], INFO: Clearing GUI Screen
-[T 16/07/2024 20:23:47], INFO: Begining data parsing in C:\Users\Brody Howard\Documents\GitHub\Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\CF-F2\raw
-[T 16/07/2024 20:23:47], INFO: Clearing GUI Screen
-[T 16/07/2024 20:23:47], INFO: Initalizing Parser
-[T 16/07/2024 20:23:47], INFO: Reading data.log
-[T 16/07/2024 20:23:47], INFO: Reading events.log
-[T 16/07/2024 20:23:47], INFO: Parsing Sensor Lines
-[T 16/07/2024 20:23:49], INFO: Parsing Actuator Lines
-[T 16/07/2024 20:23:50], INFO: Reformating Actuators Data and Converting to Dataframes
-[T 16/07/2024 20:23:50], INFO: Creating Graphs
-[T 16/07/2024 20:23:51], INFO: Generated 9 Plots
-[T 16/07/2024 20:23:52], INFO: Data Parsing and Plotting Complete
-[T 16/07/2024 20:23:52], INFO: Clearing GUI Screen
-[T 16/07/2024 20:25:20], INFO:: Created a new custom plot
-[T 16/07/2024 20:25:40], INFO:: Created a new custom plot
-[T 16/07/2024 20:28:20], INFO:: Created a new custom plot
-[T 16/07/2024 20:28:28], INFO:: Created a new custom plot
-[T 16/07/2024 20:28:37], INFO:: Created a new custom plot
+[T 17/07/2024 01:51:51], INFO: Program Started
+[T 17/07/2024 01:51:51], INFO: Clearing GUI Screen
+[T 17/07/2024 01:52:03], INFO: Begining data parsing in C:\Users\Brody Howard\Documents\GitHub\Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\CF-F2\raw
+[T 17/07/2024 01:52:03], INFO: Clearing GUI Screen
+[T 17/07/2024 01:52:04], INFO: Initalizing Parser
+[T 17/07/2024 01:52:04], INFO: Reading data.log
+[T 17/07/2024 01:52:04], INFO: Reading events.log
+[T 17/07/2024 01:52:04], INFO: Parsing Sensor Lines
+[T 17/07/2024 01:52:06], INFO: Parsing Actuator Lines
+[T 17/07/2024 01:52:06], INFO: Reformating Actuators Data and Converting to Dataframes
+[T 17/07/2024 01:52:06], INFO: Creating Graphs
+[T 17/07/2024 01:52:08], INFO: Generated 9 Plots
+[T 17/07/2024 01:52:08], INFO: Data Parsing and Plotting Complete
+[T 17/07/2024 01:52:08], INFO: Clearing GUI Screen
+[T 17/07/2024 01:52:18], INFO: Clearing GUI Screen
+[T 17/07/2024 01:52:19], INFO: Clearing GUI Screen
+[T 17/07/2024 01:52:20], INFO: Clearing GUI Screen
+[T 17/07/2024 01:52:22], INFO: Changed appearance mode to Light
+[T 17/07/2024 01:52:23], INFO: Clearing GUI Screen
+[T 17/07/2024 01:52:26], INFO: Clearing GUI Screen
+[T 17/07/2024 01:52:28], INFO: Changed appearance mode to Dark
+[T 17/07/2024 01:52:30], INFO: Changed appearance mode to Light
+[T 17/07/2024 01:52:30], INFO: Changed appearance mode to Dark
+[T 17/07/2024 01:52:32], INFO: Clearing GUI Screen

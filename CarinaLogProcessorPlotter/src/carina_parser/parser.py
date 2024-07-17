@@ -111,42 +111,28 @@ def parse_actuator_lines(lines, time_offset):
             other_time_values = [val[0] for val in actuators[other_actuator]]
             for time in time_values:
                 if time not in other_time_values:
-                    actuators[other_actuator].append((time, None))
+                    actuators[other_actuator].append((time, ""))
     for actuator in actuators:
         actuators[actuator].sort(key=lambda x: x[0])
             
     return actuators
 
-def mass_flow_rate(sensors: pd.DataFrame, start_ind: int, end_ind: int) -> list: 
-    time = sensors["Time"].to_list()[start_ind:end_ind]
-    if "MFT" in sensors.columns:
-        mass = sensors["MFT"].to_list()[start_ind:end_ind]
-    else:
-        mass = sensors["MOT"].to_list()[start_ind:end_ind]
-
-    mass_flow = []
-    for i in range(len(mass)):
-        inds = indexes_from_ms(1500, i, time) # maybe add multiprocessing
-        res = (mass[inds[1]] - mass[inds[0]]) / (time[inds[1]] - time[inds[0]])
-        mass_flow.append(res)
-
-    return mass_flow
-
 def actuators_reformat(actuators: dict) -> None: 
     for actuator in actuators:
-        if actuator == "MFV":
-            pass
         state = 0
         for i in range(len(actuators[actuator])):
-            if actuators[actuator][i][1] is not None:
-                if int(actuators[actuator][i][1]) == 1: 
-                    state = 1
+            if actuators[actuator][i][1] != "": 
+                if int(actuators[actuator][i][1]) >= 1:
+                    if actuator[0:2] == 'BV':
+                        state = 0
+                    else:
+                        state = 1
                 elif int(actuators[actuator][i][1]) == 0:
-                    state = 0
-                elif int(actuators[actuator][i][1]) > 1:
-                    state = 1
+                    if actuator[0:2] == 'BV':
+                        state = 1
+                    else:
+                        state = 0
             actuators[actuator][i] = (actuators[actuator][i][0], state)
-            
 
 def fill_actuators(time: list, actuators: dict)->dict:
     new_dict = {}
@@ -185,14 +171,3 @@ def dataframe_format(sensors: dict, actuators: dict):
         actuator_df[actuator] = [val[1] for val in actuators[actuator]]
 
     return sensor_df, actuator_df
-
-def indexes_from_ms(time_ms: int, cur_ind: int,  time: list) -> (tuple):
-    ms = time_ms/1000
-    i = cur_ind
-    while i < len(time) and time[i] - time[cur_ind] < ms:
-        i += 1
-    j = cur_ind
-    while j >= 0 and time[cur_ind] - time[j] < ms:
-        j -= 1
-
-    return (j, min(i, len(time) - 1))

@@ -174,7 +174,7 @@ def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "senso
         time.append(time[-1] + 0.01)
     for column in dataframe.columns:
         if column != "Time":
-            p = plt.figure(column + "vs Time Plot")
+            p = plt.figure(column + " vs Time Plot")
             data = dataframe[column].to_list()[start:end]
             if type.lower() == "sensor":
                 plt.plot(time, data)
@@ -182,7 +182,7 @@ def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "senso
                 plt.stairs(data, time)
             plt.title(column + " vs Time Plot")
             plt.xlabel("Time (s)")
-            plt.ylabel(column + get_units(column))
+            plt.ylabel(column + " " + get_units(column))
             p.show() 
             if save == 1:
                 p.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{column} vs Time Plot T[{t.strftime('%Hh%Mm%Ss', t.gmtime(start_time))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(end_time))}].jpg"))
