@@ -120,13 +120,13 @@ class Carina_Log_Processor_Plotter(CTk):
     def data_screen(self) -> None:
         tools.clear_gui(self)
 
-        self.grid_columnconfigure((0, 1, 2), weight=1)
+        self.grid_columnconfigure((0, 1, 2, 3), weight=1)
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
         title_frm = CTkFrame(master=self)
         title_frm.grid_columnconfigure((0, 1), weight=1)
         title_lbl = CTkLabel(master=title_frm, text="Data Plot Controller", text_color="lightblue", font=("Arial", 30))
-        title_lbl.grid(row = 0, column = 0, pady=30, columnspan=2, sticky="nsew")
-        title_frm.grid(row = 0, column = 0, padx=10, pady=5, columnspan=3, sticky="nsew")
+        title_lbl.grid(row = 0, column = 0, pady=30, columnspan=2, sticky="ew")
+        title_frm.grid(row = 0, column = 0, padx=10, pady=5, columnspan=4, sticky="nsew")
   
         replot_frm = CTkFrame(master=self)
         replot_frm.grid_columnconfigure((0, 1), weight=1)
@@ -155,6 +155,7 @@ class Carina_Log_Processor_Plotter(CTk):
         replot_btn = CTkButton(master=replot_frm, text="Replot", width=140, font=("Arial", 18), anchor="center", command=tools.replot_caller(self.plot_all, start_time_ent, end_time_ent, save))
         replot_btn.grid(row=5, column=0, columnspan=2, pady=20, padx=10)
         replot_frm.grid(row=1, column=0, padx=(10, 5), pady=(5, 10), rowspan=3, sticky="nsew")
+
         custom_plot_frm = CTkFrame(master=self)
         custom_plot_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
         custom_plot_frm.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
@@ -203,7 +204,24 @@ class Carina_Log_Processor_Plotter(CTk):
         save2_frm.grid(row=4, column=0, columnspan=4, pady=10, padx=10)
         custom_plot_btn = CTkButton(master=custom_plot_frm, text="Create Plot", font=("Arial", 18), command=tools.custom_plot_caller(self.custom_plot, (start_ent, end_ent), (left_axis_options, right_axis_options, actuators_options), save2)) # change command
         custom_plot_btn.grid(row=5, column=1, columnspan=2, pady=(25, 20), sticky="ew")
-        custom_plot_frm.grid(row=1, column=1, padx=(5, 10), pady=(5, 10), rowspan=5, columnspan=2, sticky="nsew")
+        custom_plot_frm.grid(row=1, column=1, padx=5, pady=(5, 10), rowspan=5, columnspan=2, sticky="nsew")
+
+        export_frm = CTkFrame(master=self)
+        export_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        export_frm.grid_rowconfigure((0, 1, 2), weight=1)
+        export_lbl = CTkLabel(master=export_frm, text="Export Parsed Data to CSV", font=("Arial", 22))
+        export_lbl.grid(row=0, column=0, columnspan=4, padx=10, pady=10, sticky="ew")
+        export_start_lbl = CTkLabel(master=export_frm, text="Start Time:", font=("Arial", 16))
+        export_start_ent = CTkEntry(master=export_frm, font=("Arial", 16), width=60)
+        export_end_lbl = CTkLabel(master=export_frm, text="End Time:", font=("Arial", 16))
+        export_end_ent = CTkEntry(master=export_frm, font=("Arial", 16), width=60) 
+        export_btn = CTkButton(master=export_frm, text="Export Data", font=("Arial", 16), command=lambda: self.export_data(export_start_ent.get(), export_end_ent.get()))
+        export_start_lbl.grid(row=1, column=0, padx=(10, 1), pady=10, sticky="ew")
+        export_start_ent.grid(row=1, column=1, padx=(1, 5), pady=10, sticky="ew")
+        export_end_lbl.grid(row=1, column=2, padx=(5, 1), pady=10, sticky="ew")
+        export_end_ent.grid(row=1, column=3, padx=(1, 10), pady=10, sticky="ew")
+        export_btn.grid(row=2, column=1, columnspan=2, padx=10, pady=10, sticky="ew")
+        export_frm.grid(row=1, column=3, padx=(5, 10), pady=(5, 10), sticky="nsew")
 
         visual_switch = CTkSwitch(master=self, text="Visual Mode", command=self.switch_visual_mode)
         visual_switch.grid(row=4, column=0, padx=10, pady=(0, 10), sticky="")
@@ -212,14 +230,23 @@ class Carina_Log_Processor_Plotter(CTk):
         buttons_frm.grid_rowconfigure((0, 1), weight=1)
         buttons_frm.grid_columnconfigure((0, 1), weight=1)
         back_btn = CTkButton(master=buttons_frm, text="Return", font=("Arial", 16), anchor="center", command=self.boot_screen)
-        back_btn.grid(row=0, column=0, pady=10, padx=(10, 5), sticky="ew")
+        back_btn.grid(row=1, column=0, columnspan=2, pady=(5, 10), padx=10, sticky="ew")
         log_btn = CTkButton(master=buttons_frm, text="Logs", font=("Arial", 16), anchor="center", command=self.logs_screen)
-        log_btn.grid(row=0, column=1, pady=10, padx=(5, 10), sticky="ew")
-        export_btn = CTkButton(master=buttons_frm, text="Export Data", font=("Arial", 16), anchor="center", command=self.export_data)
-        export_btn.grid(row=1, column=0, pady=10, padx=(10, 5), sticky="ew")
+        log_btn.grid(row=0, column=0, pady=(10, 5), padx=(10, 5), sticky="ew")
+        configuration_btn = CTkButton(master=buttons_frm, text="Congfigurations", font=("Arial", 16), anchor="center", command=None) # Change this
+        configuration_btn.grid(row=0, column=1, pady=(10, 5), padx=(5, 10), sticky="ew")
         buttons_frm.grid(row=5, column=0, padx=5, pady=(0, 10), sticky="ew")
         self.update() # why ???
         
+    def configuration_screen(self):
+        tools.clear_gui(self)
+
+        self.grid_columnconfigure((0, 1, ), weight=1)
+        self.grid_rowconfigure((0, 1, 2), weight=1)
+        logs_lbl = CTkLabel(master=self, text="Configurations", font=("Arial", 22))
+        logs_lbl.grid(row=0, column=0, columnspan=2, padx=10, pady=(20, 10), sticky="ew")
+
+
     def logs_screen(self):
         tools.clear_gui(self)
         logs_lbl = CTkLabel(master=self, text="Program Log", font=("Arial", 20))
@@ -241,8 +268,28 @@ class Carina_Log_Processor_Plotter(CTk):
             set_appearance_mode("dark")
         tools.append_to_log(f"Changed appearance mode to {get_appearance_mode()}", "INFO")
 
-    def export_data(self):
-        self.sensor_df["MFR"] = parser.mass_flow_rate(self.sensor_df, 0, len(self.sensor_df['Time']))
-        self.sensor_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_sensors_data.csv"))
-        self.actuator_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "actuator_sensors_data.csv"))
-        tools.gui_popup(f"Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")
+    def export_data(self, start, end)-> None:
+        try:
+            if start > end:
+                tools.gui_error("EXPORT DATA ERROR: Start time cannot be larger then end time.")
+                return
+            if end == "":
+                end = self.sensor_df["Time"][len(self.sensor_df) - 1]
+            else:
+                end = min(self.sensor_df["Time"][len(self.sensor_df) - 1], float(end))
+            if start == "":
+                start = self.sensor_df["Time"][0]
+            else:
+                start = max(self.sensor_df["Time"][0], float(start))
+            sensor_df = self.sensor_df[(self.sensor_df["Time"] >= start) & (self.sensor_df["Time"] <= end)]
+            actuator_df = self.actuator_df[(self.sensor_df["Time"] >= start) & (self.sensor_df["Time"] <= end)]
+            if end == self.sensor_df["Time"][len(self.sensor_df) - 1]:
+                end = tools.get_xaxis_index(self.sensor_df["Time"], end) + 1
+            else:
+                end = tools.get_xaxis_index(self.sensor_df["Time"], end)
+            sensor_df["MFR"] = parser.mass_flow_rate(self.sensor_df, tools.get_xaxis_index(self.sensor_df["Time"], start), end)
+            sensor_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_sensors_data.csv"))
+            actuator_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "actuator_sensors_data.csv"))
+            tools.gui_popup(f"Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")
+        except:
+            tools.gui_error("EXPORT DATA ERROR: Invalid start or end time.")

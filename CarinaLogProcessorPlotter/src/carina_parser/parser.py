@@ -136,12 +136,12 @@ def actuators_reformat(actuators: dict) -> None:
     for actuator in actuators:
         state = 0
         for i in range(len(actuators[actuator])):
-            if actuators[actuator][i][1] == 1: 
-                state = 1
-            elif actuators[actuator][i][1] == 0:
-                state = 0
-            else:
-                actuators[actuator][i] = (actuators[actuator][i][0], state)
+            if actuators[actuator][i][1] != "": 
+                if int(actuators[actuator][i][1]) >= 1:
+                    state = 1
+                elif int(actuators[actuator][i][1]) == 0:
+                    state = 0
+            actuators[actuator][i] = (actuators[actuator][i][0], state)
 
 def fill_actuators(time: list, actuators: dict)->dict:
     new_dict = {}
