@@ -60,7 +60,8 @@ We welcome contributions to the project! If you want to add new features or make
 Here are some suggested updates and next steps for the project:
 
 1. **Configurations Page**: Add a button to the UI in the same box as the "Return" and "Log" buttons. This button would bring the user to a different page and this would allow them to configure certain values used in the program such as the "h" used when differentiating the mass into mass flow rate.
-2. **Improve Graph Color System**: Improve the amount of colors available for use in lines on a plot which will increase the number of lines that can be plotted at once. Also, add error handling for this. It ould be nice to make the vertical asymptote for actuators a specific shade of one colour so they differ from sensor lines. 
-3. **Modularize Visuals**: Add more modularity to the UI's visuals by making chunks of it into customized objects.
-4. **Improved Error Handling**: Enhance the application to handle various error scenarios gracefully.
-5. **Performance Optimization**: Optimize the log processing and plotting to handle larger datasets efficiently. Multiprocessing may help in some scenarios. 
+2. **Improve Graph Color System**: Improve the amount of colors available for use in lines on a plot which will increase the number of lines that can be plotted at once. Also, add error handling for this. It would be nice to make the vertical asymptote for actuators a specific shade of one colour so they differ from sensor lines.
+3. **Create Ability to Deal with Thrust Data**: Be able to use the thrust from hot fire tests to calculate impulse, exhaust velocity, specific impulse, and Delta V. Maybe Add separate frame for this
+4. **Modularize Visuals**: Add more modularity to the UI's visuals by making chunks of it into customized objects.
+5. **Improved Error Handling**: Enhance the application to handle various error scenarios gracefully.
+6. **Performance Optimization**: Optimize the log processing and plotting to handle larger datasets efficiently. Multiprocessing may help in some scenarios. 
