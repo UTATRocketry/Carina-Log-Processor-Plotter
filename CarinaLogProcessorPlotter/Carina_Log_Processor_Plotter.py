@@ -4,12 +4,14 @@ from queue import Queue
 from datetime import datetime
 from src.carina_parser import parser 
 from src.GUItools import tools
+from src.GUItools import processors
 from src.GUItools.guiClasses import OptionsColumn, ActuatorTimeDropdown
 
 class Carina_Log_Processor_Plotter(CTk):
     def __init__(self, Title: str) -> None:
         super().__init__()
         self.queue = Queue()
+        self.diff_hs_size = 900
         with open("program.log", "w") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], INFO: Program Started\n')
             file.close()
@@ -99,14 +101,14 @@ class Carina_Log_Processor_Plotter(CTk):
         left_axis = []
         for sensor in options[0]: 
             if sensor == "MFR":
-                mass_flow = parser.mass_flow_rate(self.sensor_df, start, end)
+                mass_flow = processors.mass_flow_rate(self.sensor_df, start, end)
                 left_axis.append(("MFR", mass_flow))
             else:
                 left_axis.append((sensor, self.sensor_df[sensor].tolist()[start:end])) 
         right_axis = []
         for sensor in options[1]:
             if sensor == "MFR":
-                mass_flow = parser.mass_flow_rate(self.sensor_df, start, end)
+                mass_flow = processors.mass_flow_rate(self.sensor_df, start, end)
                 right_axis.append(("MFR", mass_flow))
             else:
                 right_axis.append((sensor, self.sensor_df[sensor].tolist()[start:end]))
@@ -119,6 +121,7 @@ class Carina_Log_Processor_Plotter(CTk):
             
     def data_screen(self) -> None:
         tools.clear_gui(self)
+        processors.set_parameters(self.diff_hs_size)
 
         self.grid_columnconfigure((0, 1, 2, 3), weight=1)
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
@@ -246,13 +249,23 @@ class Carina_Log_Processor_Plotter(CTk):
         configurations_lbl = CTkLabel(master=self, text="Configurations", font=("Arial", 22))
         configurations_lbl.grid(row=0, column=0, columnspan=2, padx=10, pady=(20, 10), sticky="ew")
         diff_step_size_lbl = CTkLabel(master=self, text="Differenciation Half Step Size:", font=("Arial", 16))
-        diff_step_size_ent = CTkEntry(master=self, width = 50, font=("Arial", 16))
+        diff_step_size_ent = CTkEntry(master=self, width = 50, font=("Arial", 16), placeholder_text=self.diff_hs_size)
         return_btn = CTkButton(master=self, text="Return", font=("Arial", 16), anchor="center", command=self.data_screen)
-        save_btn = CTkButton(master=self, text="Save Changes", font=("Arial", 16), anchor="center", command=None)
+        save_btn = CTkButton(master=self, text="Save Changes", font=("Arial", 16), anchor="center", command=lambda: self.config(diff_step_size_ent.get()))
         diff_step_size_lbl.grid(row=1, column=0, padx=(10, 2), pady=10, sticky="ew")
         diff_step_size_ent.grid(row=1, column=1, padx=(2, 10), pady=10, sticky="ew")
         return_btn.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
         save_btn.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
+
+    def config(self, diff_step_size):
+        try:
+            self.diff_hs_size = int(diff_step_size)
+            processors.set_parameters(self.diff_hs_size)
+            tools.gui_popup("Succesfully Applied New Configuration!")
+            tools.append_to_log(f"Changed Differention Half Step Size to {diff_step_size}")
+        except:
+            tools.gui_error("CONFIGURATION ERROR: Invalid Input")
+
 
     def logs_screen(self):
         tools.clear_gui(self)
@@ -294,7 +307,7 @@ class Carina_Log_Processor_Plotter(CTk):
                 end = tools.get_xaxis_index(self.sensor_df["Time"], end) + 1
             else:
                 end = tools.get_xaxis_index(self.sensor_df["Time"], end)
-            sensor_df["MFR"] = parser.mass_flow_rate(self.sensor_df, tools.get_xaxis_index(self.sensor_df["Time"], start), end)
+            sensor_df["MFR"] = processors.mass_flow_rate(self.sensor_df, tools.get_xaxis_index(self.sensor_df["Time"], start), end)
             sensor_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_sensors_data.csv"))
             actuator_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "actuator_sensors_data.csv"))
             tools.gui_popup(f"Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")

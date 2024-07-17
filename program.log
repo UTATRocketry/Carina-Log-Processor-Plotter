@@ -1,14 +1,15 @@
-[T 17/07/2024 00:59:58], INFO: Program Started
-[T 17/07/2024 00:59:58], INFO: Clearing GUI Screen
-[T 17/07/2024 01:00:03], INFO: Begining data parsing in C:\Users\Brody Howard\Documents\GitHub\Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\CF-F1\raw
-[T 17/07/2024 01:00:03], INFO: Clearing GUI Screen
-[T 17/07/2024 01:00:03], INFO: Initalizing Parser
-[T 17/07/2024 01:00:03], INFO: Reading data.log
-[T 17/07/2024 01:00:03], INFO: Reading events.log
-[T 17/07/2024 01:00:03], INFO: Parsing Sensor Lines
-[T 17/07/2024 01:00:05], INFO: Parsing Actuator Lines
-[T 17/07/2024 01:00:05], INFO: Reformating Actuators Data and Converting to Dataframes
-[T 17/07/2024 01:00:05], INFO: Creating Graphs
-[T 17/07/2024 01:00:06], INFO: Generated 9 Plots
-[T 17/07/2024 01:00:07], INFO: Data Parsing and Plotting Complete
-[T 17/07/2024 01:00:07], INFO: Clearing GUI Screen
+[T 17/07/2024 01:43:40], INFO: Program Started
+[T 17/07/2024 01:43:40], INFO: Clearing GUI Screen
+[T 17/07/2024 01:43:44], INFO: Begining data parsing in C:\Users\Brody Howard\Documents\GitHub\Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\CF-F2\raw
+[T 17/07/2024 01:43:44], INFO: Clearing GUI Screen
+[T 17/07/2024 01:43:44], INFO: Initalizing Parser
+[T 17/07/2024 01:43:44], INFO: Reading data.log
+[T 17/07/2024 01:43:44], INFO: Reading events.log
+[T 17/07/2024 01:43:44], INFO: Parsing Sensor Lines
+[T 17/07/2024 01:43:47], INFO: Parsing Actuator Lines
+[T 17/07/2024 01:43:47], INFO: Reformating Actuators Data and Converting to Dataframes
+[T 17/07/2024 01:43:47], INFO: Creating Graphs
+[T 17/07/2024 01:43:49], INFO: Generated 9 Plots
+[T 17/07/2024 01:43:49], INFO: Data Parsing and Plotting Complete
+[T 17/07/2024 01:43:49], INFO: Clearing GUI Screen
+[T 17/07/2024 01:44:18], INFO:: Created a new custom plot
