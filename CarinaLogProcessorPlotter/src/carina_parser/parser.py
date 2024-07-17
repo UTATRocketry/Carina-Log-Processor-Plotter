@@ -111,7 +111,7 @@ def parse_actuator_lines(lines, time_offset):
             other_time_values = [val[0] for val in actuators[other_actuator]]
             for time in time_values:
                 if time not in other_time_values:
-                    actuators[other_actuator].append((time, ""))
+                    actuators[other_actuator].append((time, None))
     for actuator in actuators:
         actuators[actuator].sort(key=lambda x: x[0])
             
@@ -134,14 +134,19 @@ def mass_flow_rate(sensors: pd.DataFrame, start_ind: int, end_ind: int) -> list:
 
 def actuators_reformat(actuators: dict) -> None: 
     for actuator in actuators:
+        if actuator == "MFV":
+            pass
         state = 0
         for i in range(len(actuators[actuator])):
-            if actuators[actuator][i][1] == 1: 
-                state = 1
-            elif actuators[actuator][i][1] == 0:
-                state = 0
-            else:
-                actuators[actuator][i] = (actuators[actuator][i][0], state)
+            if actuators[actuator][i][1] is not None:
+                if int(actuators[actuator][i][1]) == 1: 
+                    state = 1
+                elif int(actuators[actuator][i][1]) == 0:
+                    state = 0
+                elif int(actuators[actuator][i][1]) > 1:
+                    state = 1
+            actuators[actuator][i] = (actuators[actuator][i][0], state)
+            
 
 def fill_actuators(time: list, actuators: dict)->dict:
     new_dict = {}
