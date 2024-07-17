@@ -233,7 +233,7 @@ class Carina_Log_Processor_Plotter(CTk):
         back_btn.grid(row=1, column=0, columnspan=2, pady=(5, 10), padx=10, sticky="ew")
         log_btn = CTkButton(master=buttons_frm, text="Logs", font=("Arial", 16), anchor="center", command=self.logs_screen)
         log_btn.grid(row=0, column=0, pady=(10, 5), padx=(10, 5), sticky="ew")
-        configuration_btn = CTkButton(master=buttons_frm, text="Congfigurations", font=("Arial", 16), anchor="center", command=None) # Change this
+        configuration_btn = CTkButton(master=buttons_frm, text="Congfigurations", font=("Arial", 16), anchor="center", command=self.configuration_screen) # Change this
         configuration_btn.grid(row=0, column=1, pady=(10, 5), padx=(5, 10), sticky="ew")
         buttons_frm.grid(row=5, column=0, padx=5, pady=(0, 10), sticky="ew")
         self.update() # why ???
@@ -241,11 +241,18 @@ class Carina_Log_Processor_Plotter(CTk):
     def configuration_screen(self):
         tools.clear_gui(self)
 
-        self.grid_columnconfigure((0, 1, ), weight=1)
+        self.grid_columnconfigure((0, 1), weight=1)
         self.grid_rowconfigure((0, 1, 2), weight=1)
-        logs_lbl = CTkLabel(master=self, text="Configurations", font=("Arial", 22))
-        logs_lbl.grid(row=0, column=0, columnspan=2, padx=10, pady=(20, 10), sticky="ew")
-
+        configurations_lbl = CTkLabel(master=self, text="Configurations", font=("Arial", 22))
+        configurations_lbl.grid(row=0, column=0, columnspan=2, padx=10, pady=(20, 10), sticky="ew")
+        diff_step_size_lbl = CTkLabel(master=self, text="Differenciation Half Step Size:", font=("Arial", 16))
+        diff_step_size_ent = CTkEntry(master=self, width = 50, font=("Arial", 16))
+        return_btn = CTkButton(master=self, text="Return", font=("Arial", 16), anchor="center", command=self.data_screen)
+        save_btn = CTkButton(master=self, text="Save Changes", font=("Arial", 16), anchor="center", command=None)
+        diff_step_size_lbl.grid(row=1, column=0, padx=(10, 2), pady=10, sticky="ew")
+        diff_step_size_ent.grid(row=1, column=1, padx=(2, 10), pady=10, sticky="ew")
+        return_btn.grid(row=2, column=0, padx=10, pady=10, sticky="ew")
+        save_btn.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
 
     def logs_screen(self):
         tools.clear_gui(self)

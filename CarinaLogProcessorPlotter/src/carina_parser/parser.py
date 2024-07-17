@@ -138,9 +138,15 @@ def actuators_reformat(actuators: dict) -> None:
         for i in range(len(actuators[actuator])):
             if actuators[actuator][i][1] != "": 
                 if int(actuators[actuator][i][1]) >= 1:
-                    state = 1
+                    if actuator == 'BVFTP':
+                        state = 0
+                    else:
+                        state = 1
                 elif int(actuators[actuator][i][1]) == 0:
-                    state = 0
+                    if actuator == 'BVFTP':
+                        state = 1
+                    else:
+                        state = 0
             actuators[actuator][i] = (actuators[actuator][i][0], state)
 
 def fill_actuators(time: list, actuators: dict)->dict:
