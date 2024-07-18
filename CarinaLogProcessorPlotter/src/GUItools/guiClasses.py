@@ -129,9 +129,9 @@ class ActuatorTimeDropdown(CTkFrame):
             res = []
             l = len(switch_off)
             for i in range(len(switch_on)):
-                res.append(f'{switch_on[i] - 5}s Off -> On')
+                res.append(f'{switch_on[i]}s Off -> On')
                 if i < l:
-                    res.append(f'{switch_off[i] + 5}s On -> Off')
+                    res.append(f'{switch_off[i]}s On -> Off')
 
             self.actuation_times[column] = res if res else [""]
 

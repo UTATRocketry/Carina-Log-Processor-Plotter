@@ -3,6 +3,7 @@ import os
 import multiprocessing
 import pandas as pd
 from queue import Queue
+#import parse_tools
 from . import parse_tools
 
 
@@ -119,19 +120,21 @@ def parse_actuator_lines(lines, time_offset):
 
 def actuators_reformat(actuators: dict) -> None: 
     for actuator in actuators:
+        if actuator == "BVFTP":
+            pass
         state = 0
         for i in range(len(actuators[actuator])):
-            if actuators[actuator][i][1] != "": 
-                if int(actuators[actuator][i][1]) >= 1:
-                    if actuator[0:2] == 'BV':
-                        state = 0
-                    else:
-                        state = 1
-                elif int(actuators[actuator][i][1]) == 0:
-                    if actuator[0:2] == 'BV':
-                        state = 1
-                    else:
-                        state = 0
+            if actuators[actuator][i][1] != "":
+                if actuator[0:2] == 'BV':
+                    if int(actuators[actuator][i][1]) > 11: 
+                            state = 0
+                    elif int(actuators[actuator][i][1]) <= 11:
+                            state = 1
+                else:
+                    if int(actuators[actuator][i][1]) >= 1: 
+                            state = 1
+                    elif int(actuators[actuator][i][1]) == 0:
+                            state = 0
             actuators[actuator][i] = (actuators[actuator][i][0], state)
 
 def fill_actuators(time: list, actuators: dict)->dict:
@@ -171,3 +174,9 @@ def dataframe_format(sensors: dict, actuators: dict):
         actuator_df[actuator] = [val[1] for val in actuators[actuator]]
 
     return sensor_df, actuator_df
+
+if __name__ == "__main__":
+    init("CF-F2")
+    sensors, actuators = parse_from_raw()
+    actuators_reformat(actuators)
+

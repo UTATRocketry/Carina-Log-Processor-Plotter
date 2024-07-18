@@ -100,16 +100,16 @@ class Carina_Log_Processor_Plotter(CTk):
         end = tools.get_xaxis_index(time, end)
         left_axis = []
         for sensor in options[0]: 
-            if sensor == "MFR":
-                mass_flow = processors.mass_flow_rate(self.sensor_df, start, end)
-                left_axis.append(("MFR", mass_flow))
+            if sensor[0] == "d":
+                mass_flow = processors.mass_flow_rate(sensor, self.sensor_df, start, end)
+                left_axis.append((sensor, mass_flow))
             else:
                 left_axis.append((sensor, self.sensor_df[sensor].tolist()[start:end])) 
         right_axis = []
         for sensor in options[1]:
-            if sensor == "MFR":
-                mass_flow = processors.mass_flow_rate(self.sensor_df, start, end)
-                right_axis.append(("MFR", mass_flow))
+            if sensor[0] == "d":
+                mass_flow = processors.mass_flow_rate(sensor, self.sensor_df, start, end)
+                right_axis.append((sensor, mass_flow))
             else:
                 right_axis.append((sensor, self.sensor_df[sensor].tolist()[start:end]))
         actuators = []
@@ -159,6 +159,7 @@ class Carina_Log_Processor_Plotter(CTk):
         replot_btn.grid(row=5, column=0, columnspan=2, pady=20, padx=10)
         replot_frm.grid(row=1, column=0, padx=(10, 5), pady=(5, 10), rowspan=3, sticky="nsew")
 
+        self.get_sensor_options()
         custom_plot_frm = CTkFrame(master=self)
         custom_plot_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
         custom_plot_frm.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
@@ -182,8 +183,8 @@ class Carina_Log_Processor_Plotter(CTk):
         independent_opt = CTkOptionMenu(master=choices_frm, font=("Arial", 14), values=["Time"], anchor="center")
         left_axis_lbl = CTkLabel(master=choices_frm, text="Left Axis", font=("Arial", 14))
         right_axis_lbl = CTkLabel(master=choices_frm, text="Right Axis", font=("Arial", 14))
-        left_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_df.columns.to_list()[1:] + ["MFR"])
-        right_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_df.columns.to_list()[1:] + ["MFR"])
+        left_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_options)
+        right_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_options)
         actuators_options = OptionsColumn(master=choices_frm, values=self.actuator_df.columns.to_list()[1:], ctype="A")
         independent_lbl.grid(row=0, column=0, padx=(10, 0), pady=10, sticky="ew")
         actuator_lbl.grid(row=0, column=3, padx=(10, 0), pady=10, sticky="ew")
@@ -256,16 +257,6 @@ class Carina_Log_Processor_Plotter(CTk):
         return_btn.grid(row=3, column=0, padx=10, pady=10, sticky="ew")
         save_btn.grid(row=3, column=1, padx=10, pady=10, sticky="ew")
 
-    def config(self, diff_step_size):
-        try:
-            self.diff_hs_size = int(diff_step_size)
-            processors.set_parameters(self.diff_hs_size)
-            tools.gui_popup("Succesfully Applied New Configuration!")
-            tools.append_to_log(f"Changed Differention Half Step Size to {diff_step_size}")
-        except:
-            tools.gui_error("CONFIGURATION ERROR: Invalid Input")
-
-
     def logs_screen(self):
         tools.clear_gui(self)
         logs_lbl = CTkLabel(master=self, text="Program Log", font=("Arial", 20))
@@ -279,6 +270,22 @@ class Carina_Log_Processor_Plotter(CTk):
                 logs_txt.insert("end", line)
         logs_txt.configure(state="disabled")
         logs_txt.see("end")
+
+    def get_sensor_options(self):
+        self.sensor_options = self.sensor_df.columns.to_list()[1:]
+        if "MFT" in self.sensor_options:
+            self.sensor_options.append("dMFT")
+        if "MOT" in self.sensor_options:
+            self.sensor_options.append("dMOT")
+
+    def config(self, diff_step_size):
+        try:
+            self.diff_hs_size = int(diff_step_size)
+            processors.set_parameters(self.diff_hs_size)
+            tools.gui_popup("Succesfully Applied New Configuration!")
+            tools.append_to_log(f"Changed Differention Half Step Size to {diff_step_size}")
+        except:
+            tools.gui_error("CONFIGURATION ERROR: Invalid Input")
 
     def switch_visual_mode(self):
         if get_appearance_mode() == "Dark":
@@ -306,9 +313,14 @@ class Carina_Log_Processor_Plotter(CTk):
                 end = tools.get_xaxis_index(self.sensor_df["Time"], end) + 1
             else:
                 end = tools.get_xaxis_index(self.sensor_df["Time"], end)
-            sensor_df["MFR"] = processors.mass_flow_rate(self.sensor_df, tools.get_xaxis_index(self.sensor_df["Time"], start), end)
+            
+            if "MFT" in sensor_df.columns:
+                sensor_df["dMFT"] = processors.mass_flow_rate("dMFT", self.sensor_df, tools.get_xaxis_index(self.sensor_df["Time"], start), end)
+            if "MOT" in sensor_df.columns:
+                sensor_df["dMOT"] = processors.mass_flow_rate("dMOT", self.sensor_df, tools.get_xaxis_index(self.sensor_df["Time"], start), end)
             sensor_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_sensors_data.csv"))
             actuator_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "actuator_sensors_data.csv"))
             tools.gui_popup(f"Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")
         except:
             tools.gui_error("EXPORT DATA ERROR: Invalid start or end time.")
+            
