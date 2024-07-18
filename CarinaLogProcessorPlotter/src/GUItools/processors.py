@@ -5,12 +5,9 @@ def set_parameters(hs_size: int)->None:
     diff_step_size = hs_size
 
 
-def mass_flow_rate(sensors: pd.DataFrame, start_ind: int, end_ind: int) -> list: 
+def mass_flow_rate(sensor: str, sensors: pd.DataFrame, start_ind: int, end_ind: int) -> list: 
     time = sensors["Time"].to_list()[start_ind:end_ind]
-    if "MFT" in sensors.columns:
-        mass = sensors["MFT"].to_list()[start_ind:end_ind]
-    else:
-        mass = sensors["MOT"].to_list()[start_ind:end_ind]
+    mass = sensors[sensor[1:]].to_list()[start_ind:end_ind]
 
     mass_flow = []
     for i in range(len(mass)):

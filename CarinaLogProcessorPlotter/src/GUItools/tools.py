@@ -64,7 +64,7 @@ def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, sav
             gui_error("Invalid Start or End value")
     return call_func2
 
-def add_caller(func, button: CTkButton):
+def add_caller(func, button: CTkButton):#depreciated
     def call():
         func(button)
     return call
