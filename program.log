@@ -1,21 +1,14 @@
-[T 17/07/2024 21:47:52], INFO: Program Started
-[T 17/07/2024 21:47:52], INFO: Clearing GUI Screen
-[T 17/07/2024 21:47:57], INFO: Begining data parsing in C:\Users\Brody Howard\Documents\GitHub\Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\CF-F2\raw
-[T 17/07/2024 21:47:57], INFO: Clearing GUI Screen
-[T 17/07/2024 21:47:57], INFO: Initalizing Parser
-[T 17/07/2024 21:47:57], INFO: Reading data.log
-[T 17/07/2024 21:47:57], INFO: Reading events.log
-[T 17/07/2024 21:47:57], INFO: Parsing Sensor Lines
-[T 17/07/2024 21:48:00], INFO: Parsing Actuator Lines
-[T 17/07/2024 21:48:00], INFO: Reformating Actuators Data and Converting to Dataframes
-[T 17/07/2024 21:48:00], INFO: Creating Graphs
-[T 17/07/2024 21:48:01], INFO: Generated 9 Plots
-[T 17/07/2024 21:48:02], INFO: Data Parsing and Plotting Complete
-[T 17/07/2024 21:48:02], INFO: Clearing GUI Screen
-[T 17/07/2024 21:49:26], INFO:: Created a new custom plot
-[T 17/07/2024 21:49:40], INFO:: Created a new custom plot
-[T 17/07/2024 21:49:47], INFO:: Created a new custom plot
-[T 17/07/2024 21:50:08], INFO:: Created a new custom plot
-[T 17/07/2024 21:50:43], INFO:: Created a new custom plot
-[T 17/07/2024 21:51:17], INFO:: Created a new custom plot
-[T 17/07/2024 21:51:30], INFO:: Created a new custom plot
+[T 18/07/2024 12:15:26], INFO: Program Started
+[T 18/07/2024 12:15:26], INFO: Clearing GUI Screen
+[T 18/07/2024 12:15:33], INFO: Begining data parsing in C:\Users\Brody Howard\Documents\GitHub\Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\CF-F2\raw
+[T 18/07/2024 12:15:33], INFO: Clearing GUI Screen
+[T 18/07/2024 12:15:33], INFO: Initalizing Parser
+[T 18/07/2024 12:15:33], INFO: Reading data.log
+[T 18/07/2024 12:15:33], INFO: Reading events.log
+[T 18/07/2024 12:15:33], INFO: Parsing Sensor Lines
+[T 18/07/2024 12:15:36], INFO: Parsing Actuator Lines
+[T 18/07/2024 12:15:36], INFO: Reformating Actuators Data and Converting to Dataframes
+[T 18/07/2024 12:15:36], INFO: Creating Graphs
+[T 18/07/2024 12:15:38], INFO: Generated 9 Plots
+[T 18/07/2024 12:15:38], INFO: Data Parsing and Plotting Complete
+[T 18/07/2024 12:15:38], INFO: Clearing GUI Screen
