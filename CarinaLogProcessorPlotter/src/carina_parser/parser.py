@@ -126,9 +126,9 @@ def actuators_reformat(actuators: dict) -> None:
         for i in range(len(actuators[actuator])):
             if actuators[actuator][i][1] != "":
                 if actuator[0:2] == 'BV':
-                    if int(actuators[actuator][i][1]) > 11: 
+                    if int(actuators[actuator][i][1]) == 110: 
                             state = 0
-                    elif int(actuators[actuator][i][1]) <= 11:
+                    elif int(actuators[actuator][i][1]) == 0:
                             state = 1
                 else:
                     if int(actuators[actuator][i][1]) >= 1: 

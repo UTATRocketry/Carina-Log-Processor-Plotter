@@ -12,6 +12,8 @@ class Carina_Log_Processor_Plotter(CTk):
         super().__init__()
         self.queue = Queue()
         self.diff_hs_size = 900
+        self.int_type = "Simpson"
+        self.int_step_size = 100
         with open("program.log", "w") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], INFO: Program Started\n')
             file.close()
@@ -121,7 +123,7 @@ class Carina_Log_Processor_Plotter(CTk):
             
     def data_screen(self) -> None:
         tools.clear_gui(self)
-        processors.set_parameters(self.diff_hs_size)
+        processors.set_parameters(self.diff_hs_size, self.int_type, self.int_step_size)
 
         self.grid_columnconfigure((0, 1, 2), weight=1)
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
@@ -243,19 +245,39 @@ class Carina_Log_Processor_Plotter(CTk):
         tools.clear_gui(self)
 
         self.grid_columnconfigure((0, 1), weight=1)
-        self.grid_rowconfigure((0, 1, 2, 3), weight=1)
-        configurations_lbl = CTkLabel(master=self, text="Configurations", font=("Arial", 22))
+        self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        configurations_lbl = CTkLabel(master=self, text="Settings", font=("Arial", 22))
         configurations_lbl.grid(row=0, column=0, columnspan=2, padx=10, pady=(20, 10), sticky="ew")
         diff_step_size_lbl = CTkLabel(master=self, text="Differenciation Half Step Size:", font=("Arial", 16))
         diff_step_size_ent = CTkEntry(master=self, width = 50, font=("Arial", 16), placeholder_text=self.diff_hs_size)
+        int_step_size_lbl = CTkLabel(master=self, text="Integration Step Size:", font=("Arial", 16))
+        int_step_size_ent = CTkEntry(master=self, width = 50, font=("Arial", 16), placeholder_text=self.int_step_size)
+        int_type_lbl = CTkLabel(master=self, text="Integration Method:", font=("Arial", 16))
+        int_type_opt = CTkOptionMenu(master=self, values=["Trapezoid", "Simpson"], font=("Arial", 16))
+        int_type_opt.set(self.int_type)
         visual_switch = CTkSwitch(master=self, text="Visual Mode", command=self.switch_visual_mode)
-        visual_switch.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="")
+        visual_switch.grid(row=4, column=0, columnspan=2, padx=10, pady=10, sticky="")
         return_btn = CTkButton(master=self, text="Return", font=("Arial", 16), anchor="center", command=self.data_screen)
-        save_btn = CTkButton(master=self, text="Save Changes", font=("Arial", 16), anchor="center", command=lambda: self.config(diff_step_size_ent.get()))
         diff_step_size_lbl.grid(row=1, column=0, padx=(10, 2), pady=10, sticky="ew")
         diff_step_size_ent.grid(row=1, column=1, padx=(2, 10), pady=10, sticky="ew")
-        return_btn.grid(row=3, column=0, padx=10, pady=10, sticky="ew")
-        save_btn.grid(row=3, column=1, padx=10, pady=10, sticky="ew")
+        int_type_lbl.grid(row=2, column=0, padx=(10, 2), pady=10, sticky="ew")
+        int_type_opt.grid(row=2, column=1, padx=(2, 10), pady=10, sticky="ew")
+        int_step_size_lbl.grid(row=3, column=0, padx=(10, 2), pady=10, sticky="ew")
+        int_step_size_ent.grid(row=3, column=1, padx=(2, 10), pady=10, sticky="ew")
+        save_btn = CTkButton(master=self, text="Save Changes", font=("Arial", 16), anchor="center", command=lambda: self.config(diff_step_size_ent.get(), int_type_opt.get(), int_step_size_ent.get()))
+        return_btn.grid(row=5, column=0, padx=10, pady=10, sticky="ew")
+        save_btn.grid(row=5, column=1, padx=10, pady=10, sticky="ew")
+
+    def config(self, diff_step_size: int, int_method: str, int_step_side: int):
+        try:
+            self.diff_hs_size = int(diff_step_size)
+            self.int_type = int_method
+            self.int_step_size = int_step_side
+            processors.set_parameters(self.diff_hs_size, self.int_type, self.int_step_size)
+            tools.gui_popup("Succesfully Applied New Configuration!")
+            tools.append_to_log(f"Changed Differention Half Step Size to {diff_step_size}, changed integration method to {self.int_type}, changed integration step size to {self.int_step_size}")
+        except:
+            tools.gui_error("CONFIGURATION ERROR: Invalid Input")
 
     def logs_screen(self):
         tools.clear_gui(self)
@@ -277,15 +299,6 @@ class Carina_Log_Processor_Plotter(CTk):
             self.sensor_options.append("dMFT")
         if "MOT" in self.sensor_options:
             self.sensor_options.append("dMOT")
-
-    def config(self, diff_step_size):
-        try:
-            self.diff_hs_size = int(diff_step_size)
-            processors.set_parameters(self.diff_hs_size)
-            tools.gui_popup("Succesfully Applied New Configuration!")
-            tools.append_to_log(f"Changed Differention Half Step Size to {diff_step_size}")
-        except:
-            tools.gui_error("CONFIGURATION ERROR: Invalid Input")
 
     def switch_visual_mode(self):
         if get_appearance_mode() == "Dark":
