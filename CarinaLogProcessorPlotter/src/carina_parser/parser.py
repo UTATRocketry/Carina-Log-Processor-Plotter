@@ -175,5 +175,6 @@ def dataframe_format(sensors: dict, actuators: dict):
 if __name__ == "__main__":
     init("CF-F2")
     sensors, actuators = parse_from_raw()
-    actuators_reformat(actuators)
+    sensors, actuators = dataframe_format(sensors, actuators)
+    print(sensors['Time'][0:10])
 
