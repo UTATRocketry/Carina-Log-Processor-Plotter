@@ -12,6 +12,8 @@ class Carina_Log_Processor_Plotter(CTk):
         super().__init__()
         self.queue = Queue()
         self.diff_hs_size = 900
+        self.int_type = "Simpson"
+        self.int_step_size = 100
         with open("program.log", "w") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], INFO: Program Started\n')
             file.close()
@@ -121,13 +123,13 @@ class Carina_Log_Processor_Plotter(CTk):
             
     def data_screen(self) -> None:
         tools.clear_gui(self)
-        processors.set_parameters(self.diff_hs_size)
+        processors.set_parameters(self.diff_hs_size, self.int_type, self.int_step_size)
 
-        self.grid_columnconfigure((0, 1, 2), weight=1)
+        self.grid_columnconfigure((0, 1, 2, 4), weight=1)
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
         title_frm = CTkFrame(master=self)
         title_frm.grid_columnconfigure((0, 1), weight=1)
-        title_lbl = CTkLabel(master=title_frm, text="Data Plot Controller", text_color="lightblue", font=("Arial", 30))
+        title_lbl = CTkLabel(master=title_frm, text="Data Processor & Plotter", text_color="lightblue", font=("Arial", 30))
         title_lbl.grid(row = 0, column = 0, pady=30, columnspan=2, sticky="ew")
         title_frm.grid(row = 0, column = 0, padx=10, pady=5, columnspan=4, sticky="nsew")
   
@@ -165,11 +167,11 @@ class Carina_Log_Processor_Plotter(CTk):
         custom_plot_frm.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
         cutom_plot_lbl = CTkLabel(master=custom_plot_frm, text="Create Custom Plot", font=("Arial", 22))
         cutom_plot_lbl.grid(row = 0, column = 0, padx=10, pady=10, columnspan=4, sticky="ew")
-        start_lbl = CTkLabel(master=custom_plot_frm, text="Start:", font=("Arial", 16))
+        start_lbl = CTkLabel(master=custom_plot_frm, text="Start Time:", font=("Arial", 16))
         start_lbl.grid(row=2, column=0, pady=10, padx=(10, 0), sticky="ew")
         start_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=60)
         start_ent.grid(row=2, column=1, pady=10, padx=(0, 10), sticky="ew")
-        end_lbl = CTkLabel(master=custom_plot_frm, text="End:", font=("Arial", 16))
+        end_lbl = CTkLabel(master=custom_plot_frm, text="End Time:", font=("Arial", 16))
         end_lbl.grid(row=2, column=2, pady=10, padx=(10, 0), sticky="ew")
         end_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=60)
         end_ent.grid(row=2, column=3, pady=10, padx=(0, 10), sticky="ew")
@@ -210,6 +212,48 @@ class Carina_Log_Processor_Plotter(CTk):
         custom_plot_btn.grid(row=5, column=1, columnspan=2, pady=(25, 20), sticky="ew")
         custom_plot_frm.grid(row=1, column=1, padx=5, pady=(5, 10), rowspan=5, columnspan=2, sticky="nsew")
 
+        engine_calc_frm = CTkFrame(master=self)
+        engine_calc_frm.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
+        engine_calc_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
+        engine_lbl = CTkLabel(master=engine_calc_frm, text="Engine Calculations", font=("Arial", 22))
+        engine_lbl.grid(row=0, column=0, columnspan=4, padx=10, pady=10, sticky="ew")
+        wmass_lbl = CTkLabel(master=engine_calc_frm, text="Wet Mass (kg): ", font=("Arial", 14))
+        wmass_lbl.grid(row=1, column=0, pady=10, padx=(10, 0), sticky="ew")
+        wmass_ent = CTkEntry(master=engine_calc_frm, font=("Arial", 14), width=50)
+        wmass_ent.grid(row=1, column=1, pady=10, padx=(0, 10), sticky="ew")
+        dmass_lbl = CTkLabel(master=engine_calc_frm, text="Dry Mass (kg): ", font=("Arial", 14))
+        dmass_lbl.grid(row=1, column=2, pady=10, padx=(10, 0), sticky="ew")
+        dmass_ent = CTkEntry(master=engine_calc_frm, font=("Arial", 14), width=50)
+        dmass_ent.grid(row=1, column=3, pady=10, padx=(0, 10), sticky="ew")
+        start2_lbl = CTkLabel(master=engine_calc_frm, text="Start Time:", font=("Arial", 16))
+        start2_lbl.grid(row=2, column=0, pady=10, padx=(10, 0), sticky="ew")
+        start2_ent = CTkEntry(master=engine_calc_frm, font=("Arial", 16), width=60)
+        start2_ent.grid(row=2, column=1, pady=10, padx=(0, 10), sticky="ew")
+        end2_lbl = CTkLabel(master=engine_calc_frm, text="End Time:", font=("Arial", 16))
+        end2_lbl.grid(row=2, column=2, pady=10, padx=(10, 0), sticky="ew")
+        end2_ent = CTkEntry(master=engine_calc_frm, font=("Arial", 16), width=60)
+        end2_ent.grid(row=2, column=3, pady=10, padx=(0, 10), sticky="ew")
+        save3_frm = CTkFrame(master=engine_calc_frm)
+        save3_frm.grid_rowconfigure((0), weight=1)
+        save3_frm.grid_columnconfigure((0, 1, 2), weight=1)
+        save3_lbl = CTkLabel(master=save3_frm, font=("Arial", 16), text="Save Plots:", anchor="center")
+        save3 = IntVar(value=0)
+        save3_rdbtn = CTkRadioButton(master=save3_frm, text="Yes", font=("Arial", 12), value=1, variable=save3)
+        nosave3_rdbtn = CTkRadioButton(master=save3_frm, text="No", font=("Arial", 12), value=0, variable=save3)
+        save3_lbl.grid(row=0, column=0, padx=(10, 5), pady=(10, 10), sticky="nsew")
+        save3_rdbtn.grid(row=0, column=1, padx=(30, 0), pady=(10, 10), sticky="nsew")
+        nosave3_rdbtn.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
+        save3_frm.grid(row=3, column=0, columnspan=4, pady=10, padx=10)
+        results_lbl = CTkLabel(master=engine_calc_frm, text="Results", font=("Arial", 18))
+        results_lbl.grid(row=5, column=0, padx=10, pady=10, sticky="ew")
+        results_txt = CTkTextbox(master=engine_calc_frm, font=("Arial", 16), state="disabled")
+        results_txt.grid(row=6, column=0, columnspan=4, padx=10, pady=(0, 10), sticky="ew")
+        run_btn = CTkButton(master=engine_calc_frm, text="Run", font=("Arial", 16), command=tools.engine_calc_caller(self.engine_calculations, (start2_ent, end2_ent), (wmass_ent, dmass_ent), save3, results_txt))
+        run_btn.grid(row=4, column=1, columnspan=2, padx=(5,15), pady=10, sticky="ew")
+        engine_calc_frm.grid(row=1, column=3, rowspan=3, padx=(5, 10), pady=(5, 10), sticky="nsew")
+
+        #custom_dataset_frm = CTkFrame()
+
         export_frm = CTkFrame(master=self)
         export_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
         export_frm.grid_rowconfigure((0, 1, 2), weight=1)
@@ -225,51 +269,70 @@ class Carina_Log_Processor_Plotter(CTk):
         export_end_lbl.grid(row=1, column=2, padx=(5, 1), pady=10, sticky="ew")
         export_end_ent.grid(row=1, column=3, padx=(1, 10), pady=10, sticky="ew")
         export_btn.grid(row=2, column=1, columnspan=2, padx=10, pady=10, sticky="ew")
-        export_frm.grid(row=4, column=0, padx=(5, 10), pady=(5, 10), sticky="nsew")
+        export_frm.grid(row=4, column=0, padx=(10, 5), pady=(5, 10), sticky="nsew")
 
         buttons_frm = CTkFrame(master=self)
         buttons_frm.grid_rowconfigure((0, 1), weight=1)
         buttons_frm.grid_columnconfigure((0, 1), weight=1)
-        back_btn = CTkButton(master=buttons_frm, text="Return", font=("Arial", 16), anchor="center", command=self.boot_screen)
+        back_btn = CTkButton(master=buttons_frm, text="Return to Menu", font=("Arial", 16), anchor="center", command=self.boot_screen)
         back_btn.grid(row=1, column=0, columnspan=2, pady=(10, 20), padx=10, sticky="ew")
         log_btn = CTkButton(master=buttons_frm, text="Logs", font=("Arial", 16), anchor="center", command=self.logs_screen)
         log_btn.grid(row=0, column=0, pady=(20, 5), padx=(10, 7), sticky="ew")
-        configuration_btn = CTkButton(master=buttons_frm, text="Congfigurations", font=("Arial", 16), anchor="center", command=self.configuration_screen) # Change this
+        configuration_btn = CTkButton(master=buttons_frm, text="Settings", font=("Arial", 16), anchor="center", command=self.configuration_screen) # Change this
         configuration_btn.grid(row=0, column=1, pady=(20, 5), padx=(7, 10), sticky="ew")
         buttons_frm.grid(row=5, column=0, padx=5, pady=(0, 10), sticky="ew")
         self.update() # why ???
         
     def configuration_screen(self):
-        tools.clear_gui(self)
+        window = CTkToplevel()
+        window.title("Settings")
 
-        self.grid_columnconfigure((0, 1), weight=1)
-        self.grid_rowconfigure((0, 1, 2, 3), weight=1)
-        configurations_lbl = CTkLabel(master=self, text="Configurations", font=("Arial", 22))
+        window.grid_columnconfigure((0, 1), weight=1)
+        window.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        configurations_lbl = CTkLabel(master=window, text="Settings", font=("Arial", 22))
         configurations_lbl.grid(row=0, column=0, columnspan=2, padx=10, pady=(20, 10), sticky="ew")
-        diff_step_size_lbl = CTkLabel(master=self, text="Differenciation Half Step Size:", font=("Arial", 16))
-        diff_step_size_ent = CTkEntry(master=self, width = 50, font=("Arial", 16), placeholder_text=self.diff_hs_size)
-        visual_switch = CTkSwitch(master=self, text="Visual Mode", command=self.switch_visual_mode)
-        visual_switch.grid(row=2, column=0, columnspan=2, padx=10, pady=10, sticky="")
-        return_btn = CTkButton(master=self, text="Return", font=("Arial", 16), anchor="center", command=self.data_screen)
-        save_btn = CTkButton(master=self, text="Save Changes", font=("Arial", 16), anchor="center", command=lambda: self.config(diff_step_size_ent.get()))
+        diff_step_size_lbl = CTkLabel(master=window, text="Differenciation Half Step Size:", font=("Arial", 16))
+        diff_step_size_ent = CTkEntry(master=window, width = 50, font=("Arial", 16), placeholder_text=self.diff_hs_size)
+        int_step_size_lbl = CTkLabel(master=window, text="Integration Step Size:", font=("Arial", 16))
+        int_step_size_ent = CTkEntry(master=window, width = 50, font=("Arial", 16), placeholder_text=self.int_step_size)
+        int_type_lbl = CTkLabel(master=window, text="Integration Method:", font=("Arial", 16))
+        int_type_opt = CTkOptionMenu(master=window, values=["Trapezoid", "Simpson"], font=("Arial", 16))
+        int_type_opt.set(self.int_type)
+        visual_switch = CTkSwitch(master=window, text="Visual Mode", command=self.switch_visual_mode)
+        visual_switch.grid(row=4, column=0, columnspan=2, padx=10, pady=10, sticky="")
         diff_step_size_lbl.grid(row=1, column=0, padx=(10, 2), pady=10, sticky="ew")
         diff_step_size_ent.grid(row=1, column=1, padx=(2, 10), pady=10, sticky="ew")
-        return_btn.grid(row=3, column=0, padx=10, pady=10, sticky="ew")
-        save_btn.grid(row=3, column=1, padx=10, pady=10, sticky="ew")
+        int_type_lbl.grid(row=2, column=0, padx=(10, 2), pady=10, sticky="ew")
+        int_type_opt.grid(row=2, column=1, padx=(2, 10), pady=10, sticky="ew")
+        int_step_size_lbl.grid(row=3, column=0, padx=(10, 2), pady=10, sticky="ew")
+        int_step_size_ent.grid(row=3, column=1, padx=(2, 10), pady=10, sticky="ew")
+        save_btn = CTkButton(master=window, text="Save Changes", font=("Arial", 16), anchor="center", command=lambda: self.config(diff_step_size_ent.get(), int_type_opt.get(), int_step_size_ent.get()))
+        save_btn.grid(row=5, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
 
     def logs_screen(self):
-        tools.clear_gui(self)
-        logs_lbl = CTkLabel(master=self, text="Program Log", font=("Arial", 20))
-        logs_lbl.grid(row=0, column=0, padx=10, pady=(20, 10), sticky="nsew")
-        return_btn = CTkButton(master=self, text="Return", font=("Arial", 18), command=self.data_screen)
-        return_btn.grid(row=0, column=2, padx=10, pady=(20, 10))
-        logs_txt = CTkTextbox(master=self, font=("Arial", 16), width=700)
+        window = CTkToplevel()
+        window.title("Program Logs")
+        logs_lbl = CTkLabel(master=window, text="Program Log", font=("Arial", 20))
+        logs_lbl.grid(row=0, column=0, columnspan=3, padx=10, pady=(20, 10), sticky="nsew")
+        logs_txt = CTkTextbox(master=window, font=("Arial", 16), width=700)
         logs_txt.grid(row=1, column=0, columnspan=3, rowspan=5, padx=10, pady=10, sticky="nsew")
         with open("program.log", "r") as file:
             for line in file:
                 logs_txt.insert("end", line)
         logs_txt.configure(state="disabled")
         logs_txt.see("end")
+
+    def config(self, diff_step_size: int, int_method: str, int_step_side: int):
+        try:
+            self.diff_hs_size = int(diff_step_size)
+            self.int_type = int_method
+            self.int_step_size = int_step_side
+            processors.set_parameters(self.diff_hs_size, self.int_type, self.int_step_size)
+            tools.gui_popup("Succesfully Applied New Configuration!")
+            tools.append_to_log(f"Changed Differention Half Step Size to {diff_step_size}, changed integration method to {self.int_type}, changed integration step size to {self.int_step_size}")
+        except Exception as e:
+            tools.gui_error("CONFIGURATION ERROR: Invalid Input")
+            tools.append_to_log(f"Failed to change configurations due to {e}", "ERROR")
 
     def get_sensor_options(self):
         self.sensor_options = self.sensor_df.columns.to_list()[1:]
@@ -278,14 +341,29 @@ class Carina_Log_Processor_Plotter(CTk):
         if "MOT" in self.sensor_options:
             self.sensor_options.append("dMOT")
 
-    def config(self, diff_step_size):
-        try:
-            self.diff_hs_size = int(diff_step_size)
-            processors.set_parameters(self.diff_hs_size)
-            tools.gui_popup("Succesfully Applied New Configuration!")
-            tools.append_to_log(f"Changed Differention Half Step Size to {diff_step_size}")
-        except:
-            tools.gui_error("CONFIGURATION ERROR: Invalid Input")
+    def engine_calculations(self, text_box: CTkTextbox, wet_masss: float, dry_masss: float, start_time: float, end_time = None, save:int = 0)->None:
+        time = self.sensor_df["Time"].to_list()
+        start_ind = tools.get_xaxis_index(time, start_time)
+        if end_time is None:
+            end_ind = len(time) - 1
+        else:
+            end_ind = tools.get_xaxis_index(time, end_time)
+        if "MFT" in self.sensor_df.columns and "MOT" in self.sensor_df.columns:
+            results = processors.engine_calculations(self.sensor_df, wet_masss, dry_masss, start_ind, end_ind)
+            time = time[start_ind:end_ind]
+            text_box.configure(state="normal")
+            text_box.delete(0, 'end')
+            for res in results:
+                if isinstance(res[1], list):
+                    tools.single_plot(self.folder_name, time, [res], [], [], save)
+                else:
+                    text_box.insert("end", f'{res[0]}: {res[1]}{tools.get_units(res[0])}\n')
+            text_box.configure(stae='disabled')
+            tools.append_to_log("Ran engine calculations")
+        else:
+            tools.gui_error("Cannot run engine calculations as you are missing either MFT or MOT or both.")
+            tools.append_to_log("Unable to run engine calculations as required sensor data is missing", "ERROR")
+
 
     def switch_visual_mode(self):
         if get_appearance_mode() == "Dark":
@@ -321,6 +399,8 @@ class Carina_Log_Processor_Plotter(CTk):
             sensor_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_sensors_data.csv"))
             actuator_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "actuator_sensors_data.csv"))
             tools.gui_popup(f"Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")
-        except:
+            tools.append_to_log("Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")
+        except Exception as e:
             tools.gui_error("EXPORT DATA ERROR: Invalid start or end time.")
+            tools.append_to_log(f"Fialed to export data to csv due to {e}", "ERROR")
             

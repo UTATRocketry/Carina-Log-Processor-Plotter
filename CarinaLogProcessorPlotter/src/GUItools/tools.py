@@ -38,8 +38,9 @@ def replot_caller(func, start_box: CTkEntry, end_box: CTkEntry, save: IntVar):
                     append_to_log(f"Failed to create graphs as start time was greater then end time (start:{start}, end:{end})", "ERROR")
                     return
                 func(start, end, save.get())
-        except Exception:
+        except Exception as e:
             gui_error("Invalid Start or End Time")
+            append_to_log(f"Failed to replot all graphs due to {e}", "ERROR")
     return call_func2
 
 def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, save: IntVar): 
@@ -57,17 +58,35 @@ def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, sav
             else:
                 if start > end:
                     gui_error("End cannot be less then Start")
-                    append_to_log(f"Failed to create graphs as start time was greater then end time (start:{start}, end:{end})", "ERROR")
+                    append_to_log(f"Failed to create custom graph as start time was greater then end time (start:{start}, end:{end})", "ERROR")
                     return
                 func(choices, float(start), float(end), save.get())
-        except Exception:
+        except Exception as e:
             gui_error("Invalid Start or End value")
+            append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
     return call_func2
 
-def add_caller(func, button: CTkButton):#depreciated
-    def call():
-        func(button)
-    return call
+def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEntry, CTkEntry], save: IntVar, text_box: CTkTextbox):
+    def call_func3():
+        try:
+            wet_mass = float(masses[0].get())
+            dry_mass = float(masses[1].get())
+            if times[0].get() == '':
+                start_time = 0
+            else:
+                start_time = float(times[0].get())
+            if times[1].get() == '':
+                func(text_box, wet_mass, dry_mass, start_time, save=save.get())
+            else:
+                if start_time > float(times[1].get()):
+                    gui_error("End cannot be less then Start")
+                    append_to_log(f"Failed to run engine calculations as end time was smaller then start time", "ERROR")
+                    return
+                func(text_box, wet_mass, dry_mass, start_time, float(times[1].get()), save=save.get())
+        except Exception as e:
+            gui_error("One of your inputs for engine calculation is invalid")
+            append_to_log(f"Failed to run engine calculations due to {e}", "ERROR")
+    return call_func3
 
 def gui_error(msg: str) -> None:
     messagebox.showerror(title="Program Error", message=msg)
@@ -202,15 +221,17 @@ def get_xaxis_index(xaxis: list, given_time) -> int:
             
 def get_units(name: str)->str:
     unit = name[0]
-    if unit == "B" or unit == "S" or unit == "E" or "V" in name:
+    if "BV" in name or "SV" in name or unit == "E":
         return "On/Off"
     elif unit == "P":
         return "Pressure (psi)"
-    elif name == "MFR":
+    elif "V" in name:
+        return "(m/s)"
+    elif unit == "d":
         return "Mass Flow Rate (kg/s)"
     elif unit == "M":
         return "Mass (kg)"
-    elif unit == "T":
+    elif unit == "T" or "ISP" in name:
         return "(s)"
     
 def get_actuation_indexes(values: list) -> list:
@@ -222,12 +243,12 @@ def get_actuation_indexes(values: list) -> list:
             res.append((i, "On"))
     return res
             
-def append_to_log(msg: str, mode: str = 'info') -> None:
+def append_to_log(msg: str, mode: str = 'INFO') -> None:
     try:
         with open("program.log", "a") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], {mode}: {msg}\n')
             file.close()
-    except Exception:
-        gui_error("Error adding to program log")
+    except Exception as e:
+        gui_error(f"Error adding to program log. Due to {e}")
 
 

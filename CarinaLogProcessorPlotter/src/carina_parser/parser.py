@@ -3,7 +3,6 @@ import os
 import multiprocessing
 import pandas as pd
 from queue import Queue
-#import parse_tools
 from . import parse_tools
 
 
@@ -120,15 +119,13 @@ def parse_actuator_lines(lines, time_offset):
 
 def actuators_reformat(actuators: dict) -> None: 
     for actuator in actuators:
-        if actuator == "BVFTP":
-            pass
         state = 0
         for i in range(len(actuators[actuator])):
             if actuators[actuator][i][1] != "":
                 if actuator[0:2] == 'BV':
-                    if int(actuators[actuator][i][1]) > 11: 
+                    if int(actuators[actuator][i][1]) == 100: 
                             state = 0
-                    elif int(actuators[actuator][i][1]) <= 11:
+                    elif int(actuators[actuator][i][1]) == 0:
                             state = 1
                 else:
                     if int(actuators[actuator][i][1]) >= 1: 
@@ -178,5 +175,6 @@ def dataframe_format(sensors: dict, actuators: dict):
 if __name__ == "__main__":
     init("CF-F2")
     sensors, actuators = parse_from_raw()
-    actuators_reformat(actuators)
+    sensors, actuators = dataframe_format(sensors, actuators)
+    print(sensors['Time'][0:10])
 
