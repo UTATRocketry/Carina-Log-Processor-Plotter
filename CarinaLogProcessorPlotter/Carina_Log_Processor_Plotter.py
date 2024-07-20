@@ -250,7 +250,9 @@ class Carina_Log_Processor_Plotter(CTk):
         results_txt.grid(row=6, column=0, columnspan=4, padx=10, pady=(0, 10), sticky="ew")
         run_btn = CTkButton(master=engine_calc_frm, text="Run", font=("Arial", 16), command=tools.engine_calc_caller(self.engine_calculations, (start2_ent, end2_ent), (wmass_ent, dmass_ent), save3, results_txt))
         run_btn.grid(row=4, column=1, columnspan=2, padx=(5,15), pady=10, sticky="ew")
-        engine_calc_frm.grid(row=1, column=3, rowspan=4, padx=(5, 10), pady=(5, 10), sticky="nsew")
+        engine_calc_frm.grid(row=1, column=3, rowspan=3, padx=(5, 10), pady=(5, 10), sticky="nsew")
+
+        #custom_dataset_frm = CTkFrame()
 
         export_frm = CTkFrame(master=self)
         export_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)

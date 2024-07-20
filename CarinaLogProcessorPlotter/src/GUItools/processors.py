@@ -110,6 +110,21 @@ def delta_v_instantaneous(exhaust_velocity: list, initial_mass: float, final_mas
         dv.append(val * math.log(initial_mass/final_mass))
     return dv
 
+def custom_dataset(sensor1: str, sensor2: str, dataframe: pd.DataFrame, opt: str) -> list:
+    data1 = dataframe[sensor1].to_list()
+    data2 = dataframe[sensor2].to_list()
+    new_dataset = []
+    for i in len(range(data1)):
+        if opt == "+":
+            new_dataset.append(data1 + data2)
+        elif opt == "-":
+            new_dataset.append(data1 - data2)
+        elif opt == "x":
+            new_dataset.append(data1 * data2)
+        elif opt == "/":
+            new_dataset.append(data1 / data2)
+    return new_dataset
+
 if __name__ == "__main__":
     set_parameters(1000, 1000)
     y = [2, 2, 6, 20]
