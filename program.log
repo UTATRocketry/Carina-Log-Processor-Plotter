@@ -1,24 +1,2 @@
-[T 20/07/2024 16:05:49], INFO: Program Started
-[T 20/07/2024 16:05:49], INFO: Clearing GUI Screen
-[T 20/07/2024 16:05:55], ERROR: File Path not Found
-[T 20/07/2024 16:05:59], INFO: Begining data parsing in C:\Users\Brody Howard\Documents\GitHub\Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\CF-F3\raw
-[T 20/07/2024 16:05:59], INFO: Clearing GUI Screen
-[T 20/07/2024 16:05:59], INFO: Initalizing Parser
-[T 20/07/2024 16:05:59], INFO: Reading data.log
-[T 20/07/2024 16:05:59], INFO: Reading events.log
-[T 20/07/2024 16:05:59], INFO: Parsing Sensor Lines
-[T 20/07/2024 16:06:02], INFO: Parsing Actuator Lines
-[T 20/07/2024 16:06:02], INFO: Reformating Actuators Data and Converting to Dataframes
-[T 20/07/2024 16:06:02], INFO: Creating Graphs
-[T 20/07/2024 16:06:03], INFO: Generated 8 Plots
-[T 20/07/2024 16:06:04], INFO: Data Parsing and Plotting Complete
-[T 20/07/2024 16:06:04], INFO: Clearing GUI Screen
-[T 20/07/2024 16:06:37], INFO:: Created a new custom plot
-[T 20/07/2024 16:06:55], INFO:: Created a new custom plot
-[T 20/07/2024 16:07:12], INFO:: Created a new custom plot
-[T 20/07/2024 16:08:13], INFO:: Created a new custom plot
-[T 20/07/2024 16:08:24], INFO:: Created a new custom plot
-[T 20/07/2024 16:08:49], INFO:: Created a new custom plot
-[T 20/07/2024 16:09:07], INFO:: Created a new custom plot
-[T 20/07/2024 16:09:15], INFO:: Created a new custom plot
-[T 20/07/2024 16:14:00], INFO: Generated 8 Plots
+[T 21/07/2024 19:54:02], INFO: Program Started
+[T 21/07/2024 19:54:02], INFO: Clearing GUI Screen

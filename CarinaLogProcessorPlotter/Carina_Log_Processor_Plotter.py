@@ -96,7 +96,7 @@ class Carina_Log_Processor_Plotter(CTk):
         tools.generate_plots(self.folder_name, self.actuator_df, "actuator", start_time, end_time, save)
         tools.append_to_log(f'Generated {len(self.sensor_df.columns) + len(self.actuator_df.columns) - 2} Plots', "INFO")
 
-    def custom_plot(self, options: list[list, list, list], start = 0, end = None, save:int = 0):
+    def custom_plot(self, options: list[list, list, list], start = 0, end = None, save:int = 0, plot_name = None):
         time = self.sensor_df["Time"].tolist()
         start = tools.get_xaxis_index(time, start)
         end = tools.get_xaxis_index(time, end)
@@ -118,7 +118,7 @@ class Carina_Log_Processor_Plotter(CTk):
         for actuator in options[2]:
             actuators.append((actuator, self.actuator_df[actuator].tolist()[start:end]))
         time = time[start:end]
-        tools.single_plot(self.folder_name, time, left_axis, right_axis, actuators, save)
+        tools.single_plot(self.folder_name, time, left_axis, right_axis, actuators, save, plot_name)
         tools.append_to_log("Created a new custom plot", "INFO:")      
             
     def data_screen(self) -> None:
@@ -160,23 +160,27 @@ class Carina_Log_Processor_Plotter(CTk):
         replot_btn = CTkButton(master=replot_frm, text="Replot", width=140, font=("Arial", 18), anchor="center", command=tools.replot_caller(self.plot_all, start_time_ent, end_time_ent, save))
         replot_btn.grid(row=5, column=0, columnspan=2, pady=20, padx=10)
         replot_frm.grid(row=1, column=0, padx=(10, 5), pady=(5, 10), rowspan=3, sticky="nsew")
-
+        
         self.get_sensor_options()
         custom_plot_frm = CTkFrame(master=self)
         custom_plot_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
-        custom_plot_frm.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        custom_plot_frm.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
         cutom_plot_lbl = CTkLabel(master=custom_plot_frm, text="Create Custom Plot", font=("Arial", 22))
         cutom_plot_lbl.grid(row = 0, column = 0, padx=10, pady=10, columnspan=4, sticky="ew")
+        custom_title_lbl = CTkLabel(master=custom_plot_frm, text="Plot Name (optional): ", font=("Arial", 16))
+        custom_title_lbl.grid(row=1, column=0, padx=(10, 0), pady=10, sticky="ew")
+        custom_title_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=100)
+        custom_title_ent.grid(row=1, column=1, columnspan=3, padx=(0, 10), pady=10, sticky="ew")
         start_lbl = CTkLabel(master=custom_plot_frm, text="Start Time:", font=("Arial", 16))
-        start_lbl.grid(row=2, column=0, pady=10, padx=(10, 0), sticky="ew")
+        start_lbl.grid(row=3, column=0, pady=10, padx=(10, 0), sticky="ew")
         start_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=60)
-        start_ent.grid(row=2, column=1, pady=10, padx=(0, 10), sticky="ew")
+        start_ent.grid(row=3, column=1, pady=10, padx=(0, 10), sticky="ew")
         end_lbl = CTkLabel(master=custom_plot_frm, text="End Time:", font=("Arial", 16))
-        end_lbl.grid(row=2, column=2, pady=10, padx=(10, 0), sticky="ew")
+        end_lbl.grid(row=3, column=2, pady=10, padx=(10, 0), sticky="ew")
         end_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=60)
-        end_ent.grid(row=2, column=3, pady=10, padx=(0, 10), sticky="ew")
+        end_ent.grid(row=3, column=3, pady=10, padx=(0, 10), sticky="ew")
         actuator_frame = ActuatorTimeDropdown(master=custom_plot_frm, actuator_df=self.actuator_df, entry_boxes=[start_ent, end_ent], text="Actuator Timelines: ")
-        actuator_frame.grid(row=1, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
+        actuator_frame.grid(row=2, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
         choices_frm = CTkFrame(master=custom_plot_frm)
         choices_frm.grid_rowconfigure((0, 1), weight=1)
         choices_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
@@ -196,7 +200,7 @@ class Carina_Log_Processor_Plotter(CTk):
         left_axis_options.grid(row=1, column=1, padx=10, pady=10, sticky ="nsew")
         right_axis_options.grid(row=1, column=2, padx=10, pady=10, sticky ="nsew")
         actuators_options.grid(row=1, column=3, rowspan=2, padx=10, pady=10, sticky ="nsew")
-        choices_frm.grid(row=3, column=0, columnspan=4, padx = 10, pady=10, stick="nsew")
+        choices_frm.grid(row=4, column=0, columnspan=4, padx = 10, pady=10, stick="nsew")
         save2_frm = CTkFrame(master=custom_plot_frm)
         save2_frm.grid_rowconfigure((0), weight=1)
         save2_frm.grid_columnconfigure((0, 1, 2), weight=1)
@@ -207,9 +211,9 @@ class Carina_Log_Processor_Plotter(CTk):
         save2_lbl.grid(row=0, column=0, padx=(10, 5), pady=(10, 10), sticky="nsew")
         save2_rdbtn.grid(row=0, column=1, padx=(30, 0), pady=(10, 10), sticky="nsew")
         nosave2_rdbtn.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
-        save2_frm.grid(row=4, column=0, columnspan=4, pady=10, padx=10)
-        custom_plot_btn = CTkButton(master=custom_plot_frm, text="Create Plot", font=("Arial", 18), command=tools.custom_plot_caller(self.custom_plot, (start_ent, end_ent), (left_axis_options, right_axis_options, actuators_options), save2)) # change command
-        custom_plot_btn.grid(row=5, column=1, columnspan=2, pady=(25, 20), sticky="ew")
+        save2_frm.grid(row=5, column=0, columnspan=4, pady=10, padx=10)
+        custom_plot_btn = CTkButton(master=custom_plot_frm, text="Create Plot", font=("Arial", 18), command=tools.custom_plot_caller(self.custom_plot, (start_ent, end_ent), (left_axis_options, right_axis_options, actuators_options), save2, custom_title_ent)) # change command
+        custom_plot_btn.grid(row=6, column=1, columnspan=2, pady=(25, 20), sticky="ew")
         custom_plot_frm.grid(row=1, column=1, padx=5, pady=(5, 10), rowspan=5, columnspan=2, sticky="nsew")
 
         engine_calc_frm = CTkFrame(master=self)

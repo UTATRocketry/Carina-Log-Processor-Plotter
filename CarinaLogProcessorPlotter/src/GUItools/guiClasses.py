@@ -65,12 +65,6 @@ class OptionsColumn(CTkFrame):
         already_chosen = [name.get() for name in self.option_boxes]
         if self.type == "S":
             if already_chosen[0] != "None":
-                # if "d" == already_chosen[0][0]:
-                #     letter = "d"
-                # elif "M" == already_chosen[0][0]:
-                #     letter = "M"
-                # elif "P" == already_chosen[0][0]:
-                #     letter = "P"
                 for name in self.values:
                     if already_chosen[0][0] == name[0] and name not in already_chosen: 
                         res.append(name)
@@ -127,11 +121,18 @@ class ActuatorTimeDropdown(CTkFrame):
             switch_off = self.df['Time'][changes == -1].tolist()
 
             res = []
-            l = len(switch_off)
-            for i in range(len(switch_on)):
-                res.append(f'{switch_on[i]}s Off -> On')
-                if i < l:
+            if switch_on[0] < switch_off[0]:
+                l = len(switch_off) 
+                for i in range(len(switch_on)):
+                    res.append(f'{switch_on[i]}s Off -> On')
+                    if i < l:
+                        res.append(f'{switch_off[i]}s On -> Off')
+            else:
+                l = len(switch_on) 
+                for i in range(len(switch_off)):
                     res.append(f'{switch_off[i]}s On -> Off')
+                    if i < l:
+                        res.append(f'{switch_on[i]}s Off -> On')
 
             self.actuation_times[column] = res if res else [""]
 
@@ -150,7 +151,27 @@ class ActuatorTimeDropdown(CTkFrame):
                     break
             if i + 1 < len(self.actuation_times[self.actuator_opt.get()]):
                 self.entry_boxes[1].insert(0, self.actuation_times[self.actuator_opt.get()][i + 1].split("s ")[0])
-            
+
+class OperationSelector(CTkFrame):
+    def __init__(self, *args, master: Any, sensor_df:DataFrame, operators:list, padx:int = 0, pady:int = 0, font:tuple = ("Arial", 16), **kwargs)->None:
+        super().__init__(*args, master=master, **kwargs)
+
+        self.df = sensor_df
+        self.operators = operators
+        self.font = font
+        self.padx = padx
+        self.pady=pady
+        self.options = self.df.columns[1:]
+
+        self.grid_columnconfigure((0, 1, 2), weight=1)
+        self.grid_rowconfigure((0, 1), weight=1)
+        self.opt1 = CTkOptionMenu(self, font=self.font, values=self.options, anchor="center", command=self.update_options)
+        self.opt2 = CTkOptionMenu(self, font=self.font, values=self.options, anchor="center", command=self.update_options)
+        self.operator = CTkOptionMenu(self, font=self.font, values=self.operators, anchor="center", command=self.update_options)
+        self.opt1.grid(row=1, column=0, padx=(10, 5), pady=10, sticky="ew")
+
+    def update_options():
+        pass
 
 class OptionsBar(CTkFrame):
     def __init__(self, *args, master: Any, titles: list = [], choices: list = [], addcommand = None, removecommmand = None, padx:int = 0, pady:int = 0, font:tuple = ("Arial", 16), **kwargs)->None:
