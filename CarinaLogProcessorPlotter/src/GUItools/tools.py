@@ -43,27 +43,28 @@ def replot_caller(func, start_box: CTkEntry, end_box: CTkEntry, save: IntVar):
             append_to_log(f"Failed to replot all graphs due to {e}", "ERROR")
     return call_func2
 
-def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, save: IntVar): 
+def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, save: IntVar, plot_name: CTkEntry): 
     def call_func2():
-        try:
-            choices = (options[0].selections(), options[1].selections(), options[2].selections())
-            start = times[0].get()
-            end = times[1].get()
-            if start == "" and end == "":
-                func(choices)
-            elif start == "":
-                func(choices, end=float(end), save=save.get())
-            elif end == "":
-                func(choices, start=float(start), save=save.get())
-            else:
-                if start > end:
-                    gui_error("End cannot be less then Start")
-                    append_to_log(f"Failed to create custom graph as start time was greater then end time (start:{start}, end:{end})", "ERROR")
-                    return
-                func(choices, float(start), float(end), save.get())
-        except Exception as e:
-            gui_error("Invalid Start or End value")
-            append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
+        #try:
+        choices = (options[0].selections(), options[1].selections(), options[2].selections())
+        name = plot_name.get() if plot_name.get() != "" else None
+        start = times[0].get()
+        end = times[1].get()
+        if start == "" and end == "":
+            func(choices, save=save.get(), plot_name=name)
+        elif start == "":
+            func(choices, end=float(end), save=save.get(), plot_name=name)
+        elif end == "":
+            func(choices, start=float(start), save=save.get(), plot_name=name)
+        else:
+            if start > end:
+                gui_error("End cannot be less then Start")
+                append_to_log(f"Failed to create custom graph as start time was greater then end time (start:{start}, end:{end})", "ERROR")
+                return
+            func(choices, float(start), float(end), save.get(), plot_name=name)
+        #except Exception as e:
+            #gui_error("Invalid Start or End value")
+            #append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
     return call_func2
 
 def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEntry, CTkEntry], save: IntVar, text_box: CTkTextbox):
@@ -88,6 +89,9 @@ def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEn
             append_to_log(f"Failed to run engine calculations due to {e}", "ERROR")
     return call_func3
 
+def custom_dataset_caller(func, sensors:list, operation:str):
+    pass
+
 def gui_error(msg: str) -> None:
     messagebox.showerror(title="Program Error", message=msg)
     append_to_log(msg, "ERROR")
@@ -102,19 +106,22 @@ def clear_gui(window: CTk) -> None:
     append_to_log("Clearing GUI Screen", "INFO") 
 
 #add error handeling for colors array, in general improve color handeling fr lines
-def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, actuators:list, save:int = 0) -> None: 
+def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, actuators:list, save:int = 0, plot_name = None) -> None: 
     if not os.path.exists(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots")):
         os.mkdir(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots"))
 
     colors = ['b','g','r','c','m','y','k']
-    name = ""
-    for tup in left_axis: #fix
-        name += tup[0] + " & "
-    for tup in right_axis:
-        name += tup[0] + " & "
-    for tup in actuators:
-        name += tup[0] + " & "
-    name += "Vs Time"
+    if plot_name is not None:
+        name = plot_name
+    else:
+        name = ""
+        for tup in left_axis: #fix
+            name += tup[0] + " & "
+        for tup in right_axis:
+            name += tup[0] + " & "
+        for tup in actuators:
+            name += tup[0] + " & "
+        name += "Vs Time"
 
     fig = plt.figure(name)
     i = 0
@@ -168,7 +175,7 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
     fig.show()
 
     if save == 1:
-        fig.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{name} vs Time Plot {t.strftime('%Hh%Mm%Ss', t.gmtime(time[0]))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(time[-1]))}.jpg"))
+        fig.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{name} {t.strftime('%Hh%Mm%Ss', t.gmtime(time[0]))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(time[-1]))}.jpg"))
 
 def max_min_check(prev_min: float, prev_max: float, data: list)->tuple:
     cur_max = max(data)
