@@ -74,6 +74,11 @@ class OptionsColumn(CTkFrame):
             for name in self.values:
                 if name not in already_chosen: res.append(name)
         return res
+    
+    def update_values(self, new_values:list)->None:
+        self.values = new_values
+        self.option_boxes[0].configure(values= ["None"] + new_values)
+        self.update_boxes(self.option_boxes[0].get())
 
     def update_boxes(self, choice)->None:
         self.option_boxes[0].set(choice)
@@ -153,25 +158,66 @@ class ActuatorTimeDropdown(CTkFrame):
                 self.entry_boxes[1].insert(0, self.actuation_times[self.actuator_opt.get()][i + 1].split("s ")[0])
 
 class OperationSelector(CTkFrame):
-    def __init__(self, *args, master: Any, sensor_df:DataFrame, operators:list, padx:int = 0, pady:int = 0, font:tuple = ("Arial", 16), **kwargs)->None:
+    def __init__(self, *args, master: Any, sensor_df:DataFrame, padx:int = 0, pady:int = 0, font:tuple = ("Arial", 16), **kwargs)->None:
         super().__init__(*args, master=master, **kwargs)
 
         self.df = sensor_df
-        self.operators = operators
         self.font = font
-        self.padx = padx
+        self.padx = padx 
         self.pady=pady
-        self.options = self.df.columns[1:]
+        self.initial_options = self.df.columns[1:]
 
         self.grid_columnconfigure((0, 1, 2), weight=1)
         self.grid_rowconfigure((0, 1), weight=1)
-        self.opt1 = CTkOptionMenu(self, font=self.font, values=self.options, anchor="center", command=self.update_options)
-        self.opt2 = CTkOptionMenu(self, font=self.font, values=self.options, anchor="center", command=self.update_options)
-        self.operator = CTkOptionMenu(self, font=self.font, values=self.operators, anchor="center", command=self.update_options)
+        self.lbl1 = CTkLabel(self, text="Data 1", font=self.font, anchor="center")
+        self.lbl2 = CTkLabel(self, text="Operator", font=self.font, anchor="center")
+        self.lbl3 = CTkLabel(self, text="Data 2", font=self.font, anchor="center")
+        self.lbl1.grid(row=0, column=0, padx=(10, 5), pady=10, sticky="ew")
+        self.lbl2.grid(row=0, column=1, padx=(5, 5), pady=10, sticky="ew")
+        self.lbl3.grid(row=0, column=2, padx=(5, 10), pady=10, sticky="ew")
+        self.opt1 = CTkOptionMenu(self, font=self.font, values=self.initial_options, anchor="center", command=self.update_options1)
+        self.opt2 = CTkOptionMenu(self, font=self.font, values=self.initial_options, anchor="center", command=self.update_options2)
+        self.operator = CTkOptionMenu(self, font=self.font, values=["+", "-", "x", "/"], anchor="center", width=20)
         self.opt1.grid(row=1, column=0, padx=(10, 5), pady=10, sticky="ew")
+        self.opt2.grid(row=1, column=2, padx=(5, 10), pady=10, sticky="ew")
+        self.operator.grid(row=1, column=1, padx=(5, 5), pady=10, sticky="ew")
 
-    def update_options():
-        pass
+    def update_options1(self, choice):
+        self.opt1.set(choice)
+        if choice == "":
+            res = self.initial_options
+        else:
+            res = [""]
+            for option in self.initial_options:
+                if self.operator.get() == "+" or self.operator.get() == "-":
+                    if option != choice and option[0] == choice[0]:
+                        res.append(option)
+                else:
+                    if option != choice:
+                        res.append(option)
+        
+        self.opt1.configure(values=res)
+        self.opt2.configure(values=res)
+    
+    def update_options2(self, choice):
+        self.opt2.set(choice)
+        if choice == "":
+            res = self.initial_options
+        else:
+            res = [""]
+            for option in self.initial_options:
+                if self.operator.get() == "+" or self.operator.get() == "-":
+                    if option != choice and option[0] == choice[0]:
+                        res.append(option)
+                else:
+                    if option != choice:
+                        res.append(option)
+        
+        self.opt1.configure(values=res)
+        self.opt2.configure(values=res)
+
+    def get(self):
+        return (self.opt1.get(), self.opt2.get(), self.operator.get())
 
 class OptionsBar(CTkFrame):
     def __init__(self, *args, master: Any, titles: list = [], choices: list = [], addcommand = None, removecommmand = None, padx:int = 0, pady:int = 0, font:tuple = ("Arial", 16), **kwargs)->None:

@@ -114,15 +114,15 @@ def custom_dataset(sensor1: str, sensor2: str, dataframe: pd.DataFrame, opt: str
     data1 = dataframe[sensor1].to_list()
     data2 = dataframe[sensor2].to_list()
     new_dataset = []
-    for i in len(range(data1)):
+    for i in range(len(data1)):
         if opt == "+":
-            new_dataset.append(data1 + data2)
+            new_dataset.append(data1[i] + data2[i])
         elif opt == "-":
-            new_dataset.append(data1 - data2)
+            new_dataset.append(data1[i] - data2[i])
         elif opt == "x":
-            new_dataset.append(data1 * data2)
+            new_dataset.append(data1[i] * data2[i])
         elif opt == "/":
-            new_dataset.append(data1 / data2)
+            new_dataset.append(data1[i] / data2[i])
     return new_dataset
 
 if __name__ == "__main__":

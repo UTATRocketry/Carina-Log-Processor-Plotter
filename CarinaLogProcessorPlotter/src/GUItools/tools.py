@@ -89,8 +89,20 @@ def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEn
             append_to_log(f"Failed to run engine calculations due to {e}", "ERROR")
     return call_func3
 
-def custom_dataset_caller(func, sensors:list, operation:str):
-    pass
+def custom_dataset_caller(func, frame:CTkFrame, entry:CTkEntry):
+    def call_func4():
+        tup = frame.get()
+        if tup[0] == "" or tup[1] == "":
+            gui_error("One of your data inputs is invalid")
+            append_to_log("One of the inputs for making a new dataset was incorrect", "ERROR")
+            return
+        if entry.get() == "":
+            gui_error("Dataset Name cannot be null")
+            append_to_log("Name for new dataset cannot be null, breaking process", "ERROR")
+            return
+        else:
+            func([tup[0], tup[1]], tup[2], entry.get())
+    return call_func4
 
 def gui_error(msg: str) -> None:
     messagebox.showerror(title="Program Error", message=msg)
@@ -240,7 +252,8 @@ def get_units(name: str)->str:
         return "Mass (kg)"
     elif unit == "T" or "ISP" in name:
         return "(s)"
-    
+    return ""
+
 def get_actuation_indexes(values: list) -> list:
     res = []
     for i in range(len(values) - 1):
