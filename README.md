@@ -66,6 +66,25 @@ The Carina Log Processor and Plotter is a GUI-based application designed to read
 
 ![image](https://github.com/user-attachments/assets/3d4cf10b-61c1-46de-baae-534c9c1bbfd3)
 
+##### Custom Dataset
+   This tool is useful for creating new datasets based on already existing data. You can subtract, add, multiply, or divide data from two different sensors. Examples of uses for this are to get the pressure difference between two different sensors or to get the pressure ratio between two sensors. After running this tool you can then plot this data using the custom plot tool or the replot all tool. To use the tool follow the below steps:
+1. First choose a name for the new dataset and enter it into the "New Dataset Name:". This will be what the name is when custom plotting and in graphs.
+2. Next in the box containing dropdowns, choose your first sensor data to be used under "Data 1". Then choose the operation you want to use in the dropdown under the "Operator" title. Under the "Data 2" title, choose the second sensor data you want to be used in the calculation. Note the calculation will happen exactly as it appears in the tool and the calculation is done between each datapoint of each dataset.
+3. Once you are happy with your decision click "Create Dataset". This will create the new dataset and add it to the program's stored data frame.
+
+![image](https://github.com/user-attachments/assets/12ed018b-eb53-46c4-bd2a-7162cd07ec1d)
+
+##### Engine Calculations
+   **This tool is still under testing.** This tool is meant to do engine calculations based on thrust data collected from testing. The tool uses thrust data, and mass flow rate data from both an ox tank and fuel tank and determines the impulse, specific impulse, exhaust velocity and delta-V of the engine both instantaneous and average. It does this by doing a step-by-step calculation for each data point or an average over all points. To use this tool:
+1. First enter the wet mass of the rocket in the entry box next to "Wet Mass (kg)". This is the planned mass of the rocket fully fueled in kg. Then enter the dry mass of the rocket in the entry box next to the "Dry Mass (kg)" label. The dry mass is the planned mass of the rocket after the engine uses all its fuel. These values are very important for determining the delta-V and also for the average value calculations.
+2. Now enter the start time for the engine burn in the entry box next to the "Start Time:" label.
+3. Then enter the end time for the engine burn in the entry box next to the "End Time:" label. It is important to get the start and end times right as it removes any of the non-burn time data from the results.
+4. The last option is to choose whether you want to save the plots automatically after they are generated.  
+5. Finally click "Run" and the program will calculate the results. The plots will be generated and average results will be filed in the results window.
+
+![image](https://github.com/user-attachments/assets/a8faa875-3840-456c-ab3c-cccce2c1dd62)
+
+
 #### Secondary Pages
 
 ##### Logs
@@ -97,10 +116,7 @@ We welcome contributions to the project! If you want to add new features or make
 
 Here are some suggested updates and next steps for the project:
 
-1. **Configurations Page**: Add a button to the UI in the same box as the "Return" and "Log" buttons. This button would bring the user to a different page and this would allow them to configure certain values used in the program such as the "h" used when differentiating the mass into mass flow rate.
-2. **Improve Graph Color System**: Improve the amount of colors available for use in lines on a plot which will increase the number of lines that can be plotted at once. Also, add error handling for this. It would be nice to make the vertical asymptote for actuators a specific shade of one colour so they differ from sensor lines.
-3. **Create Ability to Deal with Thrust Data**: Be able to use the thrust from hot fire tests to calculate impulse, exhaust velocity, specific impulse, and Delta V. Maybe Add a separate frame for this
-4. **Data Operations Tool** Add frame that allows you to customly perform operation between two data sets e.g.PFM - PCC. This would produce a new dataset you could then plot.
-5. **Modularize Visuals**: Add more modularity to the UI's visuals by making chunks of it into customized objects.
-6. **Improved Error Handling**: Enhance the application to handle various error scenarios gracefully.
-7. **Performance Optimization**: Optimize the log processing and plotting to handle larger datasets efficiently. Multiprocessing may help in some scenarios. 
+1. **Improve Graph Color System**: Improve the amount of colors available for use in lines on a plot which will increase the number of lines that can be plotted at once. Also, add error handling for this. It would be nice to make the vertical asymptote for actuators a specific shade of one colour so they differ from sensor lines.
+2. **Modularize Visuals**: Add more modularity to the UI's visuals by making chunks of it into customized objects.
+3. **Improved Error Handling**: Enhance the application to handle various error scenarios gracefully.
+4. **Performance Optimization**: Optimize the log processing and plotting to handle larger datasets efficiently. Multiprocessing may help in some scenarios. 
