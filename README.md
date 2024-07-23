@@ -53,7 +53,8 @@ The Carina Log Processor and Plotter is a GUI-based application designed to read
 3. If you choose not to use actuation times for your start and end times, you can manually enter these times. As done in the previous tool enter the start time and end time in seconds into their respective entry boxes.
 4. Now you must choose what data you wish to plot. You can choose a sensor name under the "Left Axis" and "Right Axis" and you can also plot multiple sensors under the left or right axis so long as they have the same unit. You can add more or fewer sensors on one axis by clicking the plus or minus button.
 5. Next choose whether you want to add vertical asymptotes for actuation times to your plot by selecting actuators under the "Actuators" title. You can add or remove actuators by using the plus or minus buttons. Note: if you leave the left and right axis as "None" and choose an actuator it will plot the actuator as data and not a vertical asymptote.
-6. Finally, choose whether to save the plot automatically on creation. 
+6. Finally, choose whether to save the plot automatically on creation by clicking the "Yes or "No" radio buttons.
+7. Click "Create Plot" and your new custom plot will be generated. 
 ![image](https://github.com/user-attachments/assets/45ce57aa-7b98-4025-afd2-b49e90093c46)
 
 
