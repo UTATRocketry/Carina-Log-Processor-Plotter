@@ -267,8 +267,8 @@ class Carina_Log_Processor_Plotter(CTk):
         dataset_name_ent.grid(row=1, column=1, columnspan=2, padx=(0, 10), pady=10, sticky="w")
         operation = OperationSelector(master=custom_dataset_frm, sensor_df=self.sensor_df)
         operation.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
-        create_buttom = CTkButton(master=custom_dataset_frm, text="Create Dataset", font=("Arial", 16), command=tools.custom_dataset_caller(self.custom_dataset, operation, dataset_name_ent))
-        create_buttom.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
+        create_buttom = CTkButton(master=custom_dataset_frm, text="Create Dataset", font=("Arial", 16), width=200, height=40, command=tools.custom_dataset_caller(self.custom_dataset, operation, dataset_name_ent))
+        create_buttom.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
         custom_dataset_frm.grid(row=4, column=3, rowspan=2, padx=(5, 10), pady=(5, 10), sticky="nsew")
 
         export_frm = CTkFrame(master=self)
@@ -425,7 +425,7 @@ class Carina_Log_Processor_Plotter(CTk):
             if "MOT" in sensor_df.columns:
                 sensor_df["dMOT"] = processors.mass_flow_rate("dMOT", self.sensor_df, tools.get_xaxis_index(self.sensor_df["Time"], start), end)
             sensor_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_sensors_data.csv"))
-            actuator_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "actuator_sensors_data.csv"))
+            actuator_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_actuator_data.csv"))
             tools.gui_popup(f"Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")
             tools.append_to_log("Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")
         except Exception as e:

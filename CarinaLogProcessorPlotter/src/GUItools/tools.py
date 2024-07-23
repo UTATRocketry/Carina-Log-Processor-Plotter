@@ -182,6 +182,7 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
         plt.ylabel("On/Off (1 or 0)")
 
     plt.xlabel("Time (s)")
+    plt.grid()
     plt.title(name)
     fig.legend()
     fig.show()
@@ -218,6 +219,7 @@ def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "senso
                 plt.plot(time, data)
             elif type.lower() == "actuator":
                 plt.stairs(data, time)
+            plt.grid()
             plt.title(column + " vs Time Plot")
             plt.xlabel("Time (s)")
             plt.ylabel(column + " " + get_units(column))
