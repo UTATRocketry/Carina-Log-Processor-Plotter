@@ -1,18 +1,15 @@
-[T 22/07/2024 20:11:27], INFO: Program Started
-[T 22/07/2024 20:11:27], INFO: Clearing GUI Screen
-[T 22/07/2024 20:11:31], INFO: Begining data parsing in C:\Users\Brody Howard\Documents\GitHub\Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\CF-F3\raw
-[T 22/07/2024 20:11:31], INFO: Clearing GUI Screen
-[T 22/07/2024 20:11:31], INFO: Initalizing Parser
-[T 22/07/2024 20:11:31], INFO: Reading data.log
-[T 22/07/2024 20:11:31], INFO: Reading events.log
-[T 22/07/2024 20:11:31], INFO: Parsing Sensor Lines
-[T 22/07/2024 20:11:34], INFO: Parsing Actuator Lines
-[T 22/07/2024 20:11:34], INFO: Reformating Actuators Data and Converting to Dataframes
-[T 22/07/2024 20:11:34], INFO: Creating Graphs
-[T 22/07/2024 20:11:35], INFO: Generated 8 Plots
-[T 22/07/2024 20:11:36], INFO: Data Parsing and Plotting Complete
-[T 22/07/2024 20:11:36], INFO: Clearing GUI Screen
-[T 22/07/2024 20:12:04], INFO: New dataset created called PINJ, created by doing PFM + PCC
-[T 22/07/2024 20:12:18], INFO:: Created a new custom plot
-[T 22/07/2024 20:13:16], INFO:: Created a new custom plot
-[T 22/07/2024 20:13:26], INFO:: Created a new custom plot
+[T 22/07/2024 20:56:49], INFO: Program Started
+[T 22/07/2024 20:56:49], INFO: Clearing GUI Screen
+[T 22/07/2024 20:56:53], INFO: Begining data parsing in C:\Users\Brody Howard\Documents\GitHub\Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\CF-F3\raw
+[T 22/07/2024 20:56:53], INFO: Clearing GUI Screen
+[T 22/07/2024 20:56:53], INFO: Initalizing Parser
+[T 22/07/2024 20:56:53], INFO: Reading data.log
+[T 22/07/2024 20:56:53], INFO: Reading events.log
+[T 22/07/2024 20:56:53], INFO: Parsing Sensor Lines
+[T 22/07/2024 20:56:57], INFO: Parsing Actuator Lines
+[T 22/07/2024 20:56:57], INFO: Reformating Actuators Data and Converting to Dataframes
+[T 22/07/2024 20:56:57], INFO: Creating Graphs
+[T 22/07/2024 20:56:58], INFO: Generated 8 Plots
+[T 22/07/2024 20:56:59], INFO: Data Parsing and Plotting Complete
+[T 22/07/2024 20:56:59], INFO: Clearing GUI Screen
+[T 22/07/2024 20:57:44], INFO:: Created a new custom plot

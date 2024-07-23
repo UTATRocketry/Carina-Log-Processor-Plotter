@@ -159,7 +159,7 @@ class Carina_Log_Processor_Plotter(CTk):
         save_frm.grid(row=3, column=0, columnspan=2, pady=10, padx=10)
         replot_btn = CTkButton(master=replot_frm, text="Replot", width=140, font=("Arial", 18), anchor="center", command=tools.replot_caller(self.plot_all, start_time_ent, end_time_ent, save))
         replot_btn.grid(row=5, column=0, columnspan=2, pady=20, padx=10)
-        replot_frm.grid(row=1, column=0, padx=(10, 5), pady=(5, 10), rowspan=3, sticky="nsew")
+        replot_frm.grid(row=1, column=0, padx=(10, 5), pady=(5, 10), rowspan=2, sticky="nsew")
         
         self.get_sensor_options()
         custom_plot_frm = CTkFrame(master=self)
@@ -262,9 +262,9 @@ class Carina_Log_Processor_Plotter(CTk):
         dataset_lbl = CTkLabel(master=custom_dataset_frm, text="Make Custom Dataset", font=("Arial", 22))
         dataset_lbl.grid(row=0, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
         dataset_name_lbl = CTkLabel(master=custom_dataset_frm, text="New Dataset Name: ", font=("Arial", 16))
-        dataset_name_lbl.grid(row=1, column=0, padx=(10, 1), pady=10, sticky="ew")
-        dataset_name_ent = CTkEntry(master=custom_dataset_frm, font=("Arial", 18), width=100)
-        dataset_name_ent.grid(row=1, column=1, columnspan=2, padx=(0, 10), pady=10, sticky="ew")
+        dataset_name_lbl.grid(row=1, column=0, padx=(10, 0), pady=10, sticky="ew")
+        dataset_name_ent = CTkEntry(master=custom_dataset_frm, font=("Arial", 16), width=150)
+        dataset_name_ent.grid(row=1, column=1, columnspan=2, padx=(0, 10), pady=10, sticky="w")
         operation = OperationSelector(master=custom_dataset_frm, sensor_df=self.sensor_df)
         operation.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
         create_buttom = CTkButton(master=custom_dataset_frm, text="Create Dataset", font=("Arial", 16), command=tools.custom_dataset_caller(self.custom_dataset, operation, dataset_name_ent))
@@ -286,19 +286,18 @@ class Carina_Log_Processor_Plotter(CTk):
         export_end_lbl.grid(row=1, column=2, padx=(5, 1), pady=10, sticky="ew")
         export_end_ent.grid(row=1, column=3, padx=(1, 10), pady=10, sticky="ew")
         export_btn.grid(row=2, column=1, columnspan=2, padx=10, pady=10, sticky="ew")
-        export_frm.grid(row=4, column=0, padx=(10, 5), pady=(5, 10), sticky="nsew")
+        export_frm.grid(row=3, column=0, rowspan=2, padx=(10, 5), pady=(5, 10), sticky="nsew")
 
         buttons_frm = CTkFrame(master=self)
         buttons_frm.grid_rowconfigure((0, 1), weight=1)
         buttons_frm.grid_columnconfigure((0, 1), weight=1)
-        back_btn = CTkButton(master=buttons_frm, text="Return to Menu", font=("Arial", 16), anchor="center", command=self.boot_screen)
-        back_btn.grid(row=1, column=0, columnspan=2, pady=(10, 20), padx=10, sticky="ew")
-        log_btn = CTkButton(master=buttons_frm, text="Logs", font=("Arial", 16), anchor="center", command=self.logs_screen)
-        log_btn.grid(row=0, column=0, pady=(20, 5), padx=(10, 7), sticky="ew")
-        configuration_btn = CTkButton(master=buttons_frm, text="Settings", font=("Arial", 16), anchor="center", command=self.configuration_screen) # Change this
-        configuration_btn.grid(row=0, column=1, pady=(20, 5), padx=(7, 10), sticky="ew")
-        buttons_frm.grid(row=5, column=0, padx=5, pady=(0, 10), sticky="ew")
-        self.update() # why ???
+        back_btn = CTkButton(master=buttons_frm, text="Return to Menu", font=("Arial", 16), anchor="center", height=50, width=180, command=self.boot_screen)
+        back_btn.grid(row=1, column=0, columnspan=2, pady=(0, 10), padx=10)
+        log_btn = CTkButton(master=buttons_frm, text="Logs", font=("Arial", 16), anchor="center", height=35, command=self.logs_screen)
+        log_btn.grid(row=0, column=0, pady=(20, 0), padx=(10, 7))
+        configuration_btn = CTkButton(master=buttons_frm, text="Settings", font=("Arial", 16), anchor="center", height=35, command=self.configuration_screen) # Change this
+        configuration_btn.grid(row=0, column=1, pady=(20, 0), padx=(7, 10))
+        buttons_frm.grid(row=5, column=0, padx=(10, 5), pady=(5, 10), sticky="nsew")
         
     def configuration_screen(self):
         window = CTkToplevel()
