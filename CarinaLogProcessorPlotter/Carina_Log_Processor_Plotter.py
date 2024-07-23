@@ -5,7 +5,7 @@ from datetime import datetime
 from src.carina_parser import parser 
 from src.GUItools import tools
 from src.GUItools import processors
-from src.GUItools.guiClasses import OptionsColumn, ActuatorTimeDropdown
+from src.GUItools.guiClasses import OptionsColumn, ActuatorTimeDropdown, OperationSelector
 
 class Carina_Log_Processor_Plotter(CTk):
     def __init__(self, Title: str) -> None:
@@ -173,12 +173,12 @@ class Carina_Log_Processor_Plotter(CTk):
         custom_title_ent.grid(row=1, column=1, columnspan=3, padx=(0, 10), pady=10, sticky="ew")
         start_lbl = CTkLabel(master=custom_plot_frm, text="Start Time:", font=("Arial", 16))
         start_lbl.grid(row=3, column=0, pady=10, padx=(10, 0), sticky="ew")
-        start_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=60)
-        start_ent.grid(row=3, column=1, pady=10, padx=(0, 10), sticky="ew")
+        start_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=200)
+        start_ent.grid(row=3, column=1, pady=10, padx=(0, 5), sticky = "w")
         end_lbl = CTkLabel(master=custom_plot_frm, text="End Time:", font=("Arial", 16))
-        end_lbl.grid(row=3, column=2, pady=10, padx=(10, 0), sticky="ew")
-        end_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=60)
-        end_ent.grid(row=3, column=3, pady=10, padx=(0, 10), sticky="ew")
+        end_lbl.grid(row=3, column=2, pady=10, padx=(5, 0), sticky="w")
+        end_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=200)
+        end_ent.grid(row=3, column=3, pady=10, padx=(0, 10), sticky = "w")
         actuator_frame = ActuatorTimeDropdown(master=custom_plot_frm, actuator_df=self.actuator_df, entry_boxes=[start_ent, end_ent], text="Actuator Timelines: ")
         actuator_frame.grid(row=2, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
         choices_frm = CTkFrame(master=custom_plot_frm)
@@ -189,16 +189,16 @@ class Carina_Log_Processor_Plotter(CTk):
         independent_opt = CTkOptionMenu(master=choices_frm, font=("Arial", 14), values=["Time"], anchor="center")
         left_axis_lbl = CTkLabel(master=choices_frm, text="Left Axis", font=("Arial", 14))
         right_axis_lbl = CTkLabel(master=choices_frm, text="Right Axis", font=("Arial", 14))
-        left_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_options)
-        right_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_options)
+        self.left_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_options)
+        self.right_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_options)
         actuators_options = OptionsColumn(master=choices_frm, values=self.actuator_df.columns.to_list()[1:], ctype="A")
         independent_lbl.grid(row=0, column=0, padx=(10, 0), pady=10, sticky="ew")
         actuator_lbl.grid(row=0, column=3, padx=(10, 0), pady=10, sticky="ew")
         independent_opt.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
         left_axis_lbl.grid(row=0, column=1, padx=(10, 0), pady=10, sticky="ew")
         right_axis_lbl.grid(row=0, column=2, padx=(10, 0), pady=10, sticky="ew")
-        left_axis_options.grid(row=1, column=1, padx=10, pady=10, sticky ="nsew")
-        right_axis_options.grid(row=1, column=2, padx=10, pady=10, sticky ="nsew")
+        self.left_axis_options.grid(row=1, column=1, padx=10, pady=10, sticky ="nsew")
+        self.right_axis_options.grid(row=1, column=2, padx=10, pady=10, sticky ="nsew")
         actuators_options.grid(row=1, column=3, rowspan=2, padx=10, pady=10, sticky ="nsew")
         choices_frm.grid(row=4, column=0, columnspan=4, padx = 10, pady=10, stick="nsew")
         save2_frm = CTkFrame(master=custom_plot_frm)
@@ -212,8 +212,8 @@ class Carina_Log_Processor_Plotter(CTk):
         save2_rdbtn.grid(row=0, column=1, padx=(30, 0), pady=(10, 10), sticky="nsew")
         nosave2_rdbtn.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
         save2_frm.grid(row=5, column=0, columnspan=4, pady=10, padx=10)
-        custom_plot_btn = CTkButton(master=custom_plot_frm, text="Create Plot", font=("Arial", 18), command=tools.custom_plot_caller(self.custom_plot, (start_ent, end_ent), (left_axis_options, right_axis_options, actuators_options), save2, custom_title_ent)) # change command
-        custom_plot_btn.grid(row=6, column=1, columnspan=2, pady=(25, 20), sticky="ew")
+        custom_plot_btn = CTkButton(master=custom_plot_frm, text="Create Plot", font=("Arial", 18), command=tools.custom_plot_caller(self.custom_plot, (start_ent, end_ent), (self.left_axis_options, self.right_axis_options, actuators_options), save2, custom_title_ent)) # change command
+        custom_plot_btn.grid(row=6, column=1, columnspan=2, padx=(60, 10), pady=(10, 10), sticky="ew")
         custom_plot_frm.grid(row=1, column=1, padx=5, pady=(5, 10), rowspan=5, columnspan=2, sticky="nsew")
 
         engine_calc_frm = CTkFrame(master=self)
@@ -256,7 +256,20 @@ class Carina_Log_Processor_Plotter(CTk):
         run_btn.grid(row=4, column=1, columnspan=2, padx=(5,15), pady=10, sticky="ew")
         engine_calc_frm.grid(row=1, column=3, rowspan=3, padx=(5, 10), pady=(5, 10), sticky="nsew")
 
-        #custom_dataset_frm = CTkFrame()
+        custom_dataset_frm = CTkFrame(master=self)
+        custom_dataset_frm.grid_columnconfigure((0, 1, 2), weight=1)
+        custom_dataset_frm.grid_rowconfigure((0, 1, 2, 3), weight=1)
+        dataset_lbl = CTkLabel(master=custom_dataset_frm, text="Make Custom Dataset", font=("Arial", 22))
+        dataset_lbl.grid(row=0, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
+        dataset_name_lbl = CTkLabel(master=custom_dataset_frm, text="New Dataset Name: ", font=("Arial", 16))
+        dataset_name_lbl.grid(row=1, column=0, padx=(10, 1), pady=10, sticky="ew")
+        dataset_name_ent = CTkEntry(master=custom_dataset_frm, font=("Arial", 18), width=100)
+        dataset_name_ent.grid(row=1, column=1, columnspan=2, padx=(0, 10), pady=10, sticky="ew")
+        operation = OperationSelector(master=custom_dataset_frm, sensor_df=self.sensor_df)
+        operation.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
+        create_buttom = CTkButton(master=custom_dataset_frm, text="Create Dataset", font=("Arial", 16), command=tools.custom_dataset_caller(self.custom_dataset, operation, dataset_name_ent))
+        create_buttom.grid(row=3, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
+        custom_dataset_frm.grid(row=4, column=3, rowspan=2, padx=(5, 10), pady=(5, 10), sticky="nsew")
 
         export_frm = CTkFrame(master=self)
         export_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
@@ -368,6 +381,18 @@ class Carina_Log_Processor_Plotter(CTk):
             tools.gui_error("Cannot run engine calculations as you are missing either MFT or MOT or both.")
             tools.append_to_log("Unable to run engine calculations as required sensor data is missing", "ERROR")
 
+    def custom_dataset(self, sensors:list, operator:str, name:str):
+        new_dataset = processors.custom_dataset(sensors[0], sensors[1], self.sensor_df, operator)
+        self.sensor_df[name] = new_dataset
+        self.sensor_options = self.sensor_df.columns.to_list()[1:]
+        if "MFT" in self.sensor_options:
+            self.sensor_options.append("dMFT")
+        if "MOT" in self.sensor_options:
+            self.sensor_options.append("dMOT")
+        self.left_axis_options.update_values(self.sensor_options)
+        self.right_axis_options.update_values(self.sensor_options)
+        tools.append_to_log(f"New dataset created called {name}, created by doing {sensors[0]} {operator} {sensors[1]}")
+        
 
     def switch_visual_mode(self):
         if get_appearance_mode() == "Dark":
