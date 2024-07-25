@@ -124,10 +124,3 @@ def custom_dataset(sensor1: str, sensor2: str, dataframe: pd.DataFrame, opt: str
         elif opt == "/":
             new_dataset.append(data1[i] / data2[i])
     return new_dataset
-
-if __name__ == "__main__":
-    set_parameters(1000, 1000)
-    y = [2, 2, 6, 20]
-    x = [0, 1, 2, 3]
-    print(trapezoid_integration(y, x))
-    print(simpson(y, x, 1))

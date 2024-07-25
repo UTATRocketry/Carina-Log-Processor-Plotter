@@ -172,9 +172,4 @@ def dataframe_format(sensors: dict, actuators: dict):
 
     return sensor_df, actuator_df
 
-if __name__ == "__main__":
-    init("CF-F2")
-    sensors, actuators = parse_from_raw()
-    sensors, actuators = dataframe_format(sensors, actuators)
-    print(sensors['Time'][0:10])
 

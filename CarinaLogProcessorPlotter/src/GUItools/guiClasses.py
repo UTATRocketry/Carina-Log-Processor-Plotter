@@ -5,9 +5,11 @@ from pandas import DataFrame
 import tkinter as tk
 
 class OptionsColumn(CTkFrame):
+    # This object is used for the sensor and actuator dropdown used in the cusotm plot tool but could be used in other tools. It allows fro multiple dropdowns to be added in a column. Would have to chnage available options function for other purposes.
     def __init__(self, *args, master: Any, values: list = [], addcommand = None, removecommmand = None, ctype: str = "S", padx:int = 0, pady:int = 0, font:tuple = ("Arial", 14), **kwargs)->None:
-        super().__init__(*args, master=master, **kwargs)
+        super().__init__(*args, master=master, **kwargs) # Intializes frame tkinter object
 
+        # Sets object variables bases off inputted parameters and set sup frame grid
         self.num_boxes = 2
         self.values = values
         self.padx = padx
@@ -16,6 +18,7 @@ class OptionsColumn(CTkFrame):
         self.type = ctype
         self.grid_columnconfigure((0, 1), weight=1)
         self.grid_rowconfigure(self.get_row_tuple(), weight=1)
+        # Sets up commands for buttons if they are provided
         if addcommand is None:
             self.addcommand = self.add_option
         else:
@@ -25,6 +28,7 @@ class OptionsColumn(CTkFrame):
         else:
             self.removecommand = removecommmand
 
+        # Sets up frame visuals 
         opt = CTkOptionMenu(self, font=self.font, values=["None"] + self.values, anchor="center", command=self.update_boxes)
         opt.grid(row=0, column=0, columnspan=2, padx=10, pady=10, sticky = "ew")
         self.option_boxes = [opt]
@@ -33,7 +37,8 @@ class OptionsColumn(CTkFrame):
         self.removebutton = CTkButton(master=self, text="-", font=self.font, width = 30, fg_color="darkred", hover_color="red", command=self.removecommand)
         self.removebutton.grid(row=1, column=1, padx=5, pady=5, sticky="ew")
 
-    def add_option(self)->None:
+    def add_option(self)->None: # Defualt funciton to add new dropdown to column
+        # checks that there is not more dropdown boxes then options to choose from and available choices is also larger then number of dropdowns. 
         if self.option_boxes[self.num_boxes - 2].get() != "None" and len(self.available_choices()) > 1:
             new_opt = CTkOptionMenu(self, font=self.font, values=self.available_choices(), anchor="center")
             new_opt.grid(row=self.num_boxes - 1, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
@@ -44,7 +49,8 @@ class OptionsColumn(CTkFrame):
             self.removebutton.grid(row=self.num_boxes - 1, column=1, padx=5, pady=5, sticky="ew")
             self.update()
 
-    def remove_option(self)->None:
+    def remove_option(self)->None: # Function to remove dropdown from the column
+        #Chekcs if there is more then one dropdown before removing a dropdown
         if len(self.option_boxes) > 1:
             last_box = self.option_boxes.pop()
             last_box.destroy()
@@ -54,13 +60,13 @@ class OptionsColumn(CTkFrame):
             self.removebutton.grid(row=self.num_boxes - 1, column=1, padx=5, pady=5, sticky="ew")
             self.update()
 
-    def get_row_tuple(self)->tuple:
+    def get_row_tuple(self)->tuple: # gets tpple to be used in the frame column grid
         res = ()
         for i in range(self.num_boxes):
             res = (*res, i)
         return res
     
-    def available_choices(self)->list:
+    def available_choices(self)->list: # gets available choices for dropdowns based on first drop boxes selection. This needs to be different if you use this object for a different purpose
         res = ["None"]
         already_chosen = [name.get() for name in self.option_boxes]
         if self.type == "S":
@@ -75,19 +81,19 @@ class OptionsColumn(CTkFrame):
                 if name not in already_chosen: res.append(name)
         return res
     
-    def update_values(self, new_values:list)->None:
+    def update_values(self, new_values:list)->None: # Updates the base values which the user can choose from
         self.values = new_values
         self.option_boxes[0].configure(values= ["None"] + new_values)
         self.update_boxes(self.option_boxes[0].get())
 
-    def update_boxes(self, choice)->None:
+    def update_boxes(self, choice)->None: #Updates the dropdown optiosn of all the dropdowns. Lets the first one have any option and thne filters for the rothers
         self.option_boxes[0].set(choice)
         if len(self.option_boxes) > 1:
             for box in self.option_boxes[1:]:
                 box.configure(values=self.available_choices())
                 box.set("None")
                 
-    def selections(self)->list:
+    def selections(self)->list: # This returns a list of al the dropdown boxes current selection. Used outside of object by other functions. 
         selection = []
         for box in self.option_boxes:
             if box.get() != "None": 
@@ -157,7 +163,7 @@ class ActuatorTimeDropdown(CTkFrame):
             if i + 1 < len(self.actuation_times[self.actuator_opt.get()]):
                 self.entry_boxes[1].insert(0, self.actuation_times[self.actuator_opt.get()][i + 1].split("s ")[0])
 
-class OperationSelector(CTkFrame):
+class OperationSelector(CTkFrame): 
     def __init__(self, *args, master: Any, sensor_df:DataFrame, padx:int = 0, pady:int = 0, font:tuple = ("Arial", 16), **kwargs)->None:
         super().__init__(*args, master=master, **kwargs)
 
@@ -219,7 +225,7 @@ class OperationSelector(CTkFrame):
     def get(self):
         return (self.opt1.get(), self.opt2.get(), self.operator.get())
 
-class OptionsBar(CTkFrame):
+class OptionsBar(CTkFrame): # Allows to make a row of dropdown selections and add more or less. 
     def __init__(self, *args, master: Any, titles: list = [], choices: list = [], addcommand = None, removecommmand = None, padx:int = 0, pady:int = 0, font:tuple = ("Arial", 16), **kwargs)->None:
         super().__init__(*args, master=master, **kwargs)
 

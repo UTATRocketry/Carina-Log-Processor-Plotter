@@ -9,6 +9,8 @@ from datetime import datetime
 
 
 def textbox_caller(func, text_box: CTkEntry, save: IntVar):
+    '''This function is used by the start screen button and takes the entry box to get the folder name. 
+    It then cals the function with the folder name parameter andf wehther to save th eplot or not'''
     def call_func():
         text = text_box.get()
         folder = os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", text, "raw")
@@ -45,26 +47,26 @@ def replot_caller(func, start_box: CTkEntry, end_box: CTkEntry, save: IntVar):
 
 def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, save: IntVar, plot_name: CTkEntry): 
     def call_func2():
-        #try:
-        choices = (options[0].selections(), options[1].selections(), options[2].selections())
-        name = plot_name.get() if plot_name.get() != "" else None
-        start = times[0].get()
-        end = times[1].get()
-        if start == "" and end == "":
-            func(choices, save=save.get(), plot_name=name)
-        elif start == "":
-            func(choices, end=float(end), save=save.get(), plot_name=name)
-        elif end == "":
-            func(choices, start=float(start), save=save.get(), plot_name=name)
-        else:
-            if start > end:
-                gui_error("End cannot be less then Start")
-                append_to_log(f"Failed to create custom graph as start time was greater then end time (start:{start}, end:{end})", "ERROR")
-                return
-            func(choices, float(start), float(end), save.get(), plot_name=name)
-        #except Exception as e:
-            #gui_error("Invalid Start or End value")
-            #append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
+        try:
+            choices = (options[0].selections(), options[1].selections(), options[2].selections())
+            name = plot_name.get() if plot_name.get() != "" else None
+            start = times[0].get()
+            end = times[1].get()
+            if start == "" and end == "":
+                func(choices, save=save.get(), plot_name=name)
+            elif start == "":
+                func(choices, end=float(end), save=save.get(), plot_name=name)
+            elif end == "":
+                func(choices, start=float(start), save=save.get(), plot_name=name)
+            else:
+                if start > end:
+                    gui_error("End cannot be less then Start")
+                    append_to_log(f"Failed to create custom graph as start time was greater then end time (start:{start}, end:{end})", "ERROR")
+                    return
+                func(choices, float(start), float(end), save.get(), plot_name=name)
+        except Exception as e:
+            gui_error("Invalid Start or End value")
+            append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
     return call_func2
 
 def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEntry, CTkEntry], save: IntVar, text_box: CTkTextbox):
@@ -105,19 +107,22 @@ def custom_dataset_caller(func, frame:CTkFrame, entry:CTkEntry):
     return call_func4
 
 def gui_error(msg: str) -> None:
+    '''Causes error pop up window with the provided message'''
     messagebox.showerror(title="Program Error", message=msg)
     append_to_log(msg, "ERROR")
 
 def gui_popup(msg:str) -> None:
+    '''Creates window pop up with given message'''
     messagebox.showinfo(title="Program Info", message=msg)
     append_to_log(msg)
 
 def clear_gui(window: CTk) -> None:
+    '''Clears the entire window provided of all visual elements'''
     for child in window.children.copy():
         window.children[child].destroy() 
     append_to_log("Clearing GUI Screen", "INFO") 
 
-#add error handeling for colors array, in general improve color handeling fr lines
+
 def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, actuators:list, save:int = 0, plot_name = None) -> None: 
     if not os.path.exists(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots")):
         os.mkdir(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots"))
@@ -188,11 +193,17 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
     fig.show()
 
     if save == 1:
-        fig.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{name} {t.strftime('%Hh%Mm%Ss', t.gmtime(time[0]))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(time[-1]))}.jpg"))
+        fig.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{name} {t.strftime('%Hh%Mm%Ss', t.gmtime(time[0]))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(time[-1]))}.jpg"), dpi=fig.dpi)
 
 def max_min_check(prev_min: float, prev_max: float, data: list)->tuple:
-    cur_max = max(data)
-    cur_min = min(data)
+    '''returns maximum and minimum value of a dataset and compares it to old maximums and minimums provided and returns whatever is lowest'''
+    cur_max = -1000
+    cur_min = 1000
+    for value in data:
+        if value > cur_max:
+            cur_max = value
+        if value < cur_min:
+            cur_min = value
     res1, res2 = prev_min, prev_max
     if cur_max > prev_max:
         res2 = cur_max
@@ -225,9 +236,10 @@ def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "senso
             plt.ylabel(column + " " + get_units(column))
             p.show() 
             if save == 1:
-                p.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{column} vs Time Plot T[{t.strftime('%Hh%Mm%Ss', t.gmtime(start_time))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(end_time))}].jpg"))
+                p.savefig(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots", f"{column} vs Time Plot T[{t.strftime('%Hh%Mm%Ss', t.gmtime(start_time))};T{t.strftime('%Hh%Mm%Ss', t.gmtime(end_time))}].jpg"), dpi=p.dpi)
 
 def get_xaxis_index(xaxis: list, given_time) -> int:
+    '''Returns index of the closest value in a dataset to the provided value'''
     if given_time == 0:
         return given_time
     elif given_time is None:
@@ -241,6 +253,7 @@ def get_xaxis_index(xaxis: list, given_time) -> int:
     return i
             
 def get_units(name: str)->str:
+    '''Returns a string representing units based off the name of the data sensor provided'''
     unit = name[0]
     if "BV" in name or "SV" in name or unit == "E":
         return "On/Off"
@@ -257,6 +270,7 @@ def get_units(name: str)->str:
     return ""
 
 def get_actuation_indexes(values: list) -> list:
+    '''Returns a list of all the indexes at which an actuator swtiches from on to of or vice versa'''
     res = []
     for i in range(len(values) - 1):
         if values[i] > values[i+1]:
@@ -266,6 +280,7 @@ def get_actuation_indexes(values: list) -> list:
     return res
             
 def append_to_log(msg: str, mode: str = 'INFO') -> None:
+    '''Function to append a message to the program.log file based on th emessage and message type (mode). '''
     try:
         with open("program.log", "a") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], {mode}: {msg}\n')

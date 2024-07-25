@@ -9,22 +9,27 @@ from src.GUItools.guiClasses import OptionsColumn, ActuatorTimeDropdown, Operati
 
 class Carina_Log_Processor_Plotter(CTk):
     def __init__(self, Title: str) -> None:
-        super().__init__()
-        self.queue = Queue()
+        super().__init__() # Initializes Window object of Tkinter
+        self.queue = Queue() # Queue for use in multiprocessing
+        # The next object variables for proccessing functions which numerically integrate and differenciate
         self.diff_hs_size = 900
         self.int_type = "Simpson"
         self.int_step_size = 100
+        # Create new program log and append first entry
         with open("program.log", "w") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], INFO: Program Started\n')
             file.close()
-        set_appearance_mode("dark")
-        set_default_color_theme("blue")
-        self.title(Title)
-        self.boot_screen()
-        self.mainloop()
+        # Sets visual mode to dark as default and to blue
+        set_appearance_mode("dark") 
+        set_default_color_theme("blue") 
+        self.title(Title) # Title of aplication which is provided when initializing object
+        self.boot_screen() # call first screen 
+        self.mainloop() # runs tkinter loop
         
-    def boot_screen(self) -> None:
+    def boot_screen(self) -> None: # First sceen user sees and allows them to choose the folder
+        # Clears screen
         tools.clear_gui(self)
+        # Sets up all the screen elements
         boot_frm = CTkFrame(master=self)
         greeting_lbl = CTkLabel(master=boot_frm, text="Welcome to the Carina Data Plotter", text_color="lightblue", font=("Arial", 30))
         prompt_frm = CTkFrame(master=boot_frm)
@@ -51,8 +56,10 @@ class Carina_Log_Processor_Plotter(CTk):
         start_program_btn.pack(pady=20)
         boot_frm.pack(pady=20, padx=30, fill="both", expand=True)
 
-    def loading_screen(self, folder_name: str, save: int) -> None:
+    def loading_screen(self, folder_name: str, save: int) -> None: # Loading window which pops up when users start program and while program processes data
+        # Clears screen
         tools.clear_gui(self)
+        # Sets up window visuals
         self.folder_name = folder_name
         messages = ["Initalizing Parser", "Reading data.log", "Reading events.log", "Parsing Sensor Lines", "Parsing Actuator Lines", "Reformating Actuators Data and Converting to Dataframes", "Creating Graphs", "Complete"]
         loading_frm = CTkFrame(master=self)
@@ -65,7 +72,9 @@ class Carina_Log_Processor_Plotter(CTk):
         info_lbl.pack(pady=5, padx=5)
         loading_frm.pack(padx=20, pady=30)
         self.update()
+        # starts thread so visuals can still update while the program proccesses the data in the backgrounf
         start_new_thread(self.data_processor, (folder_name, ))
+        # loop to update progress bar
         progress = 0
         while progress < 0.85:
             val = self.queue.get()
@@ -74,36 +83,42 @@ class Carina_Log_Processor_Plotter(CTk):
             info_lbl.configure(text=messages[val])
             tools.append_to_log(messages[val], "INFO")
             self.update()
-        self.plot_all(save=save)
         progress_bar.set(1)
         info_lbl.configure(text=messages[7])
         self.update()
+        # Once data processing done, plpot all and add to log
+        self.plot_all(save=save)
         tools.append_to_log(f"Data Parsing and Plotting Complete", "INFO")
-        self.data_screen()
+        self.data_screen() # go to main tool screen
 
-    def data_processor(self, folder_name: str) -> None:
+    def data_processor(self, folder_name: str) -> None: # This function handles processing the carina logs 
+        # constantly pushes number to queue so the threaded funcitons can communicate and so the progres sbar can be updated
         self.queue.put(0)
-        parser.init(folder_name)
+        parser.init(folder_name) # intializes globals in parser file
         self.queue.put(1)
+        # gets sensor and actuator lists using parser function
         sensors, actuators = parser.parse_from_raw(self.queue)
         self.queue.put(5)
+        # converts sensor and actuator lists to pandas dataframe
         self.sensor_df, self.actuator_df = parser.dataframe_format(sensors, actuators)
         self.queue.put(6)
-        return
+        return # breaks out of thread
     
-    def plot_all(self, start_time = 0, end_time = None, save: int = 0) -> None:
+    def plot_all(self, start_time = 0, end_time = None, save: int = 0) -> None: # Responsible for plotting all the actuators and sensors in the datarframes, then logs it 
         tools.generate_plots(self.folder_name, self.sensor_df, "sensor", start_time, end_time, save)
         tools.generate_plots(self.folder_name, self.actuator_df, "actuator", start_time, end_time, save)
         tools.append_to_log(f'Generated {len(self.sensor_df.columns) + len(self.actuator_df.columns) - 2} Plots', "INFO")
 
-    def custom_plot(self, options: list[list, list, list], start = 0, end = None, save:int = 0, plot_name = None):
-        time = self.sensor_df["Time"].tolist()
+    def custom_plot(self, options: list[list, list, list], start = 0, end = None, save:int = 0, plot_name = None): # Used to create a singular cusotmized plot, and logs it
+        # Gets time xaxis and the start and end indexes
+        time = self.sensor_df["Time"].tolist() 
         start = tools.get_xaxis_index(time, start)
         end = tools.get_xaxis_index(time, end)
+        # gets the y_data for the left an right axis and using sensor name and also get's masss flow rate if that is what was requested
         left_axis = []
         for sensor in options[0]: 
             if sensor[0] == "d":
-                mass_flow = processors.mass_flow_rate(sensor, self.sensor_df, start, end)
+                mass_flow = processors.mass_flow_rate(sensor, self.sensor_df, start, end) # Makes call to processor file to get mas flow rate
                 left_axis.append((sensor, mass_flow))
             else:
                 left_axis.append((sensor, self.sensor_df[sensor].tolist()[start:end])) 
@@ -114,17 +129,21 @@ class Carina_Log_Processor_Plotter(CTk):
                 right_axis.append((sensor, mass_flow))
             else:
                 right_axis.append((sensor, self.sensor_df[sensor].tolist()[start:end]))
+        # gets actuators y_data from dataframe using the actuator name 
         actuators = []
         for actuator in options[2]:
             actuators.append((actuator, self.actuator_df[actuator].tolist()[start:end]))
         time = time[start:end]
+        # makes plot by calling single plot function
         tools.single_plot(self.folder_name, time, left_axis, right_axis, actuators, save, plot_name)
         tools.append_to_log("Created a new custom plot", "INFO:")      
             
-    def data_screen(self) -> None:
+    def data_screen(self) -> None: # Creates the main tool screen
+        # Clears screen and set processor file global variables
         tools.clear_gui(self)
         processors.set_parameters(self.diff_hs_size, self.int_type, self.int_step_size)
 
+        # Makes grid for page and sets title
         self.grid_columnconfigure((0, 1, 2, 4), weight=1)
         self.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
         title_frm = CTkFrame(master=self)
@@ -133,6 +152,7 @@ class Carina_Log_Processor_Plotter(CTk):
         title_lbl.grid(row = 0, column = 0, pady=30, columnspan=2, sticky="ew")
         title_frm.grid(row = 0, column = 0, padx=10, pady=5, columnspan=4, sticky="nsew")
   
+        # creates visuals for replot all tool
         replot_frm = CTkFrame(master=self)
         replot_frm.grid_columnconfigure((0, 1), weight=1)
         replot_frm.grid_rowconfigure((0, 1, 2, 3, 4), weight=1)
@@ -161,7 +181,8 @@ class Carina_Log_Processor_Plotter(CTk):
         replot_btn.grid(row=5, column=0, columnspan=2, pady=20, padx=10)
         replot_frm.grid(row=1, column=0, padx=(10, 5), pady=(5, 10), rowspan=2, sticky="nsew")
         
-        self.get_sensor_options()
+        # Sets up visuals for cusotm plot tool
+        self.get_sensor_options() # Gets options for sensors based on dataframe
         custom_plot_frm = CTkFrame(master=self)
         custom_plot_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
         custom_plot_frm.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
@@ -216,6 +237,7 @@ class Carina_Log_Processor_Plotter(CTk):
         custom_plot_btn.grid(row=6, column=1, columnspan=2, padx=(60, 10), pady=(10, 10), sticky="ew")
         custom_plot_frm.grid(row=1, column=1, padx=5, pady=(5, 10), rowspan=5, columnspan=2, sticky="nsew")
 
+        # Sets up engine calculations tool visuals
         engine_calc_frm = CTkFrame(master=self)
         engine_calc_frm.grid_rowconfigure((0, 1, 2, 3, 4, 5, 6), weight=1)
         engine_calc_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
@@ -256,6 +278,7 @@ class Carina_Log_Processor_Plotter(CTk):
         run_btn.grid(row=4, column=1, columnspan=2, padx=(5,15), pady=10, sticky="ew")
         engine_calc_frm.grid(row=1, column=3, rowspan=3, padx=(5, 10), pady=(5, 10), sticky="nsew")
 
+        # Sets up the visuals for the custom dataset creation tool
         custom_dataset_frm = CTkFrame(master=self)
         custom_dataset_frm.grid_columnconfigure((0, 1, 2), weight=1)
         custom_dataset_frm.grid_rowconfigure((0, 1, 2, 3), weight=1)
@@ -271,6 +294,7 @@ class Carina_Log_Processor_Plotter(CTk):
         create_buttom.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
         custom_dataset_frm.grid(row=4, column=3, rowspan=2, padx=(5, 10), pady=(5, 10), sticky="nsew")
 
+        # Sets up visuals for the export parsed data tool
         export_frm = CTkFrame(master=self)
         export_frm.grid_columnconfigure((0, 1, 2, 3), weight=1)
         export_frm.grid_rowconfigure((0, 1, 2), weight=1)
@@ -288,6 +312,7 @@ class Carina_Log_Processor_Plotter(CTk):
         export_btn.grid(row=2, column=1, columnspan=2, padx=10, pady=10, sticky="ew")
         export_frm.grid(row=3, column=0, rowspan=2, padx=(10, 5), pady=(5, 10), sticky="nsew")
 
+        # Sets up visuals for the return to main menu buttons and the log and settings buttons to bring users to new windows. 
         buttons_frm = CTkFrame(master=self)
         buttons_frm.grid_rowconfigure((0, 1), weight=1)
         buttons_frm.grid_columnconfigure((0, 1), weight=1)
@@ -299,12 +324,15 @@ class Carina_Log_Processor_Plotter(CTk):
         configuration_btn.grid(row=0, column=1, pady=(20, 0), padx=(7, 10))
         buttons_frm.grid(row=5, column=0, padx=(10, 5), pady=(5, 10), sticky="nsew")
         
-    def configuration_screen(self):
+    def configuration_screen(self)->None: # Settings window for user to edit the program settings
+        # Creates new window and set's title
         window = CTkToplevel()
         window.title("Settings")
 
+        # Sets up grid for the window
         window.grid_columnconfigure((0, 1), weight=1)
         window.grid_rowconfigure((0, 1, 2, 3, 4, 5), weight=1)
+        # Sets up the visuals for the window 
         configurations_lbl = CTkLabel(master=window, text="Settings", font=("Arial", 22))
         configurations_lbl.grid(row=0, column=0, columnspan=2, padx=10, pady=(20, 10), sticky="ew")
         diff_step_size_lbl = CTkLabel(master=window, text="Differenciation Half Step Size:", font=("Arial", 16))
@@ -325,83 +353,101 @@ class Carina_Log_Processor_Plotter(CTk):
         save_btn = CTkButton(master=window, text="Save Changes", font=("Arial", 16), anchor="center", command=lambda: self.config(diff_step_size_ent.get(), int_type_opt.get(), int_step_size_ent.get()))
         save_btn.grid(row=5, column=0, columnspan=2, padx=10, pady=10, sticky="ew")
 
-    def logs_screen(self):
+    def logs_screen(self)->None: # Sets up logs window which shows program log
+        # Sets up window and gives it a title
         window = CTkToplevel()
         window.title("Program Logs")
+        # Creates visuals for the logs window
         logs_lbl = CTkLabel(master=window, text="Program Log", font=("Arial", 20))
         logs_lbl.grid(row=0, column=0, columnspan=3, padx=10, pady=(20, 10), sticky="nsew")
         logs_txt = CTkTextbox(master=window, font=("Arial", 16), width=700)
         logs_txt.grid(row=1, column=0, columnspan=3, rowspan=5, padx=10, pady=10, sticky="nsew")
+        #Loop inserts each line from the program.log file into the text box.
         with open("program.log", "r") as file:
             for line in file:
                 logs_txt.insert("end", line)
         logs_txt.configure(state="disabled")
-        logs_txt.see("end")
+        logs_txt.see("end") #scrolls to the bottom fo the text box
 
-    def config(self, diff_step_size: int, int_method: str, int_step_side: int):
+    def config(self, diff_step_size: int, int_method: str, int_step_side: int)->None: # Function called by the save settings button in the settings page
+        # use try and excpet to handle invalid input
         try:
+            # Re sets program variables
             self.diff_hs_size = int(diff_step_size)
             self.int_type = int_method
             self.int_step_size = int_step_side
+            # Sets the new values to the variables in the proccessor file 
             processors.set_parameters(self.diff_hs_size, self.int_type, self.int_step_size)
-            tools.gui_popup("Succesfully Applied New Configuration!")
+            tools.gui_popup("Succesfully Applied New Configuration!") # Provides succesful message and logs it 
             tools.append_to_log(f"Changed Differention Half Step Size to {diff_step_size}, changed integration method to {self.int_type}, changed integration step size to {self.int_step_size}")
         except Exception as e:
+            # Provides pop up error and logs error
             tools.gui_error("CONFIGURATION ERROR: Invalid Input")
             tools.append_to_log(f"Failed to change configurations due to {e}", "ERROR")
 
-    def get_sensor_options(self):
+    def get_sensor_options(self)->None: # Gets options that can be sekected for plotting
         self.sensor_options = self.sensor_df.columns.to_list()[1:]
+        # Chekcs for the possibility of mass flow rate being an option if mass of tanks exists
         if "MFT" in self.sensor_options:
             self.sensor_options.append("dMFT")
         if "MOT" in self.sensor_options:
             self.sensor_options.append("dMOT")
 
-    def engine_calculations(self, text_box: CTkTextbox, wet_masss: float, dry_masss: float, start_time: float, end_time = None, save:int = 0)->None:
+    def engine_calculations(self, text_box: CTkTextbox, wet_masss: float, dry_masss: float, start_time: float, end_time = None, save:int = 0)->None: # Called by engine calculations tool and Fascilatates all the engine calculations and plotting and displaying results
+        # Gets x_axis/time, start anf end index
         time = self.sensor_df["Time"].to_list()
         start_ind = tools.get_xaxis_index(time, start_time)
         if end_time is None:
             end_ind = len(time) - 1
         else:
             end_ind = tools.get_xaxis_index(time, end_time)
+        # checks to ensure we have nescscary data needed to perform engine calculations
         if "MFT" in self.sensor_df.columns and "MOT" in self.sensor_df.columns:
+            # gets results from proccessor file
             results = processors.engine_calculations(self.sensor_df, wet_masss, dry_masss, start_ind, end_ind)
             time = time[start_ind:end_ind]
+            # Empties/resets text box
             text_box.configure(state="normal")
             text_box.delete(0, 'end')
+            # Checks whether item in result is a list or value and then either plots it or puts value in text box
             for res in results:
                 if isinstance(res[1], list):
                     tools.single_plot(self.folder_name, time, [res], [], [], save)
                 else:
                     text_box.insert("end", f'{res[0]}: {res[1]}{tools.get_units(res[0])}\n')
             text_box.configure(stae='disabled')
-            tools.append_to_log("Ran engine calculations")
+            tools.append_to_log("Ran engine calculations") # appends result
         else:
+            # Provides error pop up and appends to log
             tools.gui_error("Cannot run engine calculations as you are missing either MFT or MOT or both.")
             tools.append_to_log("Unable to run engine calculations as required sensor data is missing", "ERROR")
 
-    def custom_dataset(self, sensors:list, operator:str, name:str):
+    def custom_dataset(self, sensors:list, operator:str, name:str): # Function that is called by cusotm dataset tool anf fascialtates the creation of a new dataset
+        # Uses proccessor file to make new dataset form user input
         new_dataset = processors.custom_dataset(sensors[0], sensors[1], self.sensor_df, operator)
-        self.sensor_df[name] = new_dataset
+        self.sensor_df[name] = new_dataset # adds to dataframe
+        #Resets opitons of sensors users can select forr plotting
         self.sensor_options = self.sensor_df.columns.to_list()[1:]
         if "MFT" in self.sensor_options:
             self.sensor_options.append("dMFT")
         if "MOT" in self.sensor_options:
             self.sensor_options.append("dMOT")
+        # updates it in objects of dropdown list in cusotm plot tool
         self.left_axis_options.update_values(self.sensor_options)
         self.right_axis_options.update_values(self.sensor_options)
-        tools.append_to_log(f"New dataset created called {name}, created by doing {sensors[0]} {operator} {sensors[1]}")
+        tools.append_to_log(f"New dataset created called {name}, created by doing {sensors[0]} {operator} {sensors[1]}") # Appends info to log 
         
-
-    def switch_visual_mode(self):
+    def switch_visual_mode(self): #is used to switch visual mode of the application and ads to log
         if get_appearance_mode() == "Dark":
             set_appearance_mode("light")
         else:
             set_appearance_mode("dark")
         tools.append_to_log(f"Changed appearance mode to {get_appearance_mode()}", "INFO")
 
-    def export_data(self, start, end)-> None:
+    def export_data(self, start, end)-> None: # function called by export function tool 
+        # Uses try and except to deal with user error
         try:
+            # validates start and end time and gets their values 
             if start > end:
                 tools.gui_error("EXPORT DATA ERROR: Start time cannot be larger then end time.")
                 return
@@ -413,22 +459,27 @@ class Carina_Log_Processor_Plotter(CTk):
                 start = self.sensor_df["Time"][0]
             else:
                 start = max(self.sensor_df["Time"][0], float(start))
+            # makes coppies of dataframe but within the timeframe of start and end
             sensor_df = self.sensor_df[(self.sensor_df["Time"] >= start) & (self.sensor_df["Time"] <= end)]
             actuator_df = self.actuator_df[(self.sensor_df["Time"] >= start) & (self.sensor_df["Time"] <= end)]
+            # Gets indexes for start and end
             if end == self.sensor_df["Time"][len(self.sensor_df) - 1]:
                 end = tools.get_xaxis_index(self.sensor_df["Time"], end) + 1
             else:
                 end = tools.get_xaxis_index(self.sensor_df["Time"], end)
-            
+            # add mass flow rate if we have mass values
             if "MFT" in sensor_df.columns:
                 sensor_df["dMFT"] = processors.mass_flow_rate("dMFT", self.sensor_df, tools.get_xaxis_index(self.sensor_df["Time"], start), end)
             if "MOT" in sensor_df.columns:
                 sensor_df["dMOT"] = processors.mass_flow_rate("dMOT", self.sensor_df, tools.get_xaxis_index(self.sensor_df["Time"], start), end)
+            # converts dataframe to csv and saves
             sensor_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_sensors_data.csv"))
             actuator_df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "raw", "parsed_actuator_data.csv"))
+            # provides success pop up and appends to log
             tools.gui_popup(f"Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")
             tools.append_to_log("Exported Sensors and Actuators Data to CSV in /Data/{self.folder_name}/raw folder")
         except Exception as e:
+            # provides failure pop up and appends to log
             tools.gui_error("EXPORT DATA ERROR: Invalid start or end time.")
             tools.append_to_log(f"Fialed to export data to csv due to {e}", "ERROR")
             
