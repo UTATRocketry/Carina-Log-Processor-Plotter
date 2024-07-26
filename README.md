@@ -22,7 +22,19 @@ The Carina Log Processor and Plotter is a GUI-based application designed to read
 4. Run the application:
    ```sh
    python main.py
-   ``` 
+   ```
+## Add New Test Data
+If you perform a new cold flow, hot fire, or other test you will want to add the Carina log files to the program's Data folder so that you can process it using the program. TO do this follow the below instructions:
+1. Create a folder with the name of your test inside of the **Data** folder (New Path: \Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\**test_name**)
+2. Then add a **raw** subdirectory to your test folder (New Path: \Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\**test_name**\raw)
+3. Now inside the **raw** subdirectory add the sensors data log file and actuator events log file. These files must have the names **data.log** and **events.log**.
+Your final new test folder setup should look like this:
+Path: \Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data
+                                                               -> **test_name**
+                                                                     -> **raw**
+                                                                           -> **data.log**
+                                                                           -> **events.log**
+## Program Docs
 
 ### Start Page 
 ![image](https://github.com/user-attachments/assets/e2d9a487-77e9-4db8-8e27-596e9e0c69fc)
@@ -34,7 +46,7 @@ The Carina Log Processor and Plotter is a GUI-based application designed to read
 4. Click the "Start Program" button to process and visualize the data across the entire time domain.
 5. After all the initial plots are generated you will find yourself in the main program UI.
 
-### Main Program
+### Main Page
 ![image](https://github.com/user-attachments/assets/f6187df7-6213-4124-a0a4-79f42b8a7fc3)
 
 #### Program Tools
