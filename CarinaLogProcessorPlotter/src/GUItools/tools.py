@@ -303,7 +303,7 @@ def get_available_folders() -> list:
 def append_to_log(msg: str, mode: str = 'INFO') -> None:
     '''Function to append a message to the program.log file based on th emessage and message type (mode). '''
     try:
-        with open(os.path.join("CarinaLogProcessorPlotter", "program.log"), "a") as file:
+        with open("program.log", "a") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], {mode}: {msg}\n')
             file.close()
     except Exception as e:

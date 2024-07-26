@@ -2,10 +2,10 @@ from _thread import *
 from customtkinter import *
 from queue import Queue
 from datetime import datetime
-from src.carina_parser import parser 
-from src.GUItools import *
+from CarinaLogProcessorPlotter.src.carina_parser import parser 
+from CarinaLogProcessorPlotter.src.GUItools import *
 
-class Carina_Log_Processor_Plotter(CTk):
+class CarinaLogProcessorPlotter(CTk):
     def __init__(self, Title: str) -> None:
         super().__init__() # Initializes Window object of Tkinter
         self.queue = Queue() # Queue for use in multiprocessing
@@ -14,7 +14,7 @@ class Carina_Log_Processor_Plotter(CTk):
         self.int_type = "Simpson"
         self.int_step_size = 100
         # Create new program log and append first entry
-        with open(os.path.join("CarinaLogProcessorPlotter", "program.log"), "w") as file:
+        with open("program.log", "w") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], INFO: Program Started\n')
             file.close()
         # Sets visual mode to dark as default and to blue
@@ -363,7 +363,7 @@ class Carina_Log_Processor_Plotter(CTk):
         logs_txt = CTkTextbox(master=window, font=("Arial", 16), width=700)
         logs_txt.grid(row=1, column=0, columnspan=3, rowspan=5, padx=10, pady=10, sticky="nsew")
         #Loop inserts each line from the program.log file into the text box.
-        with open(os.path.join("CarinaLogProcessorPlotter", "program.log"), "r") as file:
+        with open("program.log", "r") as file:
             for line in file:
                 logs_txt.insert("end", line)
         logs_txt.configure(state="disabled")
