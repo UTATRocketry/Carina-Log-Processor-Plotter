@@ -25,15 +25,14 @@ The Carina Log Processor and Plotter is a GUI-based application designed to read
    ```
 ## Add New Test Data
 If you perform a new cold flow, hot fire, or other test you will want to add the Carina log files to the program's Data folder so that you can process it using the program. TO do this follow the below instructions:
-1. Create a folder with the name of your test inside of the **Data** folder (New Path: \Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\**test_name**)
-2. Then add a **raw** subdirectory to your test folder (New Path: \Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\**test_name**\raw)
-3. Now inside the **raw** subdirectory add the sensors data log file and actuator events log file. These files must have the names **data.log** and **events.log**. \n
-Your final new test folder setup should look like this:
-Path: \Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data
-                                                               -> **test_name**
-                                                                     -> **raw**
-                                                                           -> **data.log**
-                                                                           -> **events.log**
+1. Create a folder with the name of your test inside of the **Data** folder (New Path: \Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\\**test_name**)
+2. Then add a **raw** subdirectory to your test folder (New Path: \Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\\**test_name**\raw)
+3. Now inside the **raw** subdirectory add the sensors data log file and actuator events log file. These files must have the names **data.log** and **events.log**. Your final new test folder setup should look like this:
+- \Carina-Log-Processor-Plotter\CarinaLogProcessorPlotter\Data\\**test_name** 
+   - **raw** 
+       - **data.log** 
+       - **events.log** 
+  
 ## Program Docs
 
 ### Start Page 
