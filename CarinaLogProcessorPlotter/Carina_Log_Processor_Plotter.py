@@ -25,8 +25,10 @@ class Carina_Log_Processor_Plotter(CTk):
         self.mainloop() # runs tkinter loop
         
     def boot_screen(self) -> None: # First sceen user sees and allows them to choose the folder
-        # Clears screen
+        # Clears screen and set data variables to nothing this is to clear ram if user has pressed back button
         tools.clear_gui(self)
+        self.actuator_df = None
+        self.sensor_df = None
         # Sets up all the screen elements
         boot_frm = CTkFrame(master=self)
         greeting_lbl = CTkLabel(master=boot_frm, text="Welcome to the Carina Data Plotter", text_color="lightblue", font=("Arial", 30))
