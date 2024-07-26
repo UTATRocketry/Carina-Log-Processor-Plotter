@@ -22,6 +22,7 @@ def textbox_caller(func, text_box: CTkEntry, save: IntVar):
     return call_func
 
 def replot_caller(func, start_box: CTkEntry, end_box: CTkEntry, save: IntVar):
+    '''Takes in inputs from ui and calls function to replot all graphswith parameters'''
     def call_func2():
         try:
             start = start_box.get()
@@ -46,6 +47,7 @@ def replot_caller(func, start_box: CTkEntry, end_box: CTkEntry, save: IntVar):
     return call_func2
 
 def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, save: IntVar, plot_name: CTkEntry): 
+    '''Takes inpout from ui and calls custom plot function feeding it the parameters it needs'''
     def call_func2():
         try:
             choices = (options[0].selections(), options[1].selections(), options[2].selections())
@@ -70,6 +72,7 @@ def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, sav
     return call_func2
 
 def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEntry, CTkEntry], save: IntVar, text_box: CTkTextbox):
+    '''Takes entry from ui and calls function with the values, used foe engine calc function'''
     def call_func3():
         try:
             wet_mass = float(masses[0].get())
@@ -92,6 +95,7 @@ def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEn
     return call_func3
 
 def custom_dataset_caller(func, frame:CTkFrame, entry:CTkEntry):
+    '''Takes the entrys from UI and calls function with the values from entries'''
     def call_func4():
         tup = frame.get()
         if tup[0] == "" or tup[1] == "":
@@ -124,6 +128,7 @@ def clear_gui(window: CTk) -> None:
 
 
 def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, actuators:list, save:int = 0, plot_name = None) -> None: 
+    '''genertes a singular plot but can plt mutliple lines and actuators actuaion times as asymptotes'''
     if not os.path.exists(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots")):
         os.mkdir(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots"))
 
@@ -212,6 +217,7 @@ def max_min_check(prev_min: float, prev_max: float, data: list)->tuple:
     return res1, res2
 
 def generate_plots(folder_name: str, dataframe: pd.DataFrame, type: str = "sensor", start_time = 0, end_time = None, save:int = 0) -> None:
+    '''generates a plot for each element in the dataframe between the start and end time'''
     if not os.path.exists(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots")):
         os.mkdir(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", folder_name, "Plots"))
 
