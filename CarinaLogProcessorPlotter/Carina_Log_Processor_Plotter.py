@@ -3,9 +3,7 @@ from customtkinter import *
 from queue import Queue
 from datetime import datetime
 from src.carina_parser import parser 
-from src.GUItools import tools
-from src.GUItools import processors
-from src.GUItools.guiClasses import OptionsColumn, ActuatorTimeDropdown, OperationSelector
+from src.GUItools import *
 
 class Carina_Log_Processor_Plotter(CTk):
     def __init__(self, Title: str) -> None:
@@ -200,7 +198,7 @@ class Carina_Log_Processor_Plotter(CTk):
         end_lbl.grid(row=3, column=2, pady=10, padx=(5, 0), sticky="w")
         end_ent = CTkEntry(master=custom_plot_frm, font=("Arial", 16), width=200)
         end_ent.grid(row=3, column=3, pady=10, padx=(0, 10), sticky = "w")
-        actuator_frame = ActuatorTimeDropdown(master=custom_plot_frm, actuator_df=self.actuator_df, entry_boxes=[start_ent, end_ent], text="Actuator Timelines: ")
+        actuator_frame = guiClasses.ActuatorTimeDropdown(master=custom_plot_frm, actuator_df=self.actuator_df, entry_boxes=[start_ent, end_ent], text="Actuator Timelines: ")
         actuator_frame.grid(row=2, column=0, columnspan=4, padx=10, pady=10, sticky="nsew")
         choices_frm = CTkFrame(master=custom_plot_frm)
         choices_frm.grid_rowconfigure((0, 1), weight=1)
@@ -210,9 +208,9 @@ class Carina_Log_Processor_Plotter(CTk):
         independent_opt = CTkOptionMenu(master=choices_frm, font=("Arial", 14), values=["Time"], anchor="center")
         left_axis_lbl = CTkLabel(master=choices_frm, text="Left Axis", font=("Arial", 14))
         right_axis_lbl = CTkLabel(master=choices_frm, text="Right Axis", font=("Arial", 14))
-        self.left_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_options)
-        self.right_axis_options = OptionsColumn(master=choices_frm, values=self.sensor_options)
-        actuators_options = OptionsColumn(master=choices_frm, values=self.actuator_df.columns.to_list()[1:], ctype="A")
+        self.left_axis_options = guiClasses.OptionsColumn(master=choices_frm, values=self.sensor_options)
+        self.right_axis_options = guiClasses.OptionsColumn(master=choices_frm, values=self.sensor_options)
+        actuators_options = guiClasses.OptionsColumn(master=choices_frm, values=self.actuator_df.columns.to_list()[1:], ctype="A")
         independent_lbl.grid(row=0, column=0, padx=(10, 0), pady=10, sticky="ew")
         actuator_lbl.grid(row=0, column=3, padx=(10, 0), pady=10, sticky="ew")
         independent_opt.grid(row=1, column=0, padx=10, pady=10, sticky="ew")
@@ -288,7 +286,7 @@ class Carina_Log_Processor_Plotter(CTk):
         dataset_name_lbl.grid(row=1, column=0, padx=(10, 0), pady=10, sticky="ew")
         dataset_name_ent = CTkEntry(master=custom_dataset_frm, font=("Arial", 16), width=150)
         dataset_name_ent.grid(row=1, column=1, columnspan=2, padx=(0, 10), pady=10, sticky="w")
-        operation = OperationSelector(master=custom_dataset_frm, sensor_df=self.sensor_df)
+        operation = guiClasses.OperationSelector(master=custom_dataset_frm, sensor_df=self.sensor_df)
         operation.grid(row=2, column=0, columnspan=3, padx=10, pady=10, sticky="ew")
         create_buttom = CTkButton(master=custom_dataset_frm, text="Create Dataset", font=("Arial", 16), width=200, height=40, command=tools.custom_dataset_caller(self.custom_dataset, operation, dataset_name_ent))
         create_buttom.grid(row=3, column=0, columnspan=3, padx=10, pady=10)

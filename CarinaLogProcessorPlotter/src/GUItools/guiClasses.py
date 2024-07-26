@@ -132,18 +132,28 @@ class ActuatorTimeDropdown(CTkFrame):
             switch_off = self.df['Time'][changes == -1].tolist()
 
             res = []
-            if switch_on[0] < switch_off[0]:
-                l = len(switch_off) 
-                for i in range(len(switch_on)):
-                    res.append(f'{switch_on[i]}s Off -> On')
-                    if i < l:
-                        res.append(f'{switch_off[i]}s On -> Off')
+            if not switch_off and not switch_on:
+                self.actuation_times[column] = [""]
+                continue
+            elif not switch_off:
+                for val in switch_on:
+                    res.append(f'{val}s Off -> On')
+            elif not switch_on:
+                for val in switch_off:
+                    res.append(f'{val}s On -> Off')
             else:
-                l = len(switch_on) 
-                for i in range(len(switch_off)):
-                    res.append(f'{switch_off[i]}s On -> Off')
-                    if i < l:
+                if switch_on[0] < switch_off[0]:
+                    l = len(switch_off) 
+                    for i in range(len(switch_on)):
                         res.append(f'{switch_on[i]}s Off -> On')
+                        if i < l:
+                            res.append(f'{switch_off[i]}s On -> Off')
+                else:
+                    l = len(switch_on) 
+                    for i in range(len(switch_off)):
+                        res.append(f'{switch_off[i]}s On -> Off')
+                        if i < l:
+                            res.append(f'{switch_on[i]}s Off -> On')
 
             self.actuation_times[column] = res if res else [""]
 
