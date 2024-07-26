@@ -18,7 +18,7 @@ def parse_from_raw(queue: Queue = None):
     sensor_lines = []
     with open(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", test_dir, "raw", "data.log"), "r") as data:
         sensor_lines = data.readlines()
-    if queue: queue.put(2)
+    if queue: queue.put(2) # al queue puts are for the progress bar in UI
 
     actuator_lines = []
     with open(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", test_dir, "raw", "events.log"), "r") as event:
@@ -27,6 +27,7 @@ def parse_from_raw(queue: Queue = None):
 
     time_offset = parse_tools.get_seconds_hhmmss(parse_tools.split_space_comma(actuator_lines[0])[1])
    
+   # Multiprocessing to speed up sensor parsing
     num_cores = max(1, multiprocessing.cpu_count() - 4)
     segment_size = len(sensor_lines) // num_cores
     with multiprocessing.Pool(num_cores) as pool:
@@ -36,6 +37,7 @@ def parse_from_raw(queue: Queue = None):
 
         results = pool.starmap(parse_sensor_lines, segments)
     
+    # Combining results form multiprocessing
     sensors = results[0]
     i = 1
     while i < len(results):
@@ -118,6 +120,7 @@ def parse_actuator_lines(lines, time_offset):
     return actuators
 
 def actuators_reformat(actuators: dict) -> None: 
+    '''Converts degree measurments into on and off (1/0)'''
     for actuator in actuators:
         state = 0
         for i in range(len(actuators[actuator])):
@@ -135,6 +138,7 @@ def actuators_reformat(actuators: dict) -> None:
             actuators[actuator][i] = (actuators[actuator][i][0], state)
 
 def fill_actuators(time: list, actuators: dict)->dict:
+    '''Fills/extends each actuator in the dictionary with a value for all the time values that are in the sensor dictionary making all the lsits the same size.'''
     new_dict = {}
     for name in actuators.keys():
         if name == "Time":
