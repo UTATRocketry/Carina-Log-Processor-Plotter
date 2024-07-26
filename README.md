@@ -36,11 +36,11 @@ If you perform a new cold flow, hot fire, or other test you will want to add the
 ## Program Docs
 
 ### Start Page 
-![image](https://github.com/user-attachments/assets/e2d9a487-77e9-4db8-8e27-596e9e0c69fc)
+![image](https://github.com/user-attachments/assets/7def1407-2d02-49e7-bc06-e944bb0ae901)
 
 #### Steps to Start Program
 1. Open the application.
-2. Enter the folder name that contains the data and event logs. (Ensure that the folder has a "raw" subfolder with the two files "data.log" and "events.log")
+2. Choose the folder you want to process from the dropdown menu.
 3. Choose whether to save the initial plots or not. (By selecting the radio button)
 4. Click the "Start Program" button to process and visualize the data across the entire time domain.
 5. After all the initial plots are generated you will find yourself in the main program UI.
