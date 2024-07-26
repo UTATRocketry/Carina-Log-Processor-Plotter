@@ -8,15 +8,12 @@ from tkinter import messagebox
 from datetime import datetime
 
 
-def textbox_caller(func, text_box: CTkEntry, save: IntVar):
+def textbox_caller(func, folder_opt: CTkOptionMenu, save: IntVar):
     '''This function is used by the start screen button and takes the entry box to get the folder name. 
     It then cals the function with the folder name parameter andf wehther to save th eplot or not'''
     def call_func():
-        text = text_box.get()
+        text = folder_opt.get()
         folder = os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", text, "raw")
-        if not os.path.exists(os.path.join(folder, "data.log")) or not os.path.exists(os.path.join(folder, "events.log")):
-            gui_error("File Path not Found")
-            return
         append_to_log(f'Begining data parsing in {folder}', "INFO")
         func(text, save.get())
     return call_func
@@ -284,11 +281,29 @@ def get_actuation_indexes(values: list) -> list:
         elif values[i] < values[i+1]:
             res.append((i, "On"))
     return res
+
+def get_available_folders() -> list:
+    cur_dir = os.path.join(os.getcwd(), "CarinaLogProcessorPlotter")
+    if not os.path.exists(os.path.join(cur_dir, "Data")):
+        os.makedirs(os.path.join(cur_dir, "Data"))
+
+    available_folders = []
+    dir_items = os.scandir(os.path.join(cur_dir, "Data"))
+    for item in dir_items:
+        if item.is_dir():
+            if os.path.exists(os.path.join(cur_dir, "Data", item, "raw", "data.log")) and os.path.exists(os.path.join(cur_dir, "Data", item, "raw", "events.log")):
+                available_folders.append(item.name)
+                append_to_log(f"Found valid folder {item.name} at path {os.path.join(cur_dir, 'Data', item)}")
+    if not available_folders:
+        gui_error("No valid data folders found! Please add a data.log and events.log file to a testfolder in a /raw subdirectory. Note all test folders must go in the /Data folder.")
+        append_to_log("Failed to find any valid data folders", "ERROR")
+        available_folders = [""]
+    return available_folders
             
 def append_to_log(msg: str, mode: str = 'INFO') -> None:
     '''Function to append a message to the program.log file based on th emessage and message type (mode). '''
     try:
-        with open("program.log", "a") as file:
+        with open(os.path.join("CarinaLogProcessorPlotter", "program.log"), "a") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], {mode}: {msg}\n')
             file.close()
     except Exception as e:

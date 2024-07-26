@@ -14,7 +14,7 @@ class Carina_Log_Processor_Plotter(CTk):
         self.int_type = "Simpson"
         self.int_step_size = 100
         # Create new program log and append first entry
-        with open("program.log", "w") as file:
+        with open(os.path.join("CarinaLogProcessorPlotter", "program.log"), "w") as file:
             file.write(f'[T {datetime.now().strftime("%d/%m/%Y %H:%M:%S")}], INFO: Program Started\n')
             file.close()
         # Sets visual mode to dark as default and to blue
@@ -35,8 +35,8 @@ class Carina_Log_Processor_Plotter(CTk):
         prompt_frm = CTkFrame(master=boot_frm)
         prompt_frm.rowconfigure((0, 1), weight=2)
         prompt_frm.columnconfigure((0, 1, 2), weight=1)
-        prompt_lbl = CTkLabel(master=prompt_frm, text='Enter folder name which contains the data and events logs in a "\\raw" sub folder (Data\\_____\\raw):  ', font=("Arial", 16), anchor="center")
-        folder_ent = CTkEntry(master=prompt_frm, font=("Arial", 12), width=100)
+        prompt_lbl = CTkLabel(master=prompt_frm, text='Choose test folder whihc you want to analyze: ', font=("Arial", 16), anchor="center")
+        folder_opt = CTkOptionMenu(master=prompt_frm, font=("Arial", 12), values=tools.get_available_folders())
         save_frm = CTkFrame(master=prompt_frm)
         save_frm.rowconfigure((0), weight=1)
         save_frm.columnconfigure((0, 1, 2), weight=1)
@@ -44,10 +44,10 @@ class Carina_Log_Processor_Plotter(CTk):
         save = IntVar(value=0)
         save_rdbtn = CTkRadioButton(master=save_frm, text="Yes", font=("Arial", 12), value=1, variable=save)
         nosave_rdbtn = CTkRadioButton(master=save_frm, text="No", font=("Arial", 12), value=0, variable=save)
-        start_program_btn = CTkButton(master=boot_frm, text="Start Program", font=("Arial", 20), width=120, anchor="center", command=tools.textbox_caller(self.loading_screen, folder_ent, save))
+        start_program_btn = CTkButton(master=boot_frm, text="Start Program", font=("Arial", 20), width=120, anchor="center", command=tools.textbox_caller(self.loading_screen, folder_opt, save))
         greeting_lbl.pack(pady=20)
         prompt_lbl.grid(row=0, column=0, columnspan=2, padx=(10, 10), pady=(10, 5), sticky="nsew")
-        folder_ent.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
+        folder_opt.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
         save_lbl.grid(row=0, column=0, padx=(10, 5), pady=(10, 10), sticky="nsew")
         save_rdbtn.grid(row=0, column=1, padx=(30, 0), pady=(10, 10), sticky="nsew")
         nosave_rdbtn.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
@@ -363,7 +363,7 @@ class Carina_Log_Processor_Plotter(CTk):
         logs_txt = CTkTextbox(master=window, font=("Arial", 16), width=700)
         logs_txt.grid(row=1, column=0, columnspan=3, rowspan=5, padx=10, pady=10, sticky="nsew")
         #Loop inserts each line from the program.log file into the text box.
-        with open("program.log", "r") as file:
+        with open(os.path.join("CarinaLogProcessorPlotter", "program.log"), "r") as file:
             for line in file:
                 logs_txt.insert("end", line)
         logs_txt.configure(state="disabled")
