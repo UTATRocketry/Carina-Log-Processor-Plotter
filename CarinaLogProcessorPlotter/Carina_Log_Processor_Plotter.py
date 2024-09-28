@@ -24,7 +24,7 @@ class CarinaLogProcessorPlotter(CTk):
         self.boot_screen() # call first screen 
         self.mainloop() # runs tkinter loop
         
-    def boot_screen(self) -> None: # First sceen user sees and allows them to choose the folder
+    def boot_screen(self) -> None: # First screen user sees and allows them to choose the folder
         # Clears screen and set data variables to nothing this is to clear ram if user has pressed back button
         tools.clear_gui(self)
         self.actuator_df = None
@@ -35,7 +35,7 @@ class CarinaLogProcessorPlotter(CTk):
         prompt_frm = CTkFrame(master=boot_frm)
         prompt_frm.rowconfigure((0, 1), weight=2)
         prompt_frm.columnconfigure((0, 1, 2), weight=1)
-        prompt_lbl = CTkLabel(master=prompt_frm, text='Choose test folder whihc you want to analyze: ', font=("Arial", 16), anchor="center")
+        prompt_lbl = CTkLabel(master=prompt_frm, text='Choose test folder which you want to analyze: ', font=("Arial", 16), anchor="center")
         folder_opt = CTkOptionMenu(master=prompt_frm, font=("Arial", 12), values=tools.get_available_folders())
         save_frm = CTkFrame(master=prompt_frm)
         save_frm.rowconfigure((0), weight=1)
