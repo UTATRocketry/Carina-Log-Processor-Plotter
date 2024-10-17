@@ -8,14 +8,14 @@ from tkinter import messagebox
 from datetime import datetime
 
 
-def textbox_caller(func, folder_opt: CTkOptionMenu, save: IntVar):
+def textbox_caller(func, folder_opt: CTkOptionMenu, plot: IntVar, save: IntVar):
     '''This function is used by the start screen button and takes the entry box to get the folder name. 
     It then cals the function with the folder name parameter andf wehther to save th eplot or not'''
     def call_func():
         text = folder_opt.get()
         folder = os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", text, "raw")
         append_to_log(f'Begining data parsing in {folder}', "INFO")
-        func(text, save.get())
+        func(text, plot.get(), save.get())
     return call_func
 
 def replot_caller(func, start_box: CTkEntry, end_box: CTkEntry, save: IntVar):
@@ -46,7 +46,7 @@ def replot_caller(func, start_box: CTkEntry, end_box: CTkEntry, save: IntVar):
 def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, save: IntVar, plot_name: CTkEntry): 
     '''Takes inpout from ui and calls custom plot function feeding it the parameters it needs'''
     def call_func2():
-        try:
+        #try:
             choices = (options[0].selections(), options[1].selections(), options[2].selections())
             name = plot_name.get() if plot_name.get() != "" else None
             start = times[0].get()
@@ -63,9 +63,9 @@ def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, sav
                     append_to_log(f"Failed to create custom graph as start time was greater then end time (start:{start}, end:{end})", "ERROR")
                     return
                 func(choices, float(start), float(end), save.get(), plot_name=name)
-        except Exception as e:
-            gui_error("Invalid Start or End value")
-            append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
+        #except Exception as e:
+            #gui_error("Invalid Start or End value")
+            #append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
     return call_func2
 
 def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEntry, CTkEntry], save: IntVar, text_box: CTkTextbox):
@@ -264,8 +264,10 @@ def get_units(name: str)->str:
         return "Pressure (psi)"
     elif "V" in name:
         return "(m/s)"
-    elif unit == "d":
+    elif name[0:2] == "dM":
         return "Mass Flow Rate (kg/s)"
+    elif name[0:2].lower() == "dp":
+        return "Pressure (psi)"
     elif unit == "M":
         return "Mass (kg)"
     elif unit == "T" or "ISP" in name:

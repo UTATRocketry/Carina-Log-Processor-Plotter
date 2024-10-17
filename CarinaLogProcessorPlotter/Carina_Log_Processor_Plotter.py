@@ -33,10 +33,17 @@ class CarinaLogProcessorPlotter(CTk):
         boot_frm = CTkFrame(master=self)
         greeting_lbl = CTkLabel(master=boot_frm, text="Welcome to the Carina Data Plotter", text_color="lightblue", font=("Arial", 30))
         prompt_frm = CTkFrame(master=boot_frm)
-        prompt_frm.rowconfigure((0, 1), weight=2)
+        prompt_frm.rowconfigure((0, 1, 2), weight=2)
         prompt_frm.columnconfigure((0, 1, 2), weight=1)
         prompt_lbl = CTkLabel(master=prompt_frm, text='Choose test folder which you want to analyze: ', font=("Arial", 16), anchor="center")
         folder_opt = CTkOptionMenu(master=prompt_frm, font=("Arial", 12), values=tools.get_available_folders())
+        immediatetly_plot_frm = CTkFrame(master=prompt_frm)
+        immediatetly_plot_frm.rowconfigure((0), weight=1)
+        immediatetly_plot_frm.columnconfigure((0, 1, 2), weight=1)
+        immediatetly_plot_label =  CTkLabel(master=immediatetly_plot_frm, font=("Arial", 16), text="Immediatetly Plot:", anchor="center")
+        plot = IntVar(value=0)
+        plot_rdbtn = CTkRadioButton(master=immediatetly_plot_frm, text="Yes", font=("Arial", 12), value=1, variable=plot)
+        noplot_rdbtn = CTkRadioButton(master=immediatetly_plot_frm, text="No", font=("Arial", 12), value=0, variable=plot)
         save_frm = CTkFrame(master=prompt_frm)
         save_frm.rowconfigure((0), weight=1)
         save_frm.columnconfigure((0, 1, 2), weight=1)
@@ -44,19 +51,24 @@ class CarinaLogProcessorPlotter(CTk):
         save = IntVar(value=0)
         save_rdbtn = CTkRadioButton(master=save_frm, text="Yes", font=("Arial", 12), value=1, variable=save)
         nosave_rdbtn = CTkRadioButton(master=save_frm, text="No", font=("Arial", 12), value=0, variable=save)
-        start_program_btn = CTkButton(master=boot_frm, text="Start Program", font=("Arial", 20), width=120, anchor="center", command=tools.textbox_caller(self.loading_screen, folder_opt, save))
+        start_program_btn = CTkButton(master=boot_frm, text="Start Program", font=("Arial", 20), width=120, anchor="center", command=tools.textbox_caller(self.loading_screen, folder_opt, plot, save))
+        
         greeting_lbl.pack(pady=20)
         prompt_lbl.grid(row=0, column=0, columnspan=2, padx=(10, 10), pady=(10, 5), sticky="nsew")
         folder_opt.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
+        immediatetly_plot_label.grid(row=0, column=0, padx=(10, 5), pady=(10, 10), sticky="nsew")
+        plot_rdbtn.grid(row=0, column=1, padx=(30, 0), pady=(10, 10), sticky="nsew")
+        noplot_rdbtn.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
+        immediatetly_plot_frm.grid(row=2, column=0, columnspan=3, pady=10, padx=10)
         save_lbl.grid(row=0, column=0, padx=(10, 5), pady=(10, 10), sticky="nsew")
         save_rdbtn.grid(row=0, column=1, padx=(30, 0), pady=(10, 10), sticky="nsew")
         nosave_rdbtn.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
-        save_frm.grid(row=2, column=0, columnspan=3, pady=10, padx=10)
+        save_frm.grid(row=3, column=0, columnspan=3, pady=10, padx=10)
         prompt_frm.pack(padx=5, expand=True)
         start_program_btn.pack(pady=20)
         boot_frm.pack(pady=20, padx=30, fill="both", expand=True)
 
-    def loading_screen(self, folder_name: str, save: int) -> None: # Loading window which pops up when users start program and while program processes data
+    def loading_screen(self, folder_name: str, plot: int, save: int) -> None: # Loading window which pops up when users start program and while program processes data
         # Clears screen
         tools.clear_gui(self)
         # Sets up window visuals
@@ -86,8 +98,9 @@ class CarinaLogProcessorPlotter(CTk):
         progress_bar.set(1)
         info_lbl.configure(text=messages[7])
         self.update()
-        # Once data processing done, plpot all and add to log
-        self.plot_all(save=save)
+        # Once data processing done, plot all if plotting was chosen and add to log
+        if plot == 1:
+            self.plot_all(save=save)
         tools.append_to_log(f"Data Parsing and Plotting Complete", "INFO")
         self.data_screen() # go to main tool screen
 
@@ -117,14 +130,14 @@ class CarinaLogProcessorPlotter(CTk):
         # gets the y_data for the left an right axis and using sensor name and also get's masss flow rate if that is what was requested
         left_axis = []
         for sensor in options[0]: 
-            if sensor[0] == "d":
+            if sensor[0:2] == "dM":
                 mass_flow = processors.mass_flow_rate(sensor, self.sensor_df, start, end) # Makes call to processor file to get mas flow rate
                 left_axis.append((sensor, mass_flow))
             else:
                 left_axis.append((sensor, self.sensor_df[sensor].tolist()[start:end])) 
         right_axis = []
         for sensor in options[1]:
-            if sensor[0] == "d":
+            if sensor[0:2] == "dM":
                 mass_flow = processors.mass_flow_rate(sensor, self.sensor_df, start, end)
                 right_axis.append((sensor, mass_flow))
             else:

@@ -72,8 +72,18 @@ class OptionsColumn(CTkFrame):
         if self.type == "S":
             if already_chosen[0] != "None":
                 for name in self.values:
-                    if already_chosen[0][0] == name[0] and name not in already_chosen: 
+                    if already_chosen[0][0:2] == "dM":
+                            if name[0:2] == "dM" and name not in already_chosen:
+                                res.append(name)
+                    elif name[0:2].lower() == "dp":
+                        if already_chosen[0][0] == "P" and name not in already_chosen:
+                            res.append(name) 
+                    elif already_chosen[0][0:2].lower() == "dp":
+                        if name[0] == "P" and name not in already_chosen:
+                            res.append(name)
+                    elif already_chosen[0][0] == name[0] and name not in already_chosen: 
                         res.append(name)
+                    
             else:
                 res += self.values 
         else:
