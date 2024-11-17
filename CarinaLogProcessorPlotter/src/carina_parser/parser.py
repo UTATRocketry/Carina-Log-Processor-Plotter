@@ -199,7 +199,6 @@ def dataframe_format(sensors: dict, actuators: dict):
     actuator_df["Time"] = [val[0] for val in actuators[list(actuators.keys())[0]]]
     for actuator in actuators:
         actuator_df[actuator] = [val[1] for val in actuators[actuator]]
-    actuator_df.to_csv("actuators.csv")
     return sensor_df, actuator_df
 
 
