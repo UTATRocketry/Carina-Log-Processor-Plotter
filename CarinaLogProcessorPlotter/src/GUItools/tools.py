@@ -46,7 +46,7 @@ def replot_caller(func, start_box: CTkEntry, end_box: CTkEntry, save: IntVar):
 def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, save: IntVar, plot_name: CTkEntry): 
     '''Takes inpout from ui and calls custom plot function feeding it the parameters it needs'''
     def call_func2():
-        #try:
+        try:
             choices = (options[0].selections(), options[1].selections(), options[2].selections())
             name = plot_name.get() if plot_name.get() != "" else None
             start = times[0].get()
@@ -63,9 +63,9 @@ def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, sav
                     append_to_log(f"Failed to create custom graph as start time was greater then end time (start:{start}, end:{end})", "ERROR")
                     return
                 func(choices, float(start), float(end), save.get(), plot_name=name)
-        #except Exception as e:
-            #gui_error("Invalid Start or End value")
-            #append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
+        except Exception as e:
+            gui_error("Invalid Start or End value")
+            append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
     return call_func2
 
 def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEntry, CTkEntry], save: IntVar, text_box: CTkTextbox):
