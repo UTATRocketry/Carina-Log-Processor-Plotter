@@ -180,8 +180,11 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
             actuations = get_actuation_indexes(actuator[1])
             for actuation in actuations:
                 new_xaxis = [time[actuation[0]]]*2
+                color = colors[i]
                 plt.plot(new_xaxis, [min_val - 2, max_val + 2], label=f'{actuator[0]} {actuation[1]}', color=colors[i], linestyle='-.')
                 i -= 1
+                if i < 0:
+                    i = len(colors) - 1
     elif actuators:
         for actuator in actuators:
             plt.plot(time, actuator[1], color=colors[i], label=actuator[0])

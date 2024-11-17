@@ -123,19 +123,41 @@ def actuators_reformat(actuators: dict) -> None:
     '''Converts degree measurments into on and off (1/0)'''
     for actuator in actuators:
         state = 0
-        for i in range(len(actuators[actuator])):
+        max_val = -1000
+        min_val = 1000
+        for i in range(len(actuators[actuator])): # Finds max and min value of actuator
             if actuators[actuator][i][1] != "":
-                if actuator[0:2] == 'BV':
-                    if int(actuators[actuator][i][1]) == 100: 
-                            state = 0
-                    elif int(actuators[actuator][i][1]) == 0:
-                            state = 1
-                else:
-                    if int(actuators[actuator][i][1]) >= 1: 
-                            state = 1
-                    elif int(actuators[actuator][i][1]) == 0:
-                            state = 0
-            actuators[actuator][i] = (actuators[actuator][i][0], state)
+                if int(actuators[actuator][i][1]) > max_val:
+                    max_val = int(actuators[actuator][i][1])
+                if int(actuators[actuator][i][1]) < min_val:
+                    min_val = int(actuators[actuator][i][1])
+        #Uses max min to find points of change in logs
+        for i in range(len(actuators[actuator])): 
+            if actuators[actuator][i][1] != "":
+                if int(actuators[actuator][i][1]) == max_val: 
+                    state = 1 if actuator[0:2] != "BV" else 0
+                elif int(actuators[actuator][i][1]) == min_val:
+                    state = 0 if actuator[0:2] != "BV" else 1
+                actuators[actuator][i] = (actuators[actuator][i][0], state)
+
+                #Outdated left here incase needed again
+                # if actuator[0:2] == 'BV':
+                #     if int(actuators[actuator][i][1]) == 100: 
+                #         state = 0
+                #     elif int(actuators[actuator][i][1]) == 0:
+                #         state = 1
+                # if actuator == "MFV":
+                #     if int(actuators[actuator][i][1]) >= 10: 
+                #         state = 1
+                #     else:
+                #         state = 0
+                # else:
+                #     if int(actuators[actuator][i][1]) >= 1: 
+                #         state = 1
+                #     elif int(actuators[actuator][i][1]) == 0:
+                #         state = 0
+
+            
 
 def fill_actuators(time: list, actuators: dict)->dict:
     '''Fills/extends each actuator in the dictionary with a value for all the time values that are in the sensor dictionary making all the lsits the same size.'''
@@ -145,7 +167,10 @@ def fill_actuators(time: list, actuators: dict)->dict:
             continue
         actuator = actuators[name]
         new_list = []
-        prev_value = actuator[0][1]
+        for tuple in actuator:
+            if tuple[1] != '':
+                prev_value = tuple[1]
+                break
         l = len(actuator)
         j = 0
         for i in range(len(time)):
@@ -154,8 +179,9 @@ def fill_actuators(time: list, actuators: dict)->dict:
             elif time[i] < actuator[j][0]:
                 new_list.append((time[i], prev_value))
             else:
-                new_list.append((actuator[j][0], actuator[j][1]))
-                prev_value = actuator[j][1]
+                new_list.append((actuator[j][0], actuator[j][1]) if actuator[j][1] != '' else (actuator[j][0], prev_value))
+                if actuator[j][1] != '':
+                    prev_value = actuator[j][1]
                 j += 1
         new_dict[name] = new_list
     return new_dict
@@ -166,14 +192,14 @@ def dataframe_format(sensors: dict, actuators: dict):
     sensor_df["Time"] = [val[0] for val in sensors[list(sensors.keys())[0]]]
     for sensor in sensors:
         sensor_df[sensor] = [val[1] for val in sensors[sensor]]
-
+    
     actuators_reformat(actuators)
     actuators = fill_actuators(sensor_df["Time"].to_list(), actuators)
     actuator_df = pd.DataFrame(columns=["Time"] + list(actuators.keys()))
     actuator_df["Time"] = [val[0] for val in actuators[list(actuators.keys())[0]]]
     for actuator in actuators:
         actuator_df[actuator] = [val[1] for val in actuators[actuator]]
-
+    actuator_df.to_csv("actuators.csv")
     return sensor_df, actuator_df
 
 
