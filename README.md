@@ -127,7 +127,8 @@ We welcome contributions to the project! If you want to add new features or make
 
 Here are some suggested updates and next steps for the project:
 
-1. **Improve Graph Color System**: Improve the amount of colors available for use in lines on a plot which will increase the number of lines that can be plotted at once. Also, add error handling for this. It would be nice to make the vertical asymptote for actuators a specific shade of one colour so they differ from sensor lines.
-2. **Modularize Visuals**: Add more modularity to the UI's visuals by making chunks of it into customized objects.
-3. **Improved Error Handling**: Enhance the application to handle various error scenarios gracefully.
-4. **Performance Optimization**: Optimize the log processing and plotting to handle larger datasets efficiently. Multiprocessing may help in some scenarios. 
+1. **Add Unit Handling System** Have the user assign a unit to each sensor when they use the custom dataset creator tool so that units and plotting can be handled more gracefully. Would remove chunky blocks of code which currently try to sort sensors by type of dimension. 
+2. **Improve Graph Color System**: Improve the amount of colors available for use in lines on a plot which will increase the number of lines that can be plotted at once. Also, add error handling for this. It would be nice to make the vertical asymptote for actuators a specific shade of one colour so they differ from sensor lines.
+3. **Modularize Visuals**: Add more modularity to the UI's visuals by making chunks of it into customized objects.
+4. **Improved Error Handling**: Enhance the application to handle various error scenarios gracefully.
+5. **Performance Optimization**: Optimize the log processing and plotting to handle larger datasets efficiently. Multiprocessing may help in some scenarios. 
