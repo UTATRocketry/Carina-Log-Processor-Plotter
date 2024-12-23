@@ -5,6 +5,8 @@ from datetime import datetime
 from CarinaLogProcessorPlotter.src.carina_parser import parser 
 from CarinaLogProcessorPlotter.src.GUItools import *
 
+import pandas as pd
+
 class CarinaLogProcessorPlotter(CTk):
     def __init__(self, Title: str) -> None:
         super().__init__() # Initializes Window object of Tkinter
@@ -126,7 +128,7 @@ class CarinaLogProcessorPlotter(CTk):
         # Gets time xaxis and the start and end indexes
         time = self.sensor_df["Time"].tolist() 
         start = tools.get_xaxis_index(time, start)
-        end = tools.get_xaxis_index(time, end)
+        end = tools.get_xaxis_index(time, end) + 1
         # gets the y_data for the left an right axis and using sensor name and also get's masss flow rate if that is what was requested
         left_axis = []
         for sensor in options[0]: 
@@ -149,7 +151,32 @@ class CarinaLogProcessorPlotter(CTk):
         time = time[start:end]
         # makes plot by calling single plot function
         tools.single_plot(self.folder_name, time, left_axis, right_axis, actuators, save, plot_name)
-        tools.append_to_log("Created a new custom plot", "INFO:")      
+        tools.append_to_log("Created a new custom plot", "INFO:")     
+
+    def custom_save(self, options: list[list, list, list], start = 0, end = None, filename = None):
+        time = self.sensor_df["Time"].tolist() 
+        start = tools.get_xaxis_index(time, start)
+        end = tools.get_xaxis_index(time, end) + 1
+
+        sensors = options[0] + options[1]
+        actuators = options[2]
+        if sensors == [] and actuators == []:
+            tools.gui_popup("No Sensors or Actuators were selected. No data was saved.")
+            return
+
+        d = {"Time": time[start:end]}
+        for sensor in sensors:
+            if sensor[0:2] == "dM":
+                mass_flow = processors.mass_flow_rate(sensor, self.sensor_df, start, end) # Makes call to processor file to get mas flow rate
+                d[sensor] = mass_flow
+            else:
+               d[sensor] = self.sensor_df[sensor].tolist()[start:end]
+        for actuator in actuators:
+            d[actuator] = self.actuator_df[actuator].tolist()[start:end]
+
+        df = pd.DataFrame(d)
+        df.to_csv(os.path.join(os.getcwd(), "CarinaLogProcessorPlotter", "Data", self.folder_name, "Plots", f"{filename}.csv"))
+        tools.append_to_log(f"Saved custom data to CSV titles '{filename}.csv' ", "INFO:")   
             
     def data_screen(self) -> None: # Creates the main tool screen
         # Clears screen and set processor file global variables
@@ -247,7 +274,9 @@ class CarinaLogProcessorPlotter(CTk):
         nosave2_rdbtn.grid(row=0, column=2, padx=(0, 10), pady=(10, 10), sticky="nsew")
         save2_frm.grid(row=5, column=0, columnspan=4, pady=10, padx=10)
         custom_plot_btn = CTkButton(master=custom_plot_frm, text="Create Plot", font=("Arial", 18), command=tools.custom_plot_caller(self.custom_plot, (start_ent, end_ent), (self.left_axis_options, self.right_axis_options, actuators_options), save2, custom_title_ent)) # change command
-        custom_plot_btn.grid(row=6, column=1, columnspan=2, padx=(60, 10), pady=(10, 10), sticky="ew")
+        custom_plot_btn.grid(row=6, column=0, columnspan=2, padx=(60, 10), pady=(10, 10), sticky="ew")
+        save_data_btn = CTkButton(master=custom_plot_frm, text="Save Data", font=("Arial", 18), command=tools.custom_save_caller(self.custom_save, (start_ent, end_ent), (self.left_axis_options, self.right_axis_options, actuators_options), custom_title_ent))
+        save_data_btn.grid(row=6, column=2, columnspan=2, padx=(10, 60), pady=(10, 10), sticky="ew")
         custom_plot_frm.grid(row=1, column=1, padx=5, pady=(5, 10), rowspan=5, columnspan=2, sticky="nsew")
 
         # Sets up engine calculations tool visuals

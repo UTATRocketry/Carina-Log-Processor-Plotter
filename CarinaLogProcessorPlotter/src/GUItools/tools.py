@@ -64,9 +64,36 @@ def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, sav
                     return
                 func(choices, float(start), float(end), save.get(), plot_name=name)
         except Exception as e:
-            gui_error("Invalid Start or End value")
+            gui_error(f"The following error occured While trying to create the plot:\n {e}")
             append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
     return call_func2
+
+def custom_save_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, filename: CTkEntry): 
+    '''Takes inpout from ui and calls custom plot function feeding it the parameters it needs'''
+    def call_func3():
+        try:
+            choices = (options[0].selections(), options[1].selections(), options[2].selections())
+            name = filename.get() if filename.get() != "" else "CustomData"
+            start = times[0].get()
+            end = times[1].get()
+            print(start)
+            print(end)
+            if start == "" and end == "":
+                func(choices, filename=name)
+            elif start == "":
+                func(choices, end=float(end), filename=name)
+            elif end == "":
+                func(choices, start=float(start), filename=name)
+            else:
+                if start > end:
+                    gui_error("End cannot be less then Start")
+                    append_to_log(f"Failed to save custom data as start time was greater then end time (start:{start}, end:{end})", "ERROR")
+                    return
+                func(choices, float(start), float(end), filename=name)
+        except Exception as e:
+            gui_error(f"The following error occured While trying to save the data:\n {e}") # fix this and make it the e 
+            append_to_log(f"Failed to save custom data due to {e}", "ERROR")
+    return call_func3
 
 def engine_calc_caller(func, times:tuple[CTkEntry, CTkEntry], masses:tuple[CTkEntry, CTkEntry], save: IntVar, text_box: CTkTextbox):
     '''Takes entry from ui and calls function with the values, used foe engine calc function'''
@@ -250,7 +277,11 @@ def get_xaxis_index(xaxis: list, given_time) -> int:
         return given_time
     elif given_time is None:
         return len(xaxis)
-    if given_time and given_time < 0:
+    elif given_time and given_time < 0:
+        gui_popup("Provided TIme less than 0, time has been set to the begging of time series.")
+        return 0
+    elif given_time < xaxis[0]:
+        gui_popup("Provided TIme less than minimum time value, time has been set to the begging of time series.")
         return 0
     else:
         for i, t in enumerate(xaxis):
