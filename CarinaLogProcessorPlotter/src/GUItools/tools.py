@@ -64,7 +64,7 @@ def custom_plot_caller(func, times:tuple[CTkEntry, CTkEntry], options:tuple, sav
                     return
                 func(choices, float(start), float(end), save.get(), plot_name=name)
         except Exception as e:
-            gui_error(f"The following error occured While trying to create the plot:\n {e}")
+            gui_error(f"The following error occured while trying to create the plot:\n {e}")
             append_to_log(f"Failed to create custom graph due to {e}", "ERROR")
     return call_func2
 
@@ -171,31 +171,25 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
 
     fig = plt.figure(name)
     i = 0
-    max_val = 0
-    min_val = 0
     plotted = True
     if left_axis and right_axis:
         for sensor in left_axis:
             plt.plot(time, sensor[1], label=sensor[0], color=colors[i])
-            min_val, max_val = max_min_check(min_val, max_val, sensor[1])
             i += 1
         plt.ylabel(get_units(sensor[0]))
         ax2 = plt.twinx()
         for sensor in right_axis:
             ax2.plot(time, sensor[1], label=sensor[0], color=colors[i])
-            min_val, max_val = max_min_check(min_val, max_val, sensor[1])
             i += 1
         ax2.set_ylabel(get_units(sensor[0]))
     elif left_axis:
         for sensor in left_axis:
             plt.plot(time, sensor[1], label=sensor[0], color=colors[i])
-            min_val, max_val = max_min_check(min_val, max_val, sensor[1])
             i += 1
         plt.ylabel(get_units(sensor[0]))
     elif right_axis: 
         for sensor in right_axis:
             plt.plot(time, sensor[1], label=sensor[0], color=colors[i])
-            min_val, max_val = max_min_check(min_val, max_val, sensor[1])
             i += 1
         plt.ylabel(get_units(sensor[0]))
     else:
@@ -206,9 +200,8 @@ def single_plot(folder_name: str, time:list, left_axis: list, right_axis:list, a
         for actuator in actuators:
             actuations = get_actuation_indexes(actuator[1])
             for actuation in actuations:
-                new_xaxis = [time[actuation[0]]]*2
-                color = colors[i]
-                plt.plot(new_xaxis, [min_val - 2, max_val + 2], label=f'{actuator[0]} {actuation[1]}', color=colors[i], linestyle='-.')
+                x = time[actuation[0]]
+                plt.axvline(x, label=f'{actuator[0]} {actuation[1]}', color=colors[i], linestyle='-.')
                 i -= 1
                 if i < 0:
                     i = len(colors) - 1
