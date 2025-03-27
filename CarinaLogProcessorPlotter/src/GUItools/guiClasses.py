@@ -126,6 +126,7 @@ class ActuatorTimeDropdown(CTkFrame):
         self.grid_rowconfigure((0), weight = 1)
 
         self.get_actuator_times()
+        
 
         self.label = CTkLabel(self, text=self.text, font=self.font)
         self.actuator_opt = CTkOptionMenu(self, font=self.font, values=self.actuators, anchor="center", command=self.set_time_options)

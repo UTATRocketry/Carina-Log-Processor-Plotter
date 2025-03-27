@@ -193,6 +193,8 @@ def dataframe_format(sensors: dict, actuators: dict):
     for sensor in sensors:
         sensor_df[sensor] = [val[1] for val in sensors[sensor]]
     
+    if len(actuators) == 0:
+        return sensor_df, pd.DataFrame({"Time": sensor_df["Time"], "Empty": [0]*len(sensor_df["Time"])})
     actuators_reformat(actuators)
     actuators = fill_actuators(sensor_df["Time"].to_list(), actuators)
     actuator_df = pd.DataFrame(columns=["Time"] + list(actuators.keys()))
